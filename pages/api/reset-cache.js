@@ -16,17 +16,11 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Nur POST-Anfragen erlaubt' });
   }
 
-  // Debug-Ausgabe für Umgebungsvariablen
-  console.log('Umgebungsvariablen:', {
-    hasWebhookSecret: !!process.env.WEBHOOK_SECRET,
-    webhookSecretLength: process.env.WEBHOOK_SECRET ? process.env.WEBHOOK_SECRET.length : 0
-  });
-
-  // Frontend-Anfragen immer akzeptieren (kein Secret erforderlich)
-  // Für externe Anfragen (z.B. Google Apps Script) das Secret überprüfen
   try {
     // Cache zurücksetzen
+    console.log('Cache wird zurückgesetzt...');
     const result = await resetCache();
+    console.log('Cache wurde erfolgreich zurückgesetzt');
     res.status(200).json(result);
   } catch (error) {
     console.error('Fehler beim Zurücksetzen des Caches:', error);
