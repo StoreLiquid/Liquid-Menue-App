@@ -258,7 +258,7 @@ export default function Home() {
     return (
       <button
         onClick={() => setSelectedManufacturerId(null)}
-        className="bg-black/20 backdrop-blur-sm border border-white/10 hover:bg-black/25 hover:border-white/20 text-white py-2 px-4 rounded-xl flex items-center justify-center mb-4 transition-all shadow-md"
+        className="bg-black/30 backdrop-blur-sm border border-white/10 hover:bg-black/40 hover:border-white/20 text-white py-2 px-4 rounded-xl flex items-center justify-center mb-4 transition-all shadow-md"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -269,29 +269,32 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#2A2832] text-white">
+    <div className="min-h-screen relative overflow-hidden text-white">
+      {/* Hintergrundverlauf mit Animation für die gesamte App */}
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-black animate-gradient-slow"></div>
+      
+      {/* Subtiles Muster-Overlay für mehr Tiefe */}
+      <div className="absolute inset-0 opacity-10 bg-[url('/noise-pattern.svg')] mix-blend-overlay"></div>
+      
+      {/* Glanzeffekt am oberen Rand */}
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-gray-400 to-transparent animate-pulse-light"></div>
+      
+      {/* Subtiler Glanzeffekt in der Ecke */}
+      <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-radial from-gray-500/10 to-transparent rounded-full -translate-x-1/4 -translate-y-1/2 animate-pulse-light"></div>
+      
+      {/* Subtiler Glanzeffekt in der unteren linken Ecke */}
+      <div className="absolute bottom-0 left-0 w-60 h-60 bg-gradient-radial from-gray-500/10 to-transparent rounded-full -translate-x-1/3 translate-y-1/3 animate-pulse-light"></div>
+      
       <Head>
         <title>Liquid Menü</title>
         <meta name="description" content="E-Liquid Produktkatalog" />
       </Head>
 
-      <main className="container mx-auto px-4 py-8">
-        {/* Header mit coolem Verlauf */}
-        <div className="flex flex-col items-center justify-center mb-8 relative overflow-hidden rounded-xl p-6 md:p-8">
-          {/* Hintergrundverlauf mit Animation */}
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-black animate-gradient-slow"></div>
-          
-          {/* Subtile Muster-Overlay für mehr Tiefe */}
-          <div className="absolute inset-0 opacity-10 bg-[url('/noise-pattern.svg')] mix-blend-overlay"></div>
-          
-          {/* Glanzeffekt am oberen Rand */}
-          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-gray-400 to-transparent animate-pulse-light"></div>
-          
-          {/* Subtiler Glanzeffekt in der Ecke */}
-          <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-radial from-gray-500/10 to-transparent rounded-full -translate-x-1/4 -translate-y-1/2 animate-pulse-light"></div>
-          
+      <main className="container mx-auto px-4 py-8 relative z-10">
+        {/* Header */}
+        <div className="flex flex-col items-center justify-center mb-8 relative overflow-hidden rounded-xl p-6 md:p-8 bg-black/20 backdrop-blur-sm border border-white/10 shadow-xl">
           {/* Logo mit Cache-Busting-Parameter */}
-          <div className="relative z-10">
+          <div className="relative">
             <img 
               src={`/Liquid-Menue.svg?v=${new Date().getTime()}`}
               alt="Liquid Menü Logo"
@@ -320,7 +323,7 @@ export default function Home() {
           <button
             onClick={handleSyncData}
             disabled={isSyncing || loading}
-            className="bg-black/20 backdrop-blur-sm border border-white/10 hover:bg-black/25 hover:border-white/20 text-white p-2 rounded-xl flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md"
+            className="bg-black/30 backdrop-blur-sm border border-white/10 hover:bg-black/40 hover:border-white/20 text-white p-2 rounded-xl flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md"
             title="Daten neu laden"
           >
             {isSyncing ? (
@@ -341,7 +344,7 @@ export default function Home() {
 
         {/* Hersteller-Grid */}
         {loading ? (
-          <div className="text-center py-12">
+          <div className="text-center py-12 bg-black/20 backdrop-blur-sm rounded-xl border border-white/10 shadow-md">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
             <p className="mt-4">Lade Daten...</p>
           </div>
@@ -375,7 +378,7 @@ export default function Home() {
         )}
       </main>
 
-      <footer className="border-t border-gray-700 mt-12 py-6 text-center text-gray-400">
+      <footer className="border-t border-white/10 mt-12 py-6 text-center text-gray-300 relative z-10 backdrop-blur-sm bg-black/20">
         <p>© 2025 Liquid Menü</p>
         <p className="text-xs mt-1 opacity-50">Created by A.G.</p>
       </footer>
