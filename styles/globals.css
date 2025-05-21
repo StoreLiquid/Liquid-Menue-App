@@ -28,7 +28,8 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  overflow-y: auto !important;
+  position: relative !important;
 }
 
 /* Chrome-spezifische Anpassungen */
@@ -42,10 +43,51 @@ body {
   }
   
   /* Sicherstellen, dass die Hintergrund-Elemente in Chrome korrekt angezeigt werden */
-  .fixed.bg-gradient-to-br {
+  .fixed.bg-gradient-to-br,
+  #app-bg-gradient {
     z-index: -1;
     will-change: transform;
     backface-visibility: hidden;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+  }
+  
+  /* Zusätzliche Hintergrund-Elemente für Chrome */
+  .fixed.opacity-10,
+  #app-bg-pattern {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: -1;
+  }
+  
+  /* Verbesserte Hintergrunddarstellung für Chrome */
+  #__next {
+    background-color: transparent !important;
+  }
+  
+  /* Explizite z-index-Werte für Chrome */
+  #app-bg-gradient {
+    z-index: -10 !important;
+  }
+  
+  #app-bg-pattern {
+    z-index: -9 !important;
+  }
+  
+  #app-top-glow,
+  #app-corner-glow-1,
+  #app-corner-glow-2 {
+    z-index: -8 !important;
   }
 }
 
@@ -56,7 +98,7 @@ body {
   flex-direction: column;
   position: relative;
   overflow-x: hidden;
-  overflow-y: visible;
+  overflow-y: visible !important;
 }
 
 /* Korrektur für absolute positionierte Elemente */
@@ -64,6 +106,26 @@ body {
   min-height: 100vh;
   width: 100%;
   z-index: 0;
+}
+
+/* Sicherstellen, dass der Footer den Hintergrund hat */
+footer {
+  background-color: var(--app-bg) !important;
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Spezifisch für Chrome */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  footer {
+    background-color: var(--app-bg) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    position: relative !important;
+    z-index: 100 !important;
+  }
 }
 
 /* Animation für den Header-Verlauf */
@@ -114,7 +176,7 @@ body {
   }
   
   /* Erweitert den Hintergrund nach oben für Pull-to-Refresh */
-  body::after {
+  body::before {
     content: '';
     position: fixed;
     top: -200px;
@@ -136,9 +198,15 @@ body {
   body {
     width: 100%;
     height: 100%;
-    overflow: auto;
+    overflow: auto !important;
     background-color: var(--app-bg);
     -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Sicherstellen, dass der Footer im Standalone-Modus korrekt angezeigt wird */
+  footer {
+    background-color: var(--app-bg) !important;
+    border-top-color: rgba(255, 255, 255, 0.1) !important;
   }
 }
 

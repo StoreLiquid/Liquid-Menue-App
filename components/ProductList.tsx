@@ -107,7 +107,7 @@ const ProductList = ({
             >
               {/* Header mit Sorte */}
               <div className="bg-black/20 px-4 py-3 border-b border-white/10 relative">
-                <div className="text-white font-semibold text-center text-base">
+                <div className="text-white font-bold text-center text-lg">
                   {liquid.sorte}
                 </div>
               </div>

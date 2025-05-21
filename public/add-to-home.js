@@ -5,6 +5,13 @@ const addToHomeBtn = document.createElement('div');
 addToHomeBtn.style.display = 'none';
 addToHomeBtn.className = 'add-to-home-prompt';
 
+// Prüft, ob das Gerät ein Mobilgerät ist (Smartphone oder Tablet)
+function isMobileDevice() {
+  // Erkennt Smartphones und Tablets anhand des User-Agents
+  const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|Tablet/i;
+  return mobileRegex.test(navigator.userAgent);
+}
+
 // Get appropriate icon based on device type
 function getAppropriateIcon() {
   const isTablet = window.innerWidth >= 768 || /iPad/i.test(navigator.userAgent);
@@ -13,6 +20,40 @@ function getAppropriateIcon() {
   } else {
     return '/icons/smartphone-icon-512.png';
   }
+}
+
+// Check if the app is already in standalone mode or installed
+function isAppInstalled() {
+  console.log("Prüfe App-Installation Status...");
+  
+  // Check if in standalone mode (PWA)
+  if (window.matchMedia('(display-mode: standalone)').matches) {
+    console.log("App läuft im Standalone-Modus (PWA)");
+    return true;
+  }
+  
+  // Check for iOS standalone mode
+  if (navigator.standalone) {
+    console.log("App läuft im iOS Standalone-Modus");
+    return true;
+  }
+  
+  // Check localStorage for installation flag
+  if (localStorage.getItem('appInstalled') === 'true') {
+    console.log("App wurde laut localStorage bereits installiert");
+    return true;
+  }
+  
+  // Zusätzliche Prüfung für iOS Safari (Homescreen)
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  if (isIOS && window.navigator.standalone === true) {
+    console.log("App läuft auf iOS vom Homescreen");
+    localStorage.setItem('appInstalled', 'true');
+    return true;
+  }
+  
+  console.log("App ist nicht installiert");
+  return false;
 }
 
 // Create prompt UI
@@ -61,6 +102,7 @@ function createPromptUI() {
       
       if (userChoice.outcome === 'accepted') {
         console.log('User accepted the install prompt');
+        localStorage.setItem('appInstalled', 'true');
       } else {
         console.log('User dismissed the install prompt');
       }
@@ -129,14 +171,26 @@ function showManualInstructions() {
       <div class="instructions-content">
         ${instructionsText}
       </div>
+      <div class="instructions-footer">
+        <button class="instructions-done-btn">Fertig</button>
+      </div>
     </div>
   `;
   
   document.body.appendChild(instructionsContainer);
   
   const closeBtn = instructionsContainer.querySelector('.instructions-close-btn');
-  closeBtn.addEventListener('click', () => {
+  const doneBtn = instructionsContainer.querySelector('.instructions-done-btn');
+  
+  function closeInstructions() {
     instructionsContainer.style.display = 'none';
+    localStorage.setItem('manualInstallShown', 'true');
+  }
+  
+  closeBtn.addEventListener('click', closeInstructions);
+  doneBtn.addEventListener('click', () => {
+    closeInstructions();
+    localStorage.setItem('appInstalled', 'true');
   });
 }
 
@@ -157,12 +211,15 @@ function addPromptStyles() {
     }
     
     .pwa-prompt-container {
-      background-color: #2A2832;
+      background-color: #1A1820;
+      background-image: linear-gradient(to bottom right, #2A2832, #1A1820);
       border-radius: 12px;
       box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
       overflow: hidden;
       color: white;
       border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
     
     .pwa-prompt-header {
@@ -223,11 +280,23 @@ function addPromptStyles() {
       background-color: rgba(255, 255, 255, 0.1);
       color: white;
       margin-right: 8px;
+      transition: all 0.2s ease;
+    }
+    
+    .pwa-prompt-cancel-btn:hover {
+      background-color: rgba(255, 255, 255, 0.2);
     }
     
     .pwa-prompt-add-btn {
       background-color: white;
-      color: #2A2832;
+      color: #1A1820;
+      transition: all 0.2s ease;
+    }
+    
+    .pwa-prompt-add-btn:hover {
+      background-color: #f0f0f0;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
     
     .manual-install-instructions {
@@ -244,15 +313,17 @@ function addPromptStyles() {
     }
     
     .instructions-container {
-      background-color: #2A2832;
+      background-color: #1A1820;
+      background-image: linear-gradient(to bottom right, #2A2832, #1A1820);
       border-radius: 12px;
       width: 90%;
       max-width: 500px;
-      max-height: 90vh;
-      overflow-y: auto;
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
-      color: white;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
       border: 1px solid rgba(255, 255, 255, 0.1);
+      color: white;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
     
     .instructions-header {
@@ -283,30 +354,54 @@ function addPromptStyles() {
     .instructions-content {
       padding: 16px;
       font-size: 14px;
-      line-height: 1.5;
+      line-height: 1.6;
     }
     
     .instructions-content ol {
-      padding-left: 24px;
+      padding-left: 20px;
+      margin-bottom: 16px;
     }
     
     .instructions-content li {
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
-
+    
+    .instructions-footer {
+      padding: 16px;
+      display: flex;
+      justify-content: flex-end;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .instructions-done-btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      background-color: white;
+      color: #1A1820;
+      transition: all 0.2s ease;
+    }
+    
+    .instructions-done-btn:hover {
+      background-color: #f0f0f0;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    
     .icon-preview {
-      margin-top: 16px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 10px;
+      margin-top: 16px;
     }
-
+    
     .preview-icon {
-      width: 60px;
-      height: 60px;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      width: 48px;
+      height: 48px;
+      margin-left: 8px;
+      border-radius: 8px;
     }
     
     @keyframes slideUp {
@@ -320,69 +415,89 @@ function addPromptStyles() {
       }
     }
   `;
-  
   document.head.appendChild(style);
 }
 
-// Check if prompt should be shown
+// Check if we should show the prompt
 function shouldShowPrompt() {
-  // Check if the app is already installed
-  if (window.matchMedia('(display-mode: standalone)').matches) {
+  // Prüfe zuerst, ob es ein Mobilgerät ist - wenn nicht, zeige keinen Prompt
+  if (!isMobileDevice()) {
+    console.log("Kein Mobilgerät erkannt, Prompt wird nicht angezeigt");
     return false;
   }
   
-  // Check if the prompt was recently dismissed
+  // Don't show if app is already installed
+  if (isAppInstalled()) {
+    console.log("App is already installed, not showing prompt");
+    return false;
+  }
+  
+  // Check if user has dismissed the prompt recently (within 3 days)
   const lastDismissed = localStorage.getItem('pwaPromptDismissed');
   if (lastDismissed) {
     const dismissedTime = parseInt(lastDismissed, 10);
-    const now = Date.now();
-    const daysSinceDismissed = (now - dismissedTime) / (1000 * 60 * 60 * 24);
-    
-    // Don't show again for 7 days after dismissal
-    if (daysSinceDismissed < 7) {
+    const threeDaysInMs = 3 * 24 * 60 * 60 * 1000;
+    if (Date.now() - dismissedTime < threeDaysInMs) {
+      console.log("Prompt was recently dismissed, not showing again yet");
       return false;
     }
+  }
+  
+  // Check if user has seen manual instructions recently
+  const manualInstallShown = localStorage.getItem('manualInstallShown');
+  if (manualInstallShown === 'true') {
+    console.log("Manual install instructions were shown, not showing prompt");
+    return false;
   }
   
   return true;
 }
 
-// Main initialization
+// Main function to handle the PWA prompt
 window.addEventListener('load', () => {
+  // Add styles first
   addPromptStyles();
   
-  // On mobile devices only
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  if (!isMobile) {
+  // Check if the app is already in standalone mode (PWA)
+  if (window.matchMedia('(display-mode: standalone)').matches || navigator.standalone) {
+    console.log('App is already running in standalone mode');
+    localStorage.setItem('appInstalled', 'true');
     return;
   }
   
-  // Listen for the beforeinstallprompt event
+  // Wenn kein Mobilgerät, dann früh beenden
+  if (!isMobileDevice()) {
+    console.log('Kein Mobilgerät erkannt, PWA-Prompt wird nicht initialisiert');
+    return;
+  }
+  
+  // Listen for beforeinstallprompt event
   window.addEventListener('beforeinstallprompt', (e) => {
-    // Prevent Chrome from showing the default prompt
+    // Prevent Chrome 76+ from automatically showing the prompt
     e.preventDefault();
-    
-    // Store the event for later use
+    // Stash the event so it can be triggered later
     deferredPrompt = e;
     
-    // Show the prompt after a delay to allow the page to load
-    if (shouldShowPrompt()) {
-      setTimeout(() => {
+    // Show the prompt if conditions are met
+    setTimeout(() => {
+      if (shouldShowPrompt()) {
+        console.log('Showing install prompt');
         const promptUI = createPromptUI();
-        promptUI.style.display = 'block';
-      }, 2000);
-    }
+      }
+    }, 2000);
   });
   
-  // For iOS Safari, which doesn't support beforeinstallprompt
-  if (/iPhone|iPad|iPod/i.test(navigator.userAgent) && /Safari/i.test(navigator.userAgent) && !window.navigator.standalone) {
-    // Check if we should show the prompt
-    if (shouldShowPrompt()) {
-      // Show the prompt after a delay
-      setTimeout(() => {
-        const promptUI = createPromptUI();
-        promptUI.style.display = 'block';
-      }, 2000);
-    }
+  // For browsers that don't support beforeinstallprompt (like iOS Safari)
+  if (isMobileDevice() && 
+      !window.matchMedia('(display-mode: standalone)').matches && 
+      !navigator.standalone && 
+      !localStorage.getItem('manualInstallShown') && 
+      shouldShowPrompt()) {
+    
+    // Show manual instructions after a delay
+    setTimeout(() => {
+      console.log('Showing manual install instructions for iOS/Safari');
+      showManualInstructions();
+    }, 3000);
   }
 }); 
