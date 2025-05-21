@@ -97,7 +97,7 @@ export default function Home() {
     try {
       console.log("Cache zurücksetzen...");
       // Verwende den neuen API-Endpunkt
-      const response = await fetch('/api/clear-cache', {
+      const response = await fetch('/api/sync-cache', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
