@@ -273,6 +273,7 @@ export default function Home() {
       <main className="container mx-auto px-4 py-8">
         {/* Header ohne Sync-Button */}
         <div className="flex flex-col items-center justify-center mb-8">
+          {/* Logo mit Cache-Busting-Parameter, um sicherzustellen, dass es immer neu geladen wird */}
           <img 
             src={`/Liquid-Menue.svg?v=${new Date().getTime()}`}
             alt="Liquid Menü Logo"
