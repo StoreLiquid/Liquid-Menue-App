@@ -151,7 +151,7 @@ const ManufacturerGrid = ({
                     }
                   }}
                 >
-                  <span className="text-xs font-semibold text-center w-full">
+                  <span className="text-sm font-semibold text-center w-full">
                     {manufacturer.name}
                     {/* Füllmenge direkt beim Herstellernamen anzeigen statt als separates Badge */}
                     {isSearchMode && fillVolume && (
@@ -222,7 +222,7 @@ const ManufacturerGrid = ({
                         </div>
                     </div>
                     
-                    <h3 className="font-medium text-center text-gray-100 text-sm">
+                    <h3 className="font-medium text-center text-gray-100 text-lg">
                       {manufacturer.name}
                       {/* Füllmenge im Suchmodus direkt beim Namen anzeigen */}
                       {isSearchMode && fillVolume && (
