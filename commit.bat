@@ -1,2 +1,3 @@
 @echo off
-git commit -m "Update Logo-Pfad" 
+powershell -ExecutionPolicy Bypass -File "%~dp0auto-commit.ps1"
+pause 
