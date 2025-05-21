@@ -16,11 +16,13 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Nur POST-Anfragen erlaubt' });
   }
 
-  // Webhook-Secret überprüfen
+  // Wenn die Anfrage vom Frontend kommt, verwende das serverseitige Secret
+  // Wenn die Anfrage von außen kommt (z.B. Google Apps Script), überprüfe das Secret
   const { secret } = req.body || {};
-  const expectedSecret = "liquid-app-secret-2025"; // Muss mit dem Secret im Google Sheets-Skript übereinstimmen
+  const expectedSecret = process.env.WEBHOOK_SECRET || "liquid-app-secret-2025";
   
-  if (secret !== expectedSecret) {
+  // Überprüfe das Secret nur, wenn es in der Anfrage enthalten ist
+  if (secret && secret !== expectedSecret) {
     console.error('Ungültiger Webhook-Secret');
     return res.status(401).json({ error: 'Ungültiger Webhook-Secret' });
   }

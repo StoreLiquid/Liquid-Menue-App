@@ -102,7 +102,6 @@ export default function Home() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          secret: 'liquid-app-secret-2025',
           timestamp: Date.now()
         })
       });
