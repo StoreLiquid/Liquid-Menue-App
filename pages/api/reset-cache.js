@@ -6,14 +6,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Nur POST-Anfragen erlaubt' });
   }
 
-  // Überprüfe den geheimen Schlüssel für den Webhook
-  const webhookSecret = process.env.WEBHOOK_SECRET;
-  const requestSecret = req.body?.secret;
-
-  if (webhookSecret && requestSecret !== webhookSecret) {
-    console.error('Ungültiger Webhook-Secret');
-    return res.status(401).json({ error: 'Ungültiger Webhook-Secret' });
-  }
+  // Webhook-Secret-Überprüfung entfernt, um die Funktion ohne Authentifizierung aufrufen zu können
 
   try {
     // Cache zurücksetzen
