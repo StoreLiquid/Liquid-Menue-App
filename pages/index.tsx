@@ -274,6 +274,7 @@ export default function Home() {
         {/* Header ohne Sync-Button */}
         <div className="flex flex-col items-center justify-center mb-8">
           {/* Logo mit Cache-Busting-Parameter, um sicherzustellen, dass es immer neu geladen wird */}
+          {/* Vercel sollte diese Änderung erkennen und ein neues Deployment erstellen */}
           <img 
             src={`/Liquid-Menue.svg?v=${new Date().getTime()}`}
             alt="Liquid Menü Logo"
