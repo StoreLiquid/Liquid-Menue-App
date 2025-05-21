@@ -2,12 +2,16 @@
 
 Eine moderne, stilvolle und Touch-optimierte Web-App für E-Zigarettenläden, mit der Kunden eigenständig nach E-Liquids suchen können.
 
+## 🔄 Aktualisiert am 21.05.2025
+- Sync-Funktion verbessert
+- Cache-Reset-Funktion optimiert
+
 ## 🔧 Installation
 
 1. Clone das Repository
 
 ```bash
-git clone https://github.com/yourusername/liquid-menu-app.git
+git clone https://github.com/StoreLiquid/Liquid-Menue-App.git
 cd liquid-menu-app
 ```
 
