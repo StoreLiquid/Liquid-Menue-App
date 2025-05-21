@@ -14,8 +14,9 @@ declare global {
 function MyApp({ Component, pageProps }: AppProps) {
   // Einfacheres useEffect ohne riskante DOM-Manipulationen
   useEffect(() => {
-    // Grundlegende iOS-Erkennung
+    // Browser-Erkennung
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
                          window.navigator.standalone;
 
@@ -32,8 +33,24 @@ function MyApp({ Component, pageProps }: AppProps) {
       (document.body.style as any)['-webkit-overflow-scrolling'] = 'touch';
     }
     
+    // Chrome-spezifische Anpassungen
+    if (isChrome) {
+      // Stelle sicher, dass der Hintergrund korrekt angezeigt wird
+      document.documentElement.style.backgroundColor = '#1A1820';
+      document.body.style.backgroundColor = '#1A1820';
+      
+      // Stelle sicher, dass fixed-positionierte Elemente korrekt angezeigt werden
+      const fixedElements = document.querySelectorAll('.fixed');
+      fixedElements.forEach((el: Element) => {
+        if (el instanceof HTMLElement) {
+          el.style.position = 'fixed';
+          el.style.zIndex = '-1';
+        }
+      });
+    }
+    
     // Debug-Ausgabe
-    console.log(`Device: ${isIOS ? 'iOS' : 'Nicht-iOS'}, Standalone: ${isStandalone}`);
+    console.log(`Device: ${isIOS ? 'iOS' : 'Nicht-iOS'}, Chrome: ${isChrome}, Standalone: ${isStandalone}`);
     console.log('Scroll-Einstellungen initialisiert');
   }, []);
 
@@ -42,7 +59,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="theme-color" content="#2A2832" />
+        <meta name="theme-color" content="#1A1820" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
       </Head>
       <Component {...pageProps} />

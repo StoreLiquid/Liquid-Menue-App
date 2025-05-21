@@ -135,7 +135,7 @@ const ManufacturerGrid = ({
                 <div 
                   key={manufacturer.id}
                   onClick={() => handleManufacturerClick(manufacturer.id)}
-                  className={`rounded-full py-1 px-3 shadow-sm cursor-pointer transition-all flex items-center justify-center min-w-[48px] border ${
+                  className={`rounded-xl py-1 px-3 shadow-sm cursor-pointer transition-all flex items-center justify-center min-w-[48px] border ${
                     manufacturer.id === selectedManufacturer
                       ? 'bg-black/20 border-white/30 text-white'
                       : 'bg-black/15 border-white/10 text-gray-300 hover:bg-black/20'
@@ -206,18 +206,18 @@ const ManufacturerGrid = ({
                 >
                   <div className="flex flex-col items-center">
                       <div 
-                        className="logo-container w-28 h-28 mb-4 flex items-center justify-center bg-gradient-to-br from-[#3a394a]/30 to-[#292733]/30 rounded-full p-1.5 shadow-[0_8px_16px_rgba(0,0,0,0.15)] border border-white/20 relative group"
+                        className="logo-container w-28 h-28 mb-4 flex items-center justify-center bg-gradient-to-br from-[#3a394a]/30 to-[#292733]/30 rounded-lg p-1.5 shadow-[0_8px_16px_rgba(0,0,0,0.15)] border border-white/20 relative group"
                         style={{ animationDelay: `${index * 0.2}s` }} // Individuelle Verzögerung
                       >
                         {/* Animation-Effekt */}
-                        <div className="logo-glow absolute inset-0 rounded-full bg-blue-400/10 opacity-20 transition-opacity duration-300"></div>
+                        <div className="logo-glow absolute inset-0 rounded-lg bg-blue-400/10 opacity-20 transition-opacity duration-300"></div>
                         
                         {/* Bewegungseffekt */}
-                        <div className="relative w-full h-full rounded-full overflow-hidden">
+                        <div className="relative w-full h-full rounded-lg overflow-hidden">
                         <img 
                           src="/Bilder/Logo Rund.svg" 
                           alt={`Logo von ${manufacturer.name}`}
-                          className="w-full h-full object-contain rounded-full z-10 relative transition-transform duration-500 hover:scale-110"
+                          className="w-full h-full object-contain z-10 relative transition-transform duration-500 hover:scale-110"
                         />
                         </div>
                     </div>

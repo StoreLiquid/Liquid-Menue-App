@@ -16,8 +16,8 @@ class MyDocument extends Document {
           <meta name="apple-mobile-web-app-title" content="Liquid Menü" />
           <meta name="format-detection" content="telephone=no" />
           <meta name="mobile-web-app-capable" content="yes" />
-          <meta name="theme-color" content="#2A2832" />
-          <meta name="apple-mobile-web-app-status-bar" content="#2A2832" />
+          <meta name="theme-color" content="#1A1820" />
+          <meta name="apple-mobile-web-app-status-bar" content="#1A1820" />
           
           {/* iOS Vollbild-Modus */}
           <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover, shrink-to-fit=no" />
@@ -47,7 +47,7 @@ class MyDocument extends Document {
           {/* PWA Splash Screen Background Color */}
           <style>{`
             :root {
-              --app-background: #2A2832;
+              --app-background: #1A1820;
             }
             
             html {
@@ -64,6 +64,18 @@ class MyDocument extends Document {
               overscroll-behavior: none;
               display: flex;
               flex-direction: column;
+            }
+            
+            /* Chrome-spezifische Anpassungen */
+            @media screen and (-webkit-min-device-pixel-ratio:0) and (min-resolution:.001dpcm) {
+              body, html, #__next {
+                background-color: var(--app-background) !important;
+              }
+              
+              .fixed {
+                position: fixed !important;
+                z-index: -1 !important;
+              }
             }
             
             /* Verbesserte iOS Pull-to-Refresh-Steuerung für Hintergrundfarbe */
