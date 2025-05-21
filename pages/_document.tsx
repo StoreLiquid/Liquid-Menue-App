@@ -111,6 +111,9 @@ class MyDocument extends Document {
           
           {/* Chrome-Detektor für spezifische Fixes */}
           <script src="/chrome-detector.js"></script>
+          
+          {/* Chrome-Hintergrund-Fix */}
+          <script src="/chrome-background.js"></script>
         </body>
       </Html>
     );
