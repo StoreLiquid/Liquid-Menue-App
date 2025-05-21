@@ -271,19 +271,19 @@ export default function Home() {
   return (
     <div className="min-h-screen relative overflow-hidden text-white">
       {/* Hintergrundverlauf mit Animation für die gesamte App */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-black animate-gradient-slow"></div>
+      <div className="fixed inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-black animate-gradient-slow"></div>
       
       {/* Subtiles Muster-Overlay für mehr Tiefe */}
-      <div className="absolute inset-0 opacity-10 bg-[url('/noise-pattern.svg')] mix-blend-overlay"></div>
+      <div className="fixed inset-0 opacity-10 bg-[url('/noise-pattern.svg')] mix-blend-overlay"></div>
       
       {/* Glanzeffekt am oberen Rand */}
-      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-gray-400 to-transparent animate-pulse-light"></div>
+      <div className="fixed top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-gray-400 to-transparent animate-pulse-light"></div>
       
       {/* Subtiler Glanzeffekt in der Ecke */}
-      <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-radial from-gray-500/10 to-transparent rounded-full -translate-x-1/4 -translate-y-1/2 animate-pulse-light"></div>
+      <div className="fixed top-0 right-0 w-40 h-40 bg-gradient-radial from-gray-500/10 to-transparent rounded-full -translate-x-1/4 -translate-y-1/2 animate-pulse-light"></div>
       
       {/* Subtiler Glanzeffekt in der unteren linken Ecke */}
-      <div className="absolute bottom-0 left-0 w-60 h-60 bg-gradient-radial from-gray-500/10 to-transparent rounded-full -translate-x-1/3 translate-y-1/3 animate-pulse-light"></div>
+      <div className="fixed bottom-0 left-0 w-60 h-60 bg-gradient-radial from-gray-500/10 to-transparent rounded-full -translate-x-1/3 translate-y-1/3 animate-pulse-light"></div>
       
       <Head>
         <title>Liquid Menü</title>
@@ -291,19 +291,17 @@ export default function Home() {
       </Head>
 
       <main className="container mx-auto px-4 py-8 relative z-10">
-        {/* Header */}
-        <div className="flex flex-col items-center justify-center mb-8 relative overflow-hidden rounded-xl p-6 md:p-8 bg-black/20 backdrop-blur-sm border border-white/10 shadow-xl">
+        {/* Header ohne Kasten */}
+        <div className="flex flex-col items-center justify-center mb-8">
           {/* Logo mit Cache-Busting-Parameter */}
-          <div className="relative">
-            <img 
-              src={`/Liquid-Menue.svg?v=${new Date().getTime()}`}
-              alt="Liquid Menü Logo"
-              className="w-64 h-40 mb-4 filter drop-shadow-xl"
-            />
-            <p className="text-gray-300 text-center mb-2">
-              Dein E-Liquid Produktkatalog
-            </p>
-          </div>
+          <img 
+            src={`/Liquid-Menue.svg?v=${new Date().getTime()}`}
+            alt="Liquid Menü Logo"
+            className="w-64 h-40 mb-4 filter drop-shadow-xl"
+          />
+          <p className="text-gray-300 text-center mb-2">
+            Dein E-Liquid Produktkatalog
+          </p>
         </div>
 
         {/* Hauptinhalt */}
