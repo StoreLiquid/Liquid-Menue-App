@@ -136,24 +136,11 @@ const ProductList = ({
               
               {/* Tags unten als Badges */}
               <div className="bg-black/20 p-2.5 flex flex-wrap justify-center gap-1.5 border-t border-white/10">
-                {/* Füllmenge als erster Tag mit besonderem Stil - hervorgehoben für Suchergebnisse */}
-                {liquid.fuellmenge && (
-                  <div 
-                    className={`rounded-full inline-block py-0.5 px-2.5 ${
-                      manufacturerId && !selectedCategory
-                      ? "bg-black/40 border border-white/30 text-white font-semibold shadow-sm" // Hervorgehoben in der Suche
-                      : "bg-black/30 border border-white/15 text-white font-medium"            // Normal
-                    }`}
-                  >
-                    <span className="text-xs">{liquid.fuellmenge}</span>
-                  </div>
-                )}
-                
                 {/* Andere Tags */}
                 {liquid.tags && liquid.tags.map((tag, index) => (
                   <div 
                     key={`${liquid.id}-${index}`}
-                    className="rounded-full inline-block py-0.5 px-2 bg-black/15 border border-white/10 text-white"
+                    className="rounded-full inline-block py-0.5 px-2 bg-black/15 border border-white/10 text-white text-center"
                   >
                     <span className="text-xs">{tag}</span>
                   </div>
