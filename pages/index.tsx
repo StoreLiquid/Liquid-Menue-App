@@ -274,7 +274,7 @@ export default function Home() {
         {/* Header ohne Sync-Button */}
         <div className="flex flex-col items-center justify-center mb-8">
           <img 
-            src="/Liquid-Menue.svg" 
+            src={`/Liquid-Menue.svg?v=${new Date().getTime()}`}
             alt="Liquid Menü Logo"
             className="w-64 h-40 mb-4 rounded-lg"
           />
