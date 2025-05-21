@@ -106,8 +106,8 @@ const ProductList = ({
               className="bg-black/15 backdrop-blur-sm rounded-lg shadow-md border border-white/10 hover:shadow-lg transition-all overflow-hidden relative flex flex-col"
             >
               {/* Header mit Sorte */}
-              <div className="bg-black/20 px-4 py-2.5 border-b border-white/10 relative">
-                <div className="text-white font-medium text-center text-sm">
+              <div className="bg-black/20 px-4 py-3 border-b border-white/10 relative">
+                <div className="text-white font-semibold text-center text-base">
                   {liquid.sorte}
                 </div>
               </div>
