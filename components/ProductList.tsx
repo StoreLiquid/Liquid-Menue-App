@@ -140,9 +140,9 @@ const ProductList = ({
                 {liquid.tags && liquid.tags.map((tag, index) => (
                   <div 
                     key={`${liquid.id}-${index}`}
-                    className="rounded-full inline-block py-0.5 px-2 bg-black/15 border border-white/10 text-white text-center"
+                    className="rounded-full inline-flex items-center justify-center py-0.5 px-2 bg-black/15 border border-white/10 text-white"
                   >
-                    <span className="text-xs">{tag}</span>
+                    <span className="text-xs text-center">{tag}</span>
                   </div>
                 ))}
               </div>
