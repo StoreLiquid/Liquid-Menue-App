@@ -108,6 +108,9 @@ class MyDocument extends Document {
           
           {/* Add to Home Screen Prompt Script */}
           <script src="/add-to-home.js" defer></script>
+          
+          {/* Chrome-Detektor für spezifische Fixes */}
+          <script src="/chrome-detector.js"></script>
         </body>
       </Html>
     );

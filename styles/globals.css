@@ -17,10 +17,11 @@ html, body {
   padding: 0;
   overscroll-behavior: none;
   -webkit-overflow-scrolling: touch;
+  overflow-x: hidden;
 }
 
 html {
-  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 body {
@@ -34,12 +35,23 @@ body {
 
 /* Chrome-spezifische Anpassungen */
 @media screen and (-webkit-min-device-pixel-ratio:0) {
-  body {
+  html, body {
     background-color: var(--app-bg) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    height: auto !important;
+    min-height: 100% !important;
+  }
+  
+  body {
+    position: relative !important;
+    overflow-y: auto !important;
   }
   
   .min-h-screen.relative {
     background-color: transparent !important;
+    overflow-y: visible !important;
+    min-height: 100vh !important;
   }
   
   /* Sicherstellen, dass die Hintergrund-Elemente in Chrome korrekt angezeigt werden */
@@ -55,6 +67,7 @@ body {
     bottom: 0 !important;
     width: 100vw !important;
     height: 100vh !important;
+    pointer-events: none;
   }
   
   /* Zusätzliche Hintergrund-Elemente für Chrome */
@@ -68,11 +81,15 @@ body {
     width: 100vw !important;
     height: 100vh !important;
     z-index: -1;
+    pointer-events: none;
   }
   
   /* Verbesserte Hintergrunddarstellung für Chrome */
   #__next {
     background-color: transparent !important;
+    min-height: 100vh !important;
+    overflow-y: visible !important;
+    position: relative !important;
   }
   
   /* Explizite z-index-Werte für Chrome */
@@ -88,6 +105,13 @@ body {
   #app-corner-glow-1,
   #app-corner-glow-2 {
     z-index: -8 !important;
+    pointer-events: none;
+  }
+  
+  /* Verbessere Scrolling in Chrome */
+  main.container {
+    position: relative !important;
+    z-index: 5 !important;
   }
 }
 
@@ -106,6 +130,7 @@ body {
   min-height: 100vh;
   width: 100%;
   z-index: 0;
+  overflow-y: auto !important;
 }
 
 /* Sicherstellen, dass der Footer den Hintergrund hat */
@@ -193,6 +218,7 @@ footer {
   html {
     background-color: var(--app-bg);
     height: 100%;
+    overflow-y: auto !important;
   }
   
   body {

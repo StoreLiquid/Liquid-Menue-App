@@ -38,15 +38,39 @@ function MyApp({ Component, pageProps }: AppProps) {
       // Stelle sicher, dass der Hintergrund korrekt angezeigt wird
       document.documentElement.style.backgroundColor = '#1A1820';
       document.body.style.backgroundColor = '#1A1820';
+      document.documentElement.style.overflow = 'auto';
+      document.body.style.overflow = 'auto';
+      document.documentElement.style.height = 'auto';
+      document.body.style.height = 'auto';
+      document.documentElement.style.minHeight = '100%';
+      document.body.style.minHeight = '100%';
+      document.body.style.position = 'relative';
       
       // Stelle sicher, dass fixed-positionierte Elemente korrekt angezeigt werden
-      const fixedElements = document.querySelectorAll('.fixed');
+      const fixedElements = document.querySelectorAll('.fixed, [id^="app-"]');
       fixedElements.forEach((el: Element) => {
         if (el instanceof HTMLElement) {
           el.style.position = 'fixed';
-          el.style.zIndex = '-1';
+          el.style.pointerEvents = 'none';
         }
       });
+      
+      // Stelle sicher, dass der Container scrollbar ist
+      const mainContainer = document.querySelector('main.container');
+      if (mainContainer instanceof HTMLElement) {
+        mainContainer.style.position = 'relative';
+        mainContainer.style.zIndex = '5';
+        mainContainer.style.overflowY = 'visible';
+      }
+      
+      // Stelle sicher, dass der Next.js-Container korrekt dargestellt wird
+      const nextContainer = document.getElementById('__next');
+      if (nextContainer) {
+        nextContainer.style.backgroundColor = 'transparent';
+        nextContainer.style.minHeight = '100vh';
+        nextContainer.style.overflowY = 'visible';
+        nextContainer.style.position = 'relative';
+      }
     }
     
     // Debug-Ausgabe
