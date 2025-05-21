@@ -1,0 +1,39 @@
+<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!-- Hintergrund mit elegantem Farbverlauf -->
+  <defs>
+    <radialGradient id="tabletBg" cx="50%" cy="50%" r="70%" fx="50%" fy="50%">
+      <stop offset="0%" style="stop-color:#101010"/>
+      <stop offset="90%" style="stop-color:#000000"/>
+    </radialGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur"/>
+      <feComponentTransfer in="blur" result="glow">
+        <feFuncA type="linear" slope="0.6" intercept="0"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff"/>
+      <stop offset="100%" style="stop-color:#e0e0e0"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Abgerundetes Rechteck als Hintergrund -->
+  <rect width="1024" height="1024" rx="160" ry="160" fill="url(#tabletBg)"/>
+  
+  <!-- VAPE & LIQUID Haupttext mit schönem Effekt -->
+  <text x="512" y="420" font-family="Georgia, Times New Roman, serif" font-size="100" font-weight="bold" text-anchor="middle" fill="url(#textGradient)" filter="url(#glow)">VAPE &amp; LIQUID</text>
+  
+  <!-- Dekorative Trennlinie mit Lichteffekt -->
+  <line x1="256" y1="500" x2="768" y2="500" stroke="#ffffff" stroke-width="5" stroke-linecap="round" filter="url(#glow)"/>
+  <line x1="286" y1="515" x2="738" y2="515" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+  
+  <!-- Liquid Menü Text -->
+  <text x="512" y="620" font-family="Georgia, Times New Roman, serif" font-size="80" font-weight="normal" text-anchor="middle" fill="url(#textGradient)" filter="url(#glow)">Liquid Menü</text>
+  
+  <!-- Eleganter Rahmen -->
+  <rect x="40" y="40" width="944" height="944" rx="140" ry="140" fill="none" stroke="#ffffff" stroke-width="3" stroke-opacity="0.4"/>
+</svg>

@@ -1,0 +1,16 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with rounded corners -->
+  <rect width="512" height="512" rx="100" ry="100" fill="#2A2832"/>
+  
+  <!-- Very bold LM letters - Optimized for small screens -->
+  <g fill="#FFFFFF">
+    <!-- L Shape - Extra bold -->
+    <path d="M120 150 L120 362 L240 362 L240 300 L180 300 L180 150 Z" />
+    
+    <!-- M Shape - Extra bold -->
+    <path d="M260 150 L320 270 L380 150 L400 150 L400 362 L340 362 L340 240 L320 330 L300 240 L300 362 L240 362 L240 150 Z" />
+  </g>
+  
+  <!-- Small 'Liquid Menu' text at bottom -->
+  <text x="256" y="400" font-family="Arial, sans-serif" font-size="30" font-weight="bold" text-anchor="middle" fill="#FFFFFF">LIQUID MENÜ</text>
+</svg> 

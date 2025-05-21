@@ -1,0 +1,88 @@
+{
+  "name": "Liquid Menü",
+  "short_name": "Liquid Menü",
+  "description": "E-Liquid Produktkatalog",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#2A2832",
+  "theme_color": "#2A2832",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icons/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/smartphone-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any",
+      "platform": "mobile"
+    },
+    {
+      "src": "/icons/tablet-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any",
+      "platform": "tablet"
+    },
+    {
+      "src": "/icons/app-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/app-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/smartphone-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable",
+      "platform": "mobile"
+    },
+    {
+      "src": "/icons/smartphone-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable",
+      "platform": "mobile"
+    },
+    {
+      "src": "/icons/tablet-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable",
+      "platform": "tablet"
+    },
+    {
+      "src": "/icons/tablet-icon-1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable",
+      "platform": "tablet"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/icons/tablet-icon-1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Liquid Menü für Tablets"
+    },
+    {
+      "src": "/icons/smartphone-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "platform": "narrow",
+      "label": "Liquid Menü für Smartphones"
+    }
+  ]
+} 

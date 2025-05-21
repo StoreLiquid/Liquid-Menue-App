@@ -1,0 +1,102 @@
+/* Swipe-Navigation Stile */
+
+/* Überscroll-Verhalten für WebKit-Browser (iOS/Safari) */
+html {
+  overscroll-behavior-x: none;  /* Verhindert Browser-Rückwärts-Geste */
+  touch-action: manipulation;   /* Verbessert Touch-Präzision */
+  width: 100%;
+  height: 100%;
+  -webkit-tap-highlight-color: transparent;  /* Verhindert Highlight-Effekt beim Tippen */
+}
+
+/* Verbessert die Touch-Erfahrung auf allen Touch-Geräten */
+body {
+  /* Zurücksetzen des Scrollverhaltens für Touch-Geräte */
+  -webkit-overflow-scrolling: touch;
+  /* Verhindert Überscrolling und Gummibandeffekt am Rand */
+  overscroll-behavior-x: none;
+  position: relative; /* NICHT fixed verwenden, das blockiert Scrolling */
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  /* Stellt sicher, dass vertikales Scrollen funktioniert */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Swipe-Indikator für visuelle Rückmeldung */
+.swipe-indicator {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  background-color: rgba(42, 40, 50, 0.75);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+  pointer-events: none;
+  z-index: 9999;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+}
+
+.swipe-indicator-left {
+  left: 12px;
+}
+
+.swipe-indicator-right {
+  right: 12px;
+}
+
+.swipe-indicator-active {
+  opacity: 1;
+}
+
+.swipe-arrow {
+  width: 14px;
+  height: 14px;
+  border-top: 2.5px solid white;
+  border-left: 2.5px solid white;
+}
+
+.swipe-arrow-left {
+  transform: rotate(-45deg);
+  margin-left: 4px; /* Leicht nach rechts verschieben für bessere Zentrierung */
+}
+
+.swipe-arrow-right {
+  transform: rotate(135deg);
+  margin-right: 4px; /* Leicht nach links verschieben für bessere Zentrierung */
+}
+
+/* iOS-spezifische Anpassungen */
+@supports (-webkit-touch-callout: none) {
+  /* Nicht position: fixed für body verwenden, da es Scrolling verhindert */
+  body {
+    position: relative;
+    width: 100%;
+    min-height: 100%;
+    overflow-y: auto; /* Erlaubt vertikales Scrollen */
+  }
+  
+  /* Entfernt diesen blauen Hintergrund beim Tippen */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Android-spezifische Anpassungen */
+@supports not (-webkit-touch-callout: none) {
+  /* Sorgt für volle Seitenhöhe auf Android */
+  html, body {
+    height: 100vh;
+    overscroll-behavior: none;
+    overflow-y: auto; /* Erlaubt vertikales Scrollen */
+  }
+} 

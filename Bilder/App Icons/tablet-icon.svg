@@ -1,0 +1,23 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with rounded corners -->
+  <rect width="512" height="512" rx="100" ry="100" fill="#2A2832"/>
+  
+  <!-- Bold LM letters - Optimized for tablet screens -->
+  <g fill="#FFFFFF">
+    <!-- L Shape -->
+    <path d="M110 140 L110 372 L240 372 L240 310 L180 310 L180 140 Z" />
+    
+    <!-- M Shape -->
+    <path d="M260 140 L320 270 L380 140 L432 140 L432 372 L360 372 L360 240 L320 340 L280 240 L280 372 L210 372 L210 140 Z" />
+  </g>
+  
+  <!-- Liquid Text (Top) -->
+  <text x="256" y="100" font-family="Arial, sans-serif" font-size="40" font-weight="bold" text-anchor="middle" fill="#FFFFFF">LIQUID</text>
+  
+  <!-- Menu Text (Bottom) -->
+  <text x="256" y="440" font-family="Arial, sans-serif" font-size="40" font-weight="bold" text-anchor="middle" fill="#FFFFFF">MENÜ</text>
+  
+  <!-- Decorative Elements -->
+  <line x1="120" y1="110" x2="392" y2="110" stroke="#FFFFFF" stroke-width="3"/>
+  <line x1="120" y1="420" x2="392" y2="420" stroke="#FFFFFF" stroke-width="3"/>
+</svg> 

@@ -1,0 +1,13 @@
+<svg width="280" height="140" viewBox="0 0 560 280" xmlns="http://www.w3.org/2000/svg">
+  <!-- Schwarzer rechteckiger Hintergrund -->
+  <rect x="0" y="0" width="560" height="280" fill="black"/>
+  
+  <!-- Haupttext: VAPE & LIQUID -->
+  <text x="280" y="140" font-family="Times New Roman, serif" font-size="50" font-weight="bold" text-anchor="middle" fill="white">VAPE &amp; LIQUID</text>
+  
+  <!-- Untertitel: CITY STORE -->
+  <text x="280" y="200" font-family="Times New Roman, serif" font-size="30" text-anchor="middle" fill="white">CITY STORE</text>
+  
+  <!-- Dekorativer Trennstrich -->
+  <line x1="160" y1="170" x2="400" y2="170" stroke="white" stroke-width="2"/>
+</svg>
