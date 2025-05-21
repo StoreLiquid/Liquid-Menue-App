@@ -21,7 +21,7 @@ function Auto-Commit {
         Write-Host "Alle Änderungen wurden zu Git hinzugefügt." -ForegroundColor Green
         
         # Änderungen committen
-        git commit -m $CommitMessage
+        git commit -m "$CommitMessage"
         Write-Host "Änderungen wurden committet mit der Nachricht: $CommitMessage" -ForegroundColor Green
         
         # Zu GitHub pushen
