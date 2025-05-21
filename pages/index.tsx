@@ -6,6 +6,8 @@ import Searchbar from '../components/Searchbar';
 import ProductList from '../components/ProductList';
 import { Manufacturer, Liquid, CategoryType } from '../types';
 
+// Test-Änderung für Vercel Deployment vom master-Branch
+
 export default function Home() {
   const [manufacturers, setManufacturers] = useState<Manufacturer[]>([]);
   const [liquids, setLiquids] = useState<Liquid[]>([]);
