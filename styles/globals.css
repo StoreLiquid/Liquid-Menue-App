@@ -34,6 +34,41 @@ body {
   flex-direction: column;
 }
 
+/* Animation für den Header-Verlauf */
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient-slow {
+  background-size: 200% 200%;
+  animation: gradient 8s ease infinite;
+}
+
+/* Subtile Pulse-Animation für Glanzeffekte */
+@keyframes pulse-light {
+  0% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.1;
+  }
+}
+
+.animate-pulse-light {
+  animation: pulse-light 4s ease-in-out infinite;
+}
+
 /* iOS-spezifische Anpassungen */
 @supports (-webkit-touch-callout: none) {
   /* Entfernt den weißen Überziehbereich bei Pull-to-refresh */

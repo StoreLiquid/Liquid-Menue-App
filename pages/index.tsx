@@ -276,18 +276,31 @@ export default function Home() {
       </Head>
 
       <main className="container mx-auto px-4 py-8">
-        {/* Header ohne Sync-Button */}
-        <div className="flex flex-col items-center justify-center mb-8">
-          {/* Logo mit Cache-Busting-Parameter, um sicherzustellen, dass es immer neu geladen wird */}
-          {/* Vercel sollte diese Änderung erkennen und ein neues Deployment erstellen */}
-          <img 
-            src={`/Liquid-Menue.svg?v=${new Date().getTime()}`}
-            alt="Liquid Menü Logo"
-            className="w-64 h-40 mb-4 rounded-lg"
-          />
-          <p className="text-gray-400 text-center mb-6">
-            Dein E-Liquid Produktkatalog
-          </p>
+        {/* Header mit coolem Verlauf */}
+        <div className="flex flex-col items-center justify-center mb-8 relative overflow-hidden rounded-xl p-6 md:p-8">
+          {/* Hintergrundverlauf mit Animation */}
+          <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-black animate-gradient-slow"></div>
+          
+          {/* Subtile Muster-Overlay für mehr Tiefe */}
+          <div className="absolute inset-0 opacity-10 bg-[url('/noise-pattern.svg')] mix-blend-overlay"></div>
+          
+          {/* Glanzeffekt am oberen Rand */}
+          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-gray-400 to-transparent animate-pulse-light"></div>
+          
+          {/* Subtiler Glanzeffekt in der Ecke */}
+          <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-radial from-gray-500/10 to-transparent rounded-full -translate-x-1/4 -translate-y-1/2 animate-pulse-light"></div>
+          
+          {/* Logo mit Cache-Busting-Parameter */}
+          <div className="relative z-10">
+            <img 
+              src={`/Liquid-Menue.svg?v=${new Date().getTime()}`}
+              alt="Liquid Menü Logo"
+              className="w-64 h-40 mb-4 filter drop-shadow-xl"
+            />
+            <p className="text-gray-300 text-center mb-2">
+              Dein E-Liquid Produktkatalog
+            </p>
+          </div>
         </div>
 
         {/* Hauptinhalt */}
