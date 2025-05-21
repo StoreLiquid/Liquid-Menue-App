@@ -99,7 +99,7 @@ const ManufacturerGrid = ({
         }
       }
       
-      .logo-container {
+      .manufacturer-logo {
         animation: float 3s ease-in-out infinite;
       }
       
@@ -213,7 +213,7 @@ const ManufacturerGrid = ({
                         <div className="absolute inset-0 rounded-lg bg-blue-400/10 opacity-0 transition-opacity duration-300 group-hover:opacity-20"></div>
                         
                         {/* Bewegungseffekt */}
-                        <div className="relative w-full h-full overflow-hidden">
+                        <div className="relative w-full h-full overflow-hidden manufacturer-logo">
                         <img 
                           src="/Bilder/Logo Rund.svg" 
                           alt={`Logo von ${manufacturer.name}`}

@@ -269,15 +269,12 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-y-auto overflow-x-hidden text-white">
-      {/* Fester Hintergrund für Chrome */}
-      <div className="fixed inset-0 w-screen h-screen bg-[#1A1820] z-[-9999]" style={{ position: 'fixed' }}></div>
-      
+    <div className="min-h-screen relative overflow-y-auto overflow-x-hidden text-white" style={{ backgroundColor: '#1A1820' }}>
       {/* Hintergrundverlauf mit Animation für die gesamte App */}
-      <div id="app-bg-gradient" className="fixed inset-0 w-screen h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black animate-gradient-slow" style={{ position: 'fixed', zIndex: -10 }}></div>
+      <div id="app-bg-gradient" className="fixed inset-0 w-screen h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black animate-gradient-slow"></div>
       
       {/* Subtiles Muster-Overlay für mehr Tiefe */}
-      <div id="app-bg-pattern" className="fixed inset-0 w-screen h-screen opacity-10 bg-[url('/noise-pattern.svg')] mix-blend-overlay" style={{ position: 'fixed', zIndex: -9 }}></div>
+      <div id="app-bg-pattern" className="fixed inset-0 w-screen h-screen opacity-10 bg-[url('/noise-pattern.svg')] mix-blend-overlay"></div>
       
       {/* Glanzeffekt am oberen Rand */}
       <div id="app-top-glow" className="fixed top-0 left-0 right-0 h-[1px] w-full bg-gradient-to-r from-transparent via-gray-400 to-transparent animate-pulse-light" style={{ position: 'fixed', zIndex: -8 }}></div>

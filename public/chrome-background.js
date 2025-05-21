@@ -1,4 +1,4 @@
-// Chrome-Hintergrund-Fix
+// Chrome-Hintergrund-Fix - Vereinfacht
 (function() {
   // Prüfe, ob der Browser Chrome ist
   function isChrome() {
@@ -24,35 +24,19 @@
     }
   }
 
-  // Wenn Chrome erkannt wurde, füge einen festen Hintergrund hinzu
+  // Wenn Chrome erkannt wurde, füge einen einfachen Hintergrund hinzu
   if (isChrome()) {
-    console.log("Chrome Browser erkannt, füge festen Hintergrund hinzu...");
-    
-    // Erstelle ein Div-Element für den Hintergrund
-    const backgroundDiv = document.createElement('div');
-    backgroundDiv.id = 'chrome-background-fix';
-    backgroundDiv.style.cssText = `
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      width: 100vw;
-      height: 100vh;
-      background-image: linear-gradient(to bottom right, #2A2832, #1A1820);
-      z-index: -9999;
-      pointer-events: none;
-    `;
-    
-    // Füge das Div-Element zum Body hinzu
-    document.body.insertBefore(backgroundDiv, document.body.firstChild);
+    console.log("Chrome Browser erkannt, füge einfachen Hintergrund hinzu...");
     
     // Füge ein Inline-Style für den Body hinzu
     const style = document.createElement('style');
     style.textContent = `
       body, html {
         background-color: #1A1820 !important;
-        background-image: linear-gradient(to bottom right, #2A2832, #1A1820) !important;
+      }
+      
+      .min-h-screen.relative {
+        background-color: transparent !important;
       }
     `;
     document.head.appendChild(style);

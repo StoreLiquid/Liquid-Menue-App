@@ -1,4 +1,4 @@
-/* Chrome-spezifische Fixes - Verbesserte Version */
+/* Chrome-spezifische Fixes - Vereinfachte Version */
 html, body {
   background-color: #1A1820 !important;
   background-image: linear-gradient(to bottom right, #2A2832, #1A1820) !important;
@@ -6,36 +6,22 @@ html, body {
   overflow-x: hidden !important;
   height: auto !important;
   min-height: 100% !important;
-  position: relative !important;
-  margin: 0 !important;
-  padding: 0 !important;
 }
 
 body {
   overflow-y: auto !important;
-  display: flex !important;
-  flex-direction: column !important;
 }
 
 #__next {
   background-color: transparent !important;
   min-height: 100vh !important;
   overflow-y: visible !important;
-  position: relative !important;
-  display: flex !important;
-  flex-direction: column !important;
-  flex: 1 !important;
-  width: 100% !important;
 }
 
 .min-h-screen.relative {
   background-color: transparent !important;
   overflow-y: visible !important;
   min-height: 100vh !important;
-  display: flex !important;
-  flex-direction: column !important;
-  flex: 1 !important;
-  width: 100% !important;
 }
 
 /* Hintergrund-Elemente */
