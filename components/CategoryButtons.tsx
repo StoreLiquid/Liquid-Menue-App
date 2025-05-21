@@ -10,13 +10,14 @@ const CategoryButtons = ({
   selectedCategory, 
   onCategoryChange 
 }: CategoryButtonsProps) => {
-  const categories: CategoryType[] = ['10ml', '60ml', '120ml'];
+  const categories: CategoryType[] = ['10ml', '60ml', '120ml', 'Base'];
   
   const getCategoryLabel = (category: CategoryType) => {
     switch(category) {
       case '10ml': return 'Fertigliquid 10ml';
       case '60ml': return 'Longfill 60ml';
       case '120ml': return 'Longfill 120ml';
+      case 'Base': return 'Base';
       default: return category;
     }
   };
@@ -27,6 +28,7 @@ const CategoryButtons = ({
       case '10ml': return 'text-blue-400';
       case '60ml': return 'text-green-400';
       case '120ml': return 'text-purple-400';
+      case 'Base': return 'text-red-400';
       default: return 'text-gray-200';
     }
   };

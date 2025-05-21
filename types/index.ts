@@ -1,4 +1,4 @@
-export type CategoryType = '10ml' | '60ml' | '120ml';
+export type CategoryType = '10ml' | '60ml' | '120ml' | 'Base';
 
 export interface Liquid {
   id: string;

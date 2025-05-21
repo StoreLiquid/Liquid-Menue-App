@@ -155,25 +155,27 @@ export async function getAllManufacturers() {
     console.log("Lade Herstellerdaten aus separaten Tabellenblättern...");
     
     // Lade Hersteller für jede Kategorie
-    const [hersteller10ml, hersteller60ml, hersteller120ml] = await Promise.all([
+    const [hersteller10ml, hersteller60ml, hersteller120ml, herstellerBase] = await Promise.all([
       fetchSheetData("Hersteller 10ml", 'A2:B100'),
       fetchSheetData("Hersteller 60ml", 'A2:B100'),
-      fetchSheetData("Hersteller 120ml", 'A2:B100')
+      fetchSheetData("Hersteller 120ml", 'A2:B100'),
+      fetchSheetData("Hersteller Base", 'A2:B100')
     ]);
     
     // Überprüfe, ob Herstellerdaten gefunden wurden
     if ((!hersteller10ml || hersteller10ml.length === 0) && 
         (!hersteller60ml || hersteller60ml.length === 0) && 
-        (!hersteller120ml || hersteller120ml.length === 0)) {
+        (!hersteller120ml || hersteller120ml.length === 0) &&
+        (!herstellerBase || herstellerBase.length === 0)) {
       console.error("Keine Herstellerdaten gefunden.");
       return { 
         manufacturers: {}, 
-        categorizedManufacturers: { '10ml': [], '60ml': [], '120ml': [] }
+        categorizedManufacturers: { '10ml': [], '60ml': [], '120ml': [], 'Base': [] }
       };
     }
     
     // Verarbeite die Daten
-    console.log(`Verarbeite Herstellerdaten: 10ml (${hersteller10ml?.length || 0}), 60ml (${hersteller60ml?.length || 0}), 120ml (${hersteller120ml?.length || 0})`);
+    console.log(`Verarbeite Herstellerdaten: 10ml (${hersteller10ml?.length || 0}), 60ml (${hersteller60ml?.length || 0}), 120ml (${hersteller120ml?.length || 0}), Base (${herstellerBase?.length || 0})`);
     
     // Erstelle eine Map für eindeutige Hersteller
     const uniqueManufacturers = {};
@@ -182,7 +184,8 @@ export async function getAllManufacturers() {
     const categorizedManufacturers = {
       '10ml': [],
       '60ml': [],
-      '120ml': []
+      '120ml': [],
+      'Base': []
     };
     
     // Hilfsfunktion zum Verarbeiten der Herstellerdaten
@@ -222,6 +225,7 @@ export async function getAllManufacturers() {
     processManufacturers(hersteller10ml, '10ml');
     processManufacturers(hersteller60ml, '60ml');
     processManufacturers(hersteller120ml, '120ml');
+    processManufacturers(herstellerBase, 'Base');
     
     // Zusammenfassung ausgeben
     Object.keys(categorizedManufacturers).forEach(category => {
@@ -241,7 +245,7 @@ export async function getAllManufacturers() {
     console.error("Fehler beim Abrufen der Hersteller:", error);
     return { 
       manufacturers: {}, 
-      categorizedManufacturers: { '10ml': [], '60ml': [], '120ml': [] }
+      categorizedManufacturers: { '10ml': [], '60ml': [], '120ml': [], 'Base': [] }
     };
   }
 }
@@ -292,7 +296,8 @@ export async function getAllLiquids() {
         // Bestimme die Kategorie basierend auf der Füllmenge und dem Hersteller
         let kategorie = fuellmenge.includes('10ml') ? '10ml' : 
                        fuellmenge.includes('60ml') ? '60ml' : 
-                       fuellmenge.includes('120ml') ? '120ml' : '10ml';
+                       fuellmenge.includes('120ml') ? '120ml' : 
+                       fuellmenge.toLowerCase().includes('base') ? 'Base' : '10ml';
         
         // Wenn der Hersteller bekannt ist, verwende seine Kategorie(n)
         if (manufacturers[herstellerId]) {
