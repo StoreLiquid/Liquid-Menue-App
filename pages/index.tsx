@@ -98,6 +98,13 @@ export default function Home() {
       console.log("Cache zurücksetzen...");
       const response = await fetch('/api/reset-cache', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          secret: 'liquid-app-secret-2025',
+          timestamp: Date.now()
+        })
       });
       
       if (!response.ok) {
