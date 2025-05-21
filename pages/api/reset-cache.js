@@ -16,7 +16,14 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Nur POST-Anfragen erlaubt' });
   }
 
-  // Webhook-Secret-Überprüfung entfernt, um die Funktion ohne Authentifizierung aufrufen zu können
+  // Webhook-Secret überprüfen
+  const { secret } = req.body || {};
+  const expectedSecret = "liquid-app-secret-2025"; // Muss mit dem Secret im Google Sheets-Skript übereinstimmen
+  
+  if (secret !== expectedSecret) {
+    console.error('Ungültiger Webhook-Secret');
+    return res.status(401).json({ error: 'Ungültiger Webhook-Secret' });
+  }
 
   try {
     // Cache zurücksetzen
