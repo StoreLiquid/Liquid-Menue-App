@@ -96,12 +96,8 @@ export default function Home() {
     setIsSyncing(true);
     try {
       console.log("Cache zurücksetzen...");
-      // Cache zurücksetzen
       const response = await fetch('/api/reset-cache', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        }
       });
       
       if (!response.ok) {
