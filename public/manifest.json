@@ -4,8 +4,8 @@
   "description": "E-Liquid Produktkatalog",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#2A2832",
-  "theme_color": "#2A2832",
+  "background_color": "#3a2a5a",
+  "theme_color": "#3a2a5a",
   "orientation": "portrait-primary",
   "icons": [
     {

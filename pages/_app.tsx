@@ -1,8 +1,9 @@
 import '../styles/globals.css';
 import '../styles/swipe-navigation.css';
+import '../styles/ios-fixes.css';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 // Einfachere Typdefinition
 declare global {
@@ -12,16 +13,26 @@ declare global {
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
+  // State für PWA-Erkennung
+  const [isPwa, setIsPwa] = useState<boolean>(false);
+  const [isIOS, setIsIOS] = useState<boolean>(false);
+  const [isChrome, setIsChrome] = useState<boolean>(false);
+  
   // Einfacheres useEffect ohne riskante DOM-Manipulationen
   useEffect(() => {
     // Browser-Erkennung
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
-                         window.navigator.standalone;
+    const detectIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const detectChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+    const detectStandalone = window.matchMedia('(display-mode: standalone)').matches || 
+                         window.navigator.standalone ||
+                         document.referrer.includes('android-app://');
+    
+    setIsIOS(detectIOS);
+    setIsChrome(detectChrome);
+    setIsPwa(detectStandalone);
 
     // Stelle sicher, dass Scrollen funktioniert
-    if (isIOS) {
+    if (detectIOS) {
       document.documentElement.style.height = '100%';
       document.body.style.height = '100%';
       document.body.style.overscrollBehavior = 'none';
@@ -31,13 +42,24 @@ function MyApp({ Component, pageProps }: AppProps) {
       document.body.style.overflow = 'auto';
       // TypeScript-freundliche Variante für WebKit-Overflow
       (document.body.style as any)['-webkit-overflow-scrolling'] = 'touch';
+      
+      // Zusätzlicher Hintergrund für iOS im PWA-Modus
+      if (detectStandalone) {
+        const iosPwaBg = document.createElement('div');
+        iosPwaBg.className = 'ios-pwa-bg';
+        document.body.appendChild(iosPwaBg);
+        
+        // Setze die Hintergrundfarbe für den Status-Bar-Bereich
+        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#3a2a5a');
+        document.querySelector('meta[name="background-color"]')?.setAttribute('content', '#3a2a5a');
+      }
     }
     
     // Chrome-spezifische Anpassungen
-    if (isChrome) {
+    if (detectChrome) {
       // Stelle sicher, dass der Hintergrund korrekt angezeigt wird
-      document.documentElement.style.backgroundColor = '#1A1820';
-      document.body.style.backgroundColor = '#1A1820';
+      document.documentElement.style.backgroundColor = detectStandalone ? '#3a2a5a' : '#1A1820';
+      document.body.style.backgroundColor = detectStandalone ? '#3a2a5a' : '#1A1820';
       document.documentElement.style.overflow = 'auto';
       document.body.style.overflow = 'auto';
       document.documentElement.style.height = 'auto';
@@ -52,6 +74,11 @@ function MyApp({ Component, pageProps }: AppProps) {
         if (el instanceof HTMLElement) {
           el.style.position = 'fixed';
           el.style.pointerEvents = 'none';
+          
+          // Erhöhe die Opazität im PWA-Modus
+          if (detectStandalone && el.id && el.id.startsWith('app-') && el.style.opacity) {
+            el.style.opacity = (parseFloat(el.style.opacity) * 1.5).toString();
+          }
         }
       });
       
@@ -73,9 +100,17 @@ function MyApp({ Component, pageProps }: AppProps) {
       }
     }
     
+    // Event-Listener für Änderungen im Display-Modus
+    const mediaQuery = window.matchMedia('(display-mode: standalone)');
+    const handleChange = (e: MediaQueryListEvent) => setIsPwa(e.matches);
+    
+    mediaQuery.addEventListener('change', handleChange);
+    
     // Debug-Ausgabe
-    console.log(`Device: ${isIOS ? 'iOS' : 'Nicht-iOS'}, Chrome: ${isChrome}, Standalone: ${isStandalone}`);
+    console.log(`Device: ${detectIOS ? 'iOS' : 'Nicht-iOS'}, Chrome: ${detectChrome}, Standalone: ${detectStandalone}`);
     console.log('Scroll-Einstellungen initialisiert');
+    
+    return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
   return (
@@ -83,7 +118,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="theme-color" content="#1A1820" />
+        <meta name="theme-color" content={isPwa ? "#3a2a5a" : "#1A1820"} />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
       </Head>
       <Component {...pageProps} />

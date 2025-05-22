@@ -16,9 +16,9 @@ class MyDocument extends Document {
           <meta name="apple-mobile-web-app-title" content="Liquid Menü" />
           <meta name="format-detection" content="telephone=no" />
           <meta name="mobile-web-app-capable" content="yes" />
-          <meta name="theme-color" content="#1A1820" />
-          <meta name="apple-mobile-web-app-status-bar" content="#1A1820" />
-          <meta name="background-color" content="#1A1820" />
+          <meta name="theme-color" content="#3a2a5a" />
+          <meta name="apple-mobile-web-app-status-bar" content="#3a2a5a" />
+          <meta name="background-color" content="#3a2a5a" />
           
           {/* iOS Vollbild-Modus */}
           <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover, shrink-to-fit=no" />
@@ -49,6 +49,7 @@ class MyDocument extends Document {
           <style>{`
             :root {
               --app-bg: #1A1820;
+              --pwa-app-bg: #3a2a5a;
             }
             
             html, body, #__next {
@@ -91,6 +92,21 @@ class MyDocument extends Document {
               background-color: var(--app-bg);
               z-index: 90;
             }
+            
+            /* PWA-spezifische Styles */
+            @media all and (display-mode: standalone) {
+              html, body, #__next {
+                background-color: var(--pwa-app-bg) !important;
+              }
+              
+              body::before {
+                background-color: var(--pwa-app-bg);
+              }
+              
+              body::after {
+                background-color: var(--pwa-app-bg);
+              }
+            }
           `}</style>
 
           {/* Manifest und Icons */}
@@ -120,12 +136,20 @@ class MyDocument extends Document {
           {/* Chrome-Fix Script */}
           <script src="/chrome-fix.js"></script>
           
+          {/* PWA-Background-Fix Script */}
+          <script src="/pwa-background-fix.js"></script>
+          
           {/* Sofortiger Fix für alle Browser */}
           <script dangerouslySetInnerHTML={{
             __html: `
               // Sofortiger Fix für alle Browser
               (function() {
-                const bgColor = '#1A1820';
+                // Prüfen, ob wir im PWA-Modus sind
+                const isPwa = window.matchMedia('(display-mode: standalone)').matches || 
+                              window.navigator.standalone || 
+                              document.referrer.includes('android-app://');
+                              
+                const bgColor = isPwa ? '#3a2a5a' : '#1A1820';
                 
                 // Setze Hintergrundfarbe für alle Browser
                 document.documentElement.style.backgroundColor = bgColor;
@@ -148,6 +172,12 @@ class MyDocument extends Document {
                     pointer-events: none;
                   \`;
                   document.body.insertBefore(fixedBg, document.body.firstChild);
+                }
+                
+                // Aktualisiere den bestehenden festen Hintergrund
+                const existingFixedBg = document.getElementById('fixed-bg');
+                if (existingFixedBg) {
+                  existingFixedBg.style.backgroundColor = bgColor;
                 }
               })();
             `

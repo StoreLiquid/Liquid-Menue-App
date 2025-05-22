@@ -22,6 +22,27 @@ export default function Home() {
   // Referenz für den ProductList-Bereich
   const productListRef = useRef<HTMLDivElement>(null);
 
+  // Neue State-Variable für PWA-Modus
+  const [isPwa, setIsPwa] = useState<boolean>(false);
+  
+  // PWA-Erkennung
+  useEffect(() => {
+    // Prüfen, ob die App im Standalone-Modus (PWA) läuft
+    const isInStandaloneMode = () => 
+      window.matchMedia('(display-mode: standalone)').matches || 
+      (window.navigator as any).standalone || 
+      document.referrer.includes('android-app://');
+      
+    setIsPwa(isInStandaloneMode());
+    
+    // Event-Listener für Änderungen im Display-Modus
+    const mediaQuery = window.matchMedia('(display-mode: standalone)');
+    const handleChange = (e: MediaQueryListEvent) => setIsPwa(e.matches);
+    
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
   // Laden der Hersteller und Liquids
   const fetchData = async () => {
     try {
@@ -271,14 +292,20 @@ export default function Home() {
   return (
     <div className="min-h-screen relative overflow-y-auto overflow-x-hidden text-white">
       {/* Hintergrundverlauf mit Animation für die gesamte App */}
-      <div id="app-bg-gradient" className="fixed inset-0 w-screen h-screen bg-gradient-radial from-[#2c1e4a] via-[#1f1c28] to-[#0f0c18] animate-gradient-slow"></div>
+      <div 
+        id="app-bg-gradient" 
+        className="fixed inset-0 w-screen h-screen bg-gradient-radial animate-gradient-slow"
+        style={{ 
+          backgroundImage: `radial-gradient(circle at top right, ${isPwa ? 'var(--pwa-gradient-start)' : 'var(--gradient-start)'}, ${isPwa ? 'var(--pwa-gradient-middle)' : 'var(--gradient-middle)'}, ${isPwa ? 'var(--pwa-gradient-end)' : 'var(--gradient-end)'})`
+        }}
+      ></div>
       
       {/* Subtiles Muster-Overlay für mehr Tiefe */}
       <div id="app-bg-pattern" className="fixed inset-0 w-screen h-screen opacity-20 bg-[url('/noise-pattern.svg')] mix-blend-overlay"></div>
       
       {/* Animierte Sterne */}
       <div className="stars">
-        {Array.from({ length: 20 }).map((_, i) => {
+        {Array.from({ length: isPwa ? 30 : 20 }).map((_, i) => {
           const size = Math.random() * 3 + 1;
           const posX = Math.random() * 100;
           const posY = Math.random() * 100;
@@ -296,7 +323,8 @@ export default function Home() {
                 top: `${posY}%`,
                 animationDelay: `${delay}s`,
                 animationDuration: `${duration}s`,
-                '--duration': `${duration}s`
+                '--duration': `${duration}s`,
+                opacity: isPwa ? '0.8' : undefined
               } as React.CSSProperties}
             />
           );
@@ -304,20 +332,36 @@ export default function Home() {
       </div>
       
       {/* Glanzeffekt am oberen Rand */}
-      <div id="app-top-glow" className="fixed top-0 left-0 right-0 h-[2px] w-full bg-gradient-to-r from-transparent via-[#8a2be2]/50 to-transparent animate-pulse-light"></div>
+      <div 
+        id="app-top-glow" 
+        className="fixed top-0 left-0 right-0 h-[2px] w-full bg-gradient-to-r from-transparent via-[#8a2be2]/50 to-transparent animate-pulse-light"
+        style={{ opacity: isPwa ? '0.7' : '0.3' }}
+      ></div>
       
       {/* Subtiler Glanzeffekt in der oberen rechten Ecke */}
-      <div id="app-corner-glow-1" className="fixed top-0 right-0 w-60 h-60 bg-gradient-radial from-[#8a2be2]/20 to-transparent rounded-full -translate-x-1/4 -translate-y-1/2 animate-pulse-light"></div>
+      <div 
+        id="app-corner-glow-1" 
+        className="fixed top-0 right-0 w-60 h-60 bg-gradient-radial from-[#8a2be2]/20 to-transparent rounded-full -translate-x-1/4 -translate-y-1/2 animate-pulse-light"
+        style={{ opacity: isPwa ? '0.7' : '0.2' }}
+      ></div>
       
       {/* Subtiler Glanzeffekt in der unteren linken Ecke */}
-      <div id="app-corner-glow-2" className="fixed bottom-0 left-0 w-80 h-80 bg-gradient-radial from-[#8a2be2]/20 to-transparent rounded-full -translate-x-1/3 translate-y-1/3 animate-pulse-light"></div>
+      <div 
+        id="app-corner-glow-2" 
+        className="fixed bottom-0 left-0 w-80 h-80 bg-gradient-radial from-[#8a2be2]/20 to-transparent rounded-full -translate-x-1/3 translate-y-1/3 animate-pulse-light"
+        style={{ opacity: isPwa ? '0.7' : '0.2' }}
+      ></div>
       
       {/* Zusätzlicher Glanzeffekt in der Mitte */}
-      <div id="app-center-glow" className="fixed top-1/2 left-1/2 w-[500px] h-[500px] bg-gradient-radial from-[#8a2be2]/10 to-transparent rounded-full -translate-x-1/2 -translate-y-1/2 animate-pulse-light"></div>
+      <div 
+        id="app-center-glow" 
+        className="fixed top-1/2 left-1/2 w-[500px] h-[500px] bg-gradient-radial from-[#8a2be2]/10 to-transparent rounded-full -translate-x-1/2 -translate-y-1/2 animate-pulse-light"
+        style={{ opacity: isPwa ? '0.7' : '0.1' }}
+      ></div>
 
       {/* Animierte Partikel */}
       <div className="fixed inset-0 z-[-9994] overflow-hidden">
-        {Array.from({ length: 5 }).map((_, i) => {
+        {Array.from({ length: isPwa ? 8 : 5 }).map((_, i) => {
           const size = Math.random() * 100 + 50;
           const posX = Math.random() * 100;
           const posY = Math.random() * 100;
@@ -335,18 +379,24 @@ export default function Home() {
                 top: `${posY}%`,
                 animationDelay: `${delay}s`,
                 animationDuration: `${duration}s`,
+                opacity: isPwa ? '0.7' : '0.2'
               }}
             />
           );
         })}
       </div>
       
+      {/* PWA-spezifischer zusätzlicher Hintergrund für iOS */}
+      {isPwa && (
+        <div className="fixed inset-0 z-[-9995] bg-gradient-radial from-[#3a2a5a]/50 to-transparent"></div>
+      )}
+      
       <Head>
         <title>Liquid Menü</title>
         <meta name="description" content="E-Liquid Produktkatalog" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-        <meta name="theme-color" content="#1A1820" />
-        <meta name="background-color" content="#1A1820" />
+        <meta name="theme-color" content={isPwa ? "#3a2a5a" : "#1A1820"} />
+        <meta name="background-color" content={isPwa ? "#3a2a5a" : "#1A1820"} />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </Head>
 

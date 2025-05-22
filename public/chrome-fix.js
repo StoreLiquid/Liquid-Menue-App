@@ -102,3 +102,82 @@ window.addEventListener('load', function() {
     gradientBg.style.backgroundSize = '200% 200%';
   }
 });
+
+// Chrome-spezifische Fixes
+(function() {
+  // Prüfen, ob wir in Chrome sind
+  const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+  if (!isChrome) return;
+  
+  // Prüfen, ob wir im PWA-Modus sind
+  const isPwa = window.matchMedia('(display-mode: standalone)').matches || 
+                window.navigator.standalone || 
+                document.referrer.includes('android-app://');
+  
+  // Farben für den Hintergrund
+  const bgColor = isPwa ? '#3a2a5a' : '#1A1820';
+  const gradientStart = isPwa ? '#3a2a5a' : '#2c1e4a';
+  const gradientMiddle = isPwa ? '#251e30' : '#1f1c28';
+  const gradientEnd = isPwa ? '#14101e' : '#0f0c18';
+  
+  // Funktion zum Anwenden der Chrome-Fixes
+  function applyChromeFixesOnLoad() {
+    // Stelle sicher, dass der Hintergrund korrekt angezeigt wird
+    document.documentElement.style.backgroundColor = bgColor;
+    document.body.style.backgroundColor = bgColor;
+    document.documentElement.style.overflow = 'auto';
+    document.body.style.overflow = 'auto';
+    document.documentElement.style.height = 'auto';
+    document.body.style.height = 'auto';
+    document.documentElement.style.minHeight = '100%';
+    document.body.style.minHeight = '100%';
+    document.body.style.position = 'relative';
+    
+    // Stelle sicher, dass fixed-positionierte Elemente korrekt angezeigt werden
+    const fixedElements = document.querySelectorAll('.fixed, [id^="app-"]');
+    fixedElements.forEach(el => {
+      if (el instanceof HTMLElement) {
+        el.style.position = 'fixed';
+        el.style.pointerEvents = 'none';
+        
+        // Setze den Hintergrund für das Haupt-Gradient-Element
+        if (el.id === 'app-bg-gradient') {
+          el.style.backgroundImage = `radial-gradient(circle at top right, ${gradientStart}, ${gradientMiddle}, ${gradientEnd})`;
+          el.style.height = isPwa ? '300vh' : '200vh';
+          el.style.opacity = '1';
+          el.style.transform = 'translateZ(0)';
+          el.style.webkitTransform = 'translateZ(0)';
+          el.style.willChange = 'transform';
+          el.style.backfaceVisibility = 'hidden';
+        }
+        
+        // Erhöhe die Opazität im PWA-Modus
+        if (isPwa && el.id && el.id.startsWith('app-') && el.style.opacity) {
+          el.style.opacity = Math.min(1, parseFloat(el.style.opacity) * 1.5).toString();
+        }
+      }
+    });
+    
+    // Stelle sicher, dass der Next.js-Container korrekt dargestellt wird
+    const nextContainer = document.getElementById('__next');
+    if (nextContainer) {
+      nextContainer.style.backgroundColor = 'transparent';
+      nextContainer.style.minHeight = '100vh';
+      nextContainer.style.overflowY = 'visible';
+      nextContainer.style.position = 'relative';
+    }
+  }
+  
+  // Wende die Fixes an, sobald das DOM geladen ist
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyChromeFixesOnLoad);
+  } else {
+    applyChromeFixesOnLoad();
+  }
+  
+  // Wende die Fixes auch nach dem vollständigen Laden an
+  window.addEventListener('load', applyChromeFixesOnLoad);
+  
+  // Wende die Fixes nach einer kurzen Verzögerung erneut an
+  setTimeout(applyChromeFixesOnLoad, 500);
+})();

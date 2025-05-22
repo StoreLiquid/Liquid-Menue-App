@@ -12,11 +12,16 @@
   --gradient-end: #0f0c18;
   --accent-glow: rgba(138, 43, 226, 0.2);
   --accent-color: #8a2be2;
+  
+  /* Verstärkte Farben für PWA-Modus */
+  --pwa-gradient-start: #3a2a5a;
+  --pwa-gradient-middle: #251e30;
+  --pwa-gradient-end: #14101e;
 }
 
 /* Grundlegende Stile für ALLE Browser */
 html, body, #__next, .min-h-screen.relative {
-  background-color: var(--app-bg) !important;
+  background-color: var(--gradient-start) !important;
   color: var(--text-color);
   margin: 0;
   padding: 0;
@@ -210,14 +215,15 @@ footer {
   @apply bg-black/20 backdrop-blur-sm border border-white/10 rounded-xl shadow-lg;
 }
 
-/* PWA im Vollbildmodus */
+/* PWA im Vollbildmodus - Spezielle Anpassungen für Mobilgeräte */
 @media all and (display-mode: standalone) {
   html, body, #__next {
-    background-color: var(--app-bg) !important;
-    background: radial-gradient(circle at top right, var(--gradient-start), var(--gradient-middle), var(--gradient-end)) !important;
+    background-color: var(--pwa-gradient-start) !important;
+    background: radial-gradient(circle at top right, var(--pwa-gradient-start), var(--pwa-gradient-middle), var(--pwa-gradient-end)) !important;
     background-attachment: fixed !important;
     height: 100%;
     overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
   }
   
   /* Fix für den Footer im PWA-Modus */
@@ -234,25 +240,98 @@ footer {
   
   /* Sicherstellen, dass der Hintergrund vollständig ist */
   #app-bg-gradient {
-    height: 200vh !important;
+    height: 300vh !important;
     bottom: -100vh !important;
     animation: pulse-bg 20s ease infinite !important;
     background-attachment: fixed !important;
+    opacity: 1 !important;
+    background-color: var(--pwa-gradient-start) !important;
+    background-image: radial-gradient(circle at top right, var(--pwa-gradient-start), var(--pwa-gradient-middle), var(--pwa-gradient-end)) !important;
+  }
+  
+  /* Verstärkte Animationen für PWA */
+  .animate-pulse-light {
+    animation: pulse-light 6s ease-in-out infinite;
+    opacity: 0.5 !important;
+  }
+  
+  /* Verbesserte Sterne und Partikel für PWA */
+  .star {
+    opacity: 0.8 !important;
+  }
+  
+  /* Verstärkte Glanzeffekte für PWA */
+  #app-center-glow, #app-corner-glow-1, #app-corner-glow-2 {
+    opacity: 0.7 !important;
+  }
+  
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at top right, var(--pwa-gradient-start), var(--pwa-gradient-middle), var(--pwa-gradient-end));
+    z-index: -9999;
+    background-attachment: fixed;
+    opacity: 1;
+  }
+}
+
+/* Mobile-spezifische Anpassungen */
+@media (max-width: 767px) {
+  html, body, #__next, .min-h-screen.relative {
+    background-color: var(--gradient-start) !important;
+  }
+  
+  body::before {
+    background: radial-gradient(circle at top right, var(--gradient-start), var(--gradient-middle), var(--gradient-end));
+    opacity: 1 !important;
+  }
+  
+  #app-bg-gradient {
+    background-color: var(--gradient-start) !important;
+    opacity: 1 !important;
+    height: 300vh !important;
+  }
+  
+  .star {
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+  
+  /* Verstärkte Glanzeffekte für Mobile */
+  #app-center-glow, #app-corner-glow-1, #app-corner-glow-2 {
+    opacity: 0.5 !important;
   }
 }
 
 /* Chrome-spezifische Anpassungen */
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   html, body, #__next, .min-h-screen.relative {
-    background-color: var(--app-bg) !important;
+    background-color: var(--gradient-start) !important;
     background: radial-gradient(circle at top right, var(--gradient-start), var(--gradient-middle), var(--gradient-end)) !important;
     background-attachment: fixed !important;
   }
   
   #app-bg-gradient {
-    height: 200vh !important;
+    height: 300vh !important;
     animation: pulse-bg 20s ease infinite !important;
     background-attachment: fixed !important;
+    opacity: 1 !important;
+  }
+  
+  /* Mobile Chrome */
+  @media (max-width: 767px) {
+    #app-bg-gradient {
+      background-color: var(--gradient-start) !important;
+      opacity: 1 !important;
+    }
+    
+    body::before {
+      background-color: var(--gradient-start) !important;
+      opacity: 1 !important;
+    }
   }
 }
 
@@ -261,11 +340,22 @@ footer {
   html, body, #__next, .min-h-screen.relative {
     background: radial-gradient(circle at top right, var(--gradient-start), var(--gradient-middle), var(--gradient-end)) !important;
     background-attachment: fixed !important;
+    background-color: var(--gradient-start) !important;
   }
   
   #app-bg-gradient {
     animation: pulse-bg 20s ease infinite !important;
     background-attachment: fixed !important;
+    opacity: 1 !important;
+    background-color: var(--gradient-start) !important;
+  }
+  
+  /* Mobile Firefox */
+  @media (max-width: 767px) {
+    body::before {
+      background-color: var(--gradient-start) !important;
+      opacity: 1 !important;
+    }
   }
 }
 
@@ -275,7 +365,81 @@ footer {
     html, body, #__next, .min-h-screen.relative {
       background: radial-gradient(circle at top right, var(--gradient-start), var(--gradient-middle), var(--gradient-end)) !important;
       background-attachment: fixed !important;
+      background-color: var(--gradient-start) !important;
     }
+    
+    /* Mobile Safari */
+    @media (max-width: 767px) {
+      body::before {
+        background-color: var(--gradient-start) !important;
+        opacity: 1 !important;
+      }
+      
+      #app-bg-gradient {
+        background-color: var(--gradient-start) !important;
+        opacity: 1 !important;
+      }
+    }
+  }
+}
+
+/* Spezifische Anpassungen für iOS Geräte */
+@supports (-webkit-touch-callout: none) {
+  html, body, #__next, .min-h-screen.relative {
+    background-color: var(--pwa-gradient-start) !important;
+    min-height: 100vh !important;
+    height: 100% !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at top right, var(--pwa-gradient-start), var(--pwa-gradient-middle), var(--pwa-gradient-end));
+    z-index: -9999;
+    background-attachment: fixed;
+    opacity: 1;
+  }
+  
+  #app-bg-gradient {
+    background-image: radial-gradient(circle at top right, var(--pwa-gradient-start), var(--pwa-gradient-middle), var(--pwa-gradient-end)) !important;
+    height: 300vh !important;
+    bottom: -100vh !important;
+    opacity: 1 !important;
+    z-index: -9998 !important;
+  }
+  
+  /* Verstärkte Animationen für iOS */
+  .animate-pulse-light {
+    animation: pulse-light 6s ease-in-out infinite;
+    opacity: 0.6 !important;
+  }
+  
+  /* Verbesserte Sterne und Partikel für iOS */
+  .star {
+    opacity: 0.9 !important;
+  }
+}
+
+/* Spezielle Anpassungen für PWA auf iOS */
+@supports (-webkit-touch-callout: none) and (display-mode: standalone) {
+  html, body, #__next, .min-h-screen.relative {
+    background-color: var(--pwa-gradient-start) !important;
+    background: radial-gradient(circle at top right, var(--pwa-gradient-start), var(--pwa-gradient-middle), var(--pwa-gradient-end)) !important;
+  }
+  
+  body::before {
+    background: radial-gradient(circle at top right, var(--pwa-gradient-start), var(--pwa-gradient-middle), var(--pwa-gradient-end));
+    opacity: 1;
+  }
+  
+  #app-bg-gradient {
+    background-image: radial-gradient(circle at top right, var(--pwa-gradient-start), var(--pwa-gradient-middle), var(--pwa-gradient-end)) !important;
+    opacity: 1 !important;
   }
 }
 
