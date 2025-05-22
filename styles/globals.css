@@ -7,9 +7,11 @@
   --app-bg: #1A1820;
   --app-bg-darker: #121015;
   --text-color: #ffffff;
-  --gradient-start: #2A2832;
-  --gradient-middle: #1F1C28;
-  --gradient-end: #1A1820;
+  --gradient-start: #2c1e4a;
+  --gradient-middle: #1f1c28;
+  --gradient-end: #0f0c18;
+  --accent-glow: rgba(138, 43, 226, 0.2);
+  --accent-color: #8a2be2;
 }
 
 /* Grundlegende Stile für ALLE Browser */
@@ -33,7 +35,7 @@ body {
   overflow-y: auto !important;
   position: relative !important;
   min-height: 100vh !important;
-  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-middle), var(--gradient-end)) !important;
+  background: radial-gradient(circle at top right, var(--gradient-start), var(--gradient-middle), var(--gradient-end)) !important;
   background-attachment: fixed !important;
 }
 
@@ -45,7 +47,7 @@ body::before {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-middle), var(--gradient-end));
+  background: radial-gradient(circle at top right, var(--gradient-start), var(--gradient-middle), var(--gradient-end));
   z-index: -9999;
   background-attachment: fixed;
 }
@@ -59,12 +61,12 @@ body::before {
   bottom: 0 !important;
   width: 100vw !important;
   height: 200vh !important;
-  background-image: linear-gradient(135deg, var(--gradient-start), var(--gradient-middle), var(--gradient-end)) !important;
+  background-image: radial-gradient(circle at top right, var(--gradient-start), var(--gradient-middle), var(--gradient-end)) !important;
   z-index: -9998 !important;
   opacity: 1 !important;
   display: block !important;
-  background-size: 300% 300% !important;
-  animation: gradient 15s ease infinite !important;
+  background-size: 200% 200% !important;
+  animation: pulse-bg 20s ease infinite !important;
   background-attachment: fixed !important;
 }
 
@@ -78,14 +80,35 @@ body::before {
   width: 100vw !important;
   height: 120vh !important;
   z-index: -9997 !important;
-  opacity: 0.15 !important;
+  opacity: 0.2 !important;
   background-attachment: fixed !important;
+  background-blend-mode: soft-light !important;
+}
+
+/* Animierte Partikel */
+.stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -9996;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  animation: twinkle var(--duration) linear infinite;
+  opacity: 0;
 }
 
 /* Glanzeffekte */
 .animate-pulse-light {
   position: fixed !important;
-  z-index: -9996 !important;
+  z-index: -9995 !important;
 }
 
 /* Container */
@@ -123,41 +146,58 @@ footer {
   background-image: linear-gradient(to bottom, transparent, var(--app-bg)) !important;
 }
 
-/* Animation für den Hintergrund-Verlauf */
-@keyframes gradient {
+/* Animation für den pulsierenden Hintergrund */
+@keyframes pulse-bg {
   0% {
-    background-position: 0% 0%;
-  }
-  25% {
-    background-position: 50% 50%;
+    background-size: 100% 100%;
+    filter: hue-rotate(0deg);
   }
   50% {
-    background-position: 100% 100%;
-  }
-  75% {
-    background-position: 50% 50%;
+    background-size: 150% 150%;
+    filter: hue-rotate(10deg);
   }
   100% {
-    background-position: 0% 0%;
+    background-size: 100% 100%;
+    filter: hue-rotate(0deg);
+  }
+}
+
+/* Animation für die Sterne */
+@keyframes twinkle {
+  0% {
+    opacity: 0;
+    transform: translateY(0) translateX(0);
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100px) translateX(100px);
   }
 }
 
 .animate-gradient-slow {
-  background-size: 300% 300% !important;
-  animation: gradient 15s ease infinite !important;
+  animation: pulse-bg 20s ease infinite !important;
   background-attachment: fixed !important;
 }
 
 /* Subtile Pulse-Animation für Glanzeffekte */
 @keyframes pulse-light {
   0% {
-    opacity: 0.05;
+    opacity: 0.1;
+    transform: scale(0.95);
   }
   50% {
-    opacity: 0.2;
+    opacity: 0.3;
+    transform: scale(1.05);
   }
   100% {
-    opacity: 0.05;
+    opacity: 0.1;
+    transform: scale(0.95);
   }
 }
 
@@ -174,7 +214,7 @@ footer {
 @media all and (display-mode: standalone) {
   html, body, #__next {
     background-color: var(--app-bg) !important;
-    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-middle), var(--gradient-end)) !important;
+    background: radial-gradient(circle at top right, var(--gradient-start), var(--gradient-middle), var(--gradient-end)) !important;
     background-attachment: fixed !important;
     height: 100%;
     overflow-y: auto !important;
@@ -196,8 +236,7 @@ footer {
   #app-bg-gradient {
     height: 200vh !important;
     bottom: -100vh !important;
-    background-size: 300% 300% !important;
-    animation: gradient 15s ease infinite !important;
+    animation: pulse-bg 20s ease infinite !important;
     background-attachment: fixed !important;
   }
 }
@@ -206,14 +245,13 @@ footer {
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   html, body, #__next, .min-h-screen.relative {
     background-color: var(--app-bg) !important;
-    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-middle), var(--gradient-end)) !important;
+    background: radial-gradient(circle at top right, var(--gradient-start), var(--gradient-middle), var(--gradient-end)) !important;
     background-attachment: fixed !important;
   }
   
   #app-bg-gradient {
     height: 200vh !important;
-    background-size: 300% 300% !important;
-    animation: gradient 15s ease infinite !important;
+    animation: pulse-bg 20s ease infinite !important;
     background-attachment: fixed !important;
   }
 }
@@ -221,13 +259,12 @@ footer {
 /* Firefox-spezifische Anpassungen */
 @-moz-document url-prefix() {
   html, body, #__next, .min-h-screen.relative {
-    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-middle), var(--gradient-end)) !important;
+    background: radial-gradient(circle at top right, var(--gradient-start), var(--gradient-middle), var(--gradient-end)) !important;
     background-attachment: fixed !important;
   }
   
   #app-bg-gradient {
-    background-size: 300% 300% !important;
-    animation: gradient 15s ease infinite !important;
+    animation: pulse-bg 20s ease infinite !important;
     background-attachment: fixed !important;
   }
 }
@@ -236,7 +273,7 @@ footer {
 @media not all and (min-resolution:.001dpcm) { 
   @supports (-webkit-appearance:none) {
     html, body, #__next, .min-h-screen.relative {
-      background: linear-gradient(135deg, var(--gradient-start), var(--gradient-middle), var(--gradient-end)) !important;
+      background: radial-gradient(circle at top right, var(--gradient-start), var(--gradient-middle), var(--gradient-end)) !important;
       background-attachment: fixed !important;
     }
   }
