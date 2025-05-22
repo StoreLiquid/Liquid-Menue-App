@@ -144,23 +144,30 @@ export default function Home() {
       // Logging für Debug-Zwecke
       console.log(`Suche nach "${searchTerm}" in ${liquids.length} Produkten`);
       
+      // Suchbegriffe in einzelne Wörter aufteilen
+      const searchTerms = searchTerm.toLowerCase().split(/\s+/).filter(term => term.length >= 2);
+      console.log("Suchbegriffe:", searchTerms);
+      
       // Globale Suche mit Fehlerprüfung für jedes Feld
       const foundProducts = liquids.filter(liquid => {
         // Prüfe, ob die Objekte die erwartete Struktur haben
         if (!liquid) return false;
         
-        const sorteMatch = liquid.sorte && typeof liquid.sorte === 'string' ? 
-          liquid.sorte.toLowerCase().includes(searchTerm.toLowerCase()) : false;
-          
-        const herstellerMatch = liquid.hersteller && typeof liquid.hersteller === 'string' ? 
-          liquid.hersteller.toLowerCase().includes(searchTerm.toLowerCase()) : false;
-          
-        const tagMatch = liquid.tags && Array.isArray(liquid.tags) ? 
-          liquid.tags.some(tag => tag && typeof tag === 'string' && 
-            tag.toLowerCase().includes(searchTerm.toLowerCase())
-          ) : false;
-          
-        return sorteMatch || herstellerMatch || tagMatch;
+        // Für jeden Suchbegriff prüfen
+        return searchTerms.every(term => {
+          const sorteMatch = liquid.sorte && typeof liquid.sorte === 'string' ? 
+            liquid.sorte.toLowerCase().includes(term) : false;
+            
+          const herstellerMatch = liquid.hersteller && typeof liquid.hersteller === 'string' ? 
+            liquid.hersteller.toLowerCase().includes(term) : false;
+            
+          const tagMatch = liquid.tags && Array.isArray(liquid.tags) ? 
+            liquid.tags.some(tag => tag && typeof tag === 'string' && 
+              tag.toLowerCase().includes(term)
+            ) : false;
+            
+          return sorteMatch || herstellerMatch || tagMatch;
+        });
       });
       
       console.log(`Gefunden: ${foundProducts.length} Produkte`);
