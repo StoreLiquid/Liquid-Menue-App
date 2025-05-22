@@ -1,14 +1,18 @@
 import { useEffect, useState, useRef } from 'react';
-import Head from 'next/head';
 import CategoryButtons from '../components/CategoryButtons';
 import ManufacturerGrid from '../components/ManufacturerGrid';
 import Searchbar from '../components/Searchbar';
 import ProductList from '../components/ProductList';
+import BackgroundElements from '../components/BackgroundElements';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import useDeviceDetection from '../hooks/useDeviceDetection';
 import { Manufacturer, Liquid, CategoryType } from '../types';
 
 // Test-Änderung für Vercel Deployment vom master-Branch
 
 export default function Home() {
+  // Zustandsvariablen für Daten
   const [manufacturers, setManufacturers] = useState<Manufacturer[]>([]);
   const [liquids, setLiquids] = useState<Liquid[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<CategoryType | string | null>("10ml");
@@ -22,53 +26,8 @@ export default function Home() {
   // Referenz für den ProductList-Bereich
   const productListRef = useRef<HTMLDivElement>(null);
 
-  // Neue State-Variable für PWA-Modus und Gerätetyp
-  const [isPwa, setIsPwa] = useState<boolean>(false);
-  const [isMobile, setIsMobile] = useState<boolean>(false);
-  const [isTablet, setIsTablet] = useState<boolean>(false);
-  const [isIOS, setIsIOS] = useState<boolean>(false);
-  
-  // PWA- und Gerätetyp-Erkennung
-  useEffect(() => {
-    // Prüfen, ob die App im Standalone-Modus (PWA) läuft
-    const isInStandaloneMode = () => 
-      window.matchMedia('(display-mode: standalone)').matches || 
-      (window.navigator as any).standalone || 
-      document.referrer.includes('android-app://');
-      
-    // Prüfen, ob es ein mobiles Gerät ist
-    const detectMobile = () => window.innerWidth <= 767;
-    
-    // Prüfen, ob es ein Tablet ist
-    const detectTablet = () => window.innerWidth > 767 && window.innerWidth <= 1024;
-    
-    // Prüfen, ob es ein iOS-Gerät ist
-    const detectIOS = () => /iPad|iPhone|iPod/.test(navigator.userAgent);
-    
-    // Setze die States
-    setIsPwa(isInStandaloneMode());
-    setIsMobile(detectMobile());
-    setIsTablet(detectTablet());
-    setIsIOS(detectIOS());
-    
-    // Event-Listener für Änderungen im Display-Modus
-    const mediaQuery = window.matchMedia('(display-mode: standalone)');
-    const handleChange = (e: MediaQueryListEvent) => setIsPwa(e.matches);
-    
-    // Event-Listener für Größenänderungen
-    const handleResize = () => {
-      setIsMobile(detectMobile());
-      setIsTablet(detectTablet());
-    };
-    
-    mediaQuery.addEventListener('change', handleChange);
-    window.addEventListener('resize', handleResize);
-    
-    return () => {
-      mediaQuery.removeEventListener('change', handleChange);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+  // Geräte-Erkennung mit unserem neuen Hook
+  const { isPwa, isMobile, isTablet, isIOS } = useDeviceDetection();
 
   // Laden der Hersteller und Liquids
   const fetchData = async () => {
@@ -318,134 +277,13 @@ export default function Home() {
 
   return (
     <div className="min-h-screen relative overflow-y-auto overflow-x-hidden text-white">
-      {/* Hintergrundverlauf mit Animation für die gesamte App */}
-      <div 
-        id="app-bg-gradient" 
-        className="fixed inset-0 w-screen h-screen bg-gradient-radial animate-gradient-slow"
-        style={{ 
-          backgroundImage: `radial-gradient(circle at top right, ${isPwa ? 'var(--pwa-gradient-start)' : 'var(--gradient-start)'}, ${isPwa ? 'var(--pwa-gradient-middle)' : 'var(--gradient-middle)'}, ${isPwa ? 'var(--pwa-gradient-end)' : 'var(--gradient-end)'})`
-        }}
-      ></div>
+      {/* Hintergrund-Elemente */}
+      <BackgroundElements isPwa={isPwa} isMobile={isMobile} isIOS={isIOS} />
       
-      {/* Subtiles Muster-Overlay für mehr Tiefe */}
-      <div id="app-bg-pattern" className="fixed inset-0 w-screen h-screen opacity-20 bg-[url('/noise-pattern.svg')] mix-blend-overlay"></div>
-      
-      {/* Animierte Sterne */}
-      <div className="stars">
-        {Array.from({ length: isPwa ? 30 : (isMobile ? 15 : 20) }).map((_, i) => {
-          const size = Math.random() * 3 + (isMobile ? 1.5 : 1);
-          const posX = Math.random() * 100;
-          const posY = Math.random() * 100;
-          const duration = Math.random() * 10 + 10;
-          const delay = Math.random() * 10;
-          
-          return (
-            <div 
-              key={`star-${i}`}
-              className="star"
-              style={{
-                width: `${size}px`,
-                height: `${size}px`,
-                left: `${posX}%`,
-                top: `${posY}%`,
-                animationDelay: `${delay}s`,
-                animationDuration: `${duration}s`,
-                '--duration': `${duration}s`,
-                opacity: isPwa ? '0.8' : (isMobile ? '0.7' : undefined)
-              } as React.CSSProperties}
-            />
-          );
-        })}
-      </div>
-      
-      {/* Glanzeffekt am oberen Rand */}
-      <div 
-        id="app-top-glow" 
-        className="fixed top-0 left-0 right-0 h-[2px] w-full bg-gradient-to-r from-transparent via-[#8a2be2]/50 to-transparent animate-pulse-light"
-        style={{ opacity: isPwa ? '0.7' : (isMobile ? '0.5' : '0.3') }}
-      ></div>
-      
-      {/* Subtiler Glanzeffekt in der oberen rechten Ecke */}
-      <div 
-        id="app-corner-glow-1" 
-        className="fixed top-0 right-0 w-60 h-60 bg-gradient-radial from-[#8a2be2]/20 to-transparent rounded-full -translate-x-1/4 -translate-y-1/2 animate-pulse-light"
-        style={{ opacity: isPwa ? '0.7' : (isMobile ? '0.5' : '0.2') }}
-      ></div>
-      
-      {/* Subtiler Glanzeffekt in der unteren linken Ecke */}
-      <div 
-        id="app-corner-glow-2" 
-        className="fixed bottom-0 left-0 w-80 h-80 bg-gradient-radial from-[#8a2be2]/20 to-transparent rounded-full -translate-x-1/3 translate-y-1/3 animate-pulse-light"
-        style={{ opacity: isPwa ? '0.7' : (isMobile ? '0.5' : '0.2') }}
-      ></div>
-      
-      {/* Zusätzlicher Glanzeffekt in der Mitte */}
-      <div 
-        id="app-center-glow" 
-        className="fixed top-1/2 left-1/2 w-[500px] h-[500px] bg-gradient-radial from-[#8a2be2]/10 to-transparent rounded-full -translate-x-1/2 -translate-y-1/2 animate-pulse-light"
-        style={{ opacity: isPwa ? '0.7' : (isMobile ? '0.4' : '0.1') }}
-      ></div>
-
-      {/* Animierte Partikel */}
-      <div className="fixed inset-0 z-[-9994] overflow-hidden">
-        {Array.from({ length: isPwa ? 8 : (isMobile ? 4 : 5) }).map((_, i) => {
-          const size = Math.random() * (isMobile ? 80 : 100) + (isMobile ? 30 : 50);
-          const posX = Math.random() * 100;
-          const posY = Math.random() * 100;
-          const duration = Math.random() * 30 + 30;
-          const delay = Math.random() * 10;
-          
-          return (
-            <div 
-              key={`particle-${i}`}
-              className="absolute rounded-full bg-gradient-radial from-[#8a2be2]/5 to-transparent animate-pulse-light"
-              style={{
-                width: `${size}px`,
-                height: `${size}px`,
-                left: `${posX}%`,
-                top: `${posY}%`,
-                animationDelay: `${delay}s`,
-                animationDuration: `${duration}s`,
-                opacity: isPwa ? '0.7' : (isMobile ? '0.4' : '0.2')
-              }}
-            />
-          );
-        })}
-      </div>
-      
-      {/* PWA-spezifischer zusätzlicher Hintergrund für iOS */}
-      {isPwa && isIOS && (
-        <div className="fixed inset-0 z-[-9995] bg-gradient-radial from-[#3a2a5a]/50 to-transparent"></div>
-      )}
-      
-      {/* Zusätzlicher Hintergrund für mobile Geräte */}
-      {isMobile && !isPwa && (
-        <div className="fixed inset-0 z-[-9995] bg-gradient-radial from-[#2c1e4a]/30 to-transparent"></div>
-      )}
-      
-      <Head>
-        <title>Liquid Menü</title>
-        <meta name="description" content="E-Liquid Produktkatalog" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-        <meta name="theme-color" content={isPwa ? "#3a2a5a" : "#1A1820"} />
-        <meta name="background-color" content={isPwa ? "#3a2a5a" : "#1A1820"} />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-      </Head>
+      {/* Header mit Meta-Tags */}
+      <Header isPwa={isPwa} />
 
       <main className="container mx-auto px-4 py-8 relative z-10 overflow-visible">
-        {/* Header ohne Kasten */}
-        <div className="flex flex-col items-center justify-center mb-8">
-          {/* Logo mit Cache-Busting-Parameter */}
-          <img 
-            src={`/Liquid-Menue.svg?v=${new Date().getTime()}`}
-            alt="Liquid Menü Logo"
-            className="w-64 h-40 mb-4 filter drop-shadow-xl"
-          />
-          <p className="text-gray-300 text-center mb-2">
-            Dein E-Liquid Produktkatalog
-          </p>
-        </div>
-
         {/* Hauptinhalt */}
         <div className="mb-8">
           <CategoryButtons 
@@ -456,7 +294,7 @@ export default function Home() {
 
         <div className="mb-8 flex items-center justify-between">
           <div className="flex-grow mr-2">
-          <Searchbar onSearch={handleSearch} initialValue={searchTerm} />
+            <Searchbar onSearch={handleSearch} initialValue={searchTerm} />
           </div>
           
           {/* Sync Button nur als Icon */}
@@ -518,20 +356,8 @@ export default function Home() {
         )}
       </main>
 
-      <footer 
-        className="border-t border-white/10 mt-12 py-6 text-center text-gray-300 relative z-100 shadow-[0_-10px_30px_rgba(0,0,0,0.5)]"
-        style={{ 
-          background: isPwa 
-            ? `linear-gradient(to bottom, transparent, var(--pwa-gradient-end))` 
-            : `linear-gradient(to bottom, transparent, var(--app-bg))`,
-          paddingBottom: isIOS ? 'env(safe-area-inset-bottom, 20px)' : (isMobile ? '16px' : '20px')
-        }}
-      >
-        <div className="container mx-auto px-4">
-          <p>© 2025 Liquid Menü</p>
-          <p className="text-xs mt-1 opacity-50">Created by A.G.</p>
-        </div>
-      </footer>
+      {/* Footer */}
+      <Footer isPwa={isPwa} isMobile={isMobile} isIOS={isIOS} />
     </div>
   );
 } 
