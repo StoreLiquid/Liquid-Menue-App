@@ -41,21 +41,6 @@ document.addEventListener('DOMContentLoaded', function() {
     footer.style.zIndex = '100';
   }
   
-  // Ein einziger Fix für den unteren Bereich
-  const bottomFix = document.createElement('div');
-  bottomFix.id = 'bottom-fix-js';
-  bottomFix.style.cssText = `
-    position: fixed;
-    bottom: -100px;
-    left: 0;
-    right: 0;
-    height: 300px;
-    background-color: ${bgColor};
-    z-index: 90;
-    pointer-events: none;
-  `;
-  document.body.appendChild(bottomFix);
-  
   // Prüfe, ob wir im PWA-Modus sind
   const isPWA = window.matchMedia('(display-mode: standalone)').matches;
   if (isPWA) {
