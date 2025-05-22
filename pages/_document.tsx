@@ -48,16 +48,19 @@ class MyDocument extends Document {
           <style>{`
             :root {
               --app-background: #1A1820;
+              --app-gradient: linear-gradient(to bottom right, #2A2832, #1A1820);
             }
             
             html {
               background-color: var(--app-background);
+              background-image: var(--app-gradient);
               height: 100%;
               overscroll-behavior: none;
             }
             
             body {
               background-color: var(--app-background);
+              background-image: var(--app-gradient);
               margin: 0;
               padding: 0;
               min-height: 100%;
@@ -65,16 +68,40 @@ class MyDocument extends Document {
               display: flex;
               flex-direction: column;
             }
+
+            #__next {
+              min-height: 100vh;
+              width: 100%;
+              background-color: transparent;
+            }
             
             /* Chrome-spezifische Anpassungen */
-            @media screen and (-webkit-min-device-pixel-ratio:0) and (min-resolution:.001dpcm) {
-              body, html, #__next {
+            @media screen and (-webkit-min-device-pixel-ratio:0) {
+              body, html {
                 background-color: var(--app-background) !important;
+                background-image: var(--app-gradient) !important;
+              }
+              
+              #__next {
+                background-color: transparent !important;
               }
               
               .fixed {
                 position: fixed !important;
-                z-index: -1 !important;
+              }
+
+              #app-bg-gradient {
+                z-index: -10 !important;
+                opacity: 1 !important;
+                display: block !important;
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                right: 0 !important;
+                bottom: 0 !important;
+                width: 100vw !important;
+                height: 100vh !important;
+                background-image: var(--app-gradient) !important;
               }
             }
             
@@ -88,12 +115,8 @@ class MyDocument extends Document {
                 left: 0;
                 right: 0;
                 background-color: var(--app-background);
+                background-image: var(--app-gradient);
                 z-index: -10;
-              }
-              
-              #__next {
-                min-height: 100vh;
-                width: 100%;
               }
             }
           `}</style>
@@ -117,6 +140,32 @@ class MyDocument extends Document {
           
           {/* Direkter Chrome-Fix */}
           <script src="/chrome-fix.js"></script>
+          
+          {/* Inline-Script für Chrome-Hintergrund */}
+          <script dangerouslySetInnerHTML={{
+            __html: `
+              // Sofortiger Fix für Chrome
+              (function() {
+                const isChrome = /Chrome/.test(navigator.userAgent) && !/Edge|Edg/.test(navigator.userAgent);
+                if (isChrome) {
+                  document.documentElement.style.backgroundColor = '#1A1820';
+                  document.documentElement.style.backgroundImage = 'linear-gradient(to bottom right, #2A2832, #1A1820)';
+                  document.body.style.backgroundColor = '#1A1820';
+                  document.body.style.backgroundImage = 'linear-gradient(to bottom right, #2A2832, #1A1820)';
+                  
+                  // Stelle sicher, dass der Gradient-Hintergrund sichtbar ist
+                  setTimeout(function() {
+                    const gradientBg = document.getElementById('app-bg-gradient');
+                    if (gradientBg) {
+                      gradientBg.style.opacity = '1';
+                      gradientBg.style.display = 'block';
+                      gradientBg.style.zIndex = '-10';
+                    }
+                  }, 100);
+                }
+              })();
+            `
+          }} />
         </body>
       </Html>
     );
