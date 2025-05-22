@@ -9,7 +9,7 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/icons/app-icon-new.png",
+      "src": "/icons/app-logo-new.png",
       "sizes": "1024x1024",
       "type": "image/png",
       "purpose": "any"
@@ -57,14 +57,14 @@
   ],
   "screenshots": [
     {
-      "src": "/icons/tablet-icon-1024.png",
+      "src": "/icons/app-logo-new.png",
       "sizes": "1024x1024",
       "type": "image/png",
       "platform": "wide",
       "label": "Liquid Menü für Tablets"
     },
     {
-      "src": "/icons/smartphone-icon-512.png",
+      "src": "/icons/app-logo-new.png",
       "sizes": "512x512",
       "type": "image/png",
       "platform": "narrow",

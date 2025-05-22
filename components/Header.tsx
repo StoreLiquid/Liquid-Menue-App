@@ -28,20 +28,20 @@ const Header: React.FC<HeaderProps> = ({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         
         {/* Apple Touch Icons für iOS Geräte */}
-        <link rel="apple-touch-icon" href="/icons/app-icon-192.png" />
-        <link rel="apple-touch-icon" sizes="152x152" href="/icons/app-icon-192.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/icons/app-icon-192.png" />
-        <link rel="apple-touch-icon" sizes="167x167" href="/icons/app-icon-192.png" />
+        <link rel="apple-touch-icon" href="/icons/app-logo-new.png" />
+        <link rel="apple-touch-icon" sizes="152x152" href="/icons/app-logo-new.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/icons/app-logo-new.png" />
+        <link rel="apple-touch-icon" sizes="167x167" href="/icons/app-logo-new.png" />
 
         {/* Standard Favicon */}
-        <link rel="icon" href="/icons/app-icon-192.png" />
+        <link rel="icon" href="/icons/app-logo-new.png" />
       </Head>
       
       <div className="flex flex-col items-center justify-center pt-safe mb-6" style={{ paddingTop: 'env(safe-area-inset-top, 20px)' }}>
         {/* Logo mit Cache-Busting-Parameter und responsiver Größe */}
         <div className="w-full max-w-xs px-4 sm:px-0">
           <img 
-            src={`/icons/app-icon-new.png?v=${new Date().getTime()}`}
+            src={`/icons/app-logo-new.png?v=${new Date().getTime()}`}
             alt="Liquid Menü Logo"
             className="w-full h-auto mx-auto object-contain filter drop-shadow-xl"
             style={{ maxHeight: '120px' }}
