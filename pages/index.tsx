@@ -385,8 +385,6 @@ export default function Home() {
           <p>© 2025 Liquid Menü</p>
           <p className="text-xs mt-1 opacity-50">Created by A.G.</p>
         </div>
-        {/* Zusätzlicher Hintergrund für den unteren Rand */}
-        <div className="absolute left-0 right-0 bottom-0 h-40 bg-[#1A1820] translate-y-full"></div>
       </footer>
     </div>
   );
