@@ -1,66 +1,85 @@
-// Einfacher, robuster Fix für Chrome und PWA
+// Einfacher Fix für Chrome und PWA
 document.addEventListener('DOMContentLoaded', function() {
   console.log("Chrome-Fix wird geladen...");
   
   // Grundfarben
   const bgColor = '#1A1820';
   
-  // Setze Hintergrundfarbe für alle Browser
-  document.documentElement.style.backgroundColor = bgColor;
-  document.body.style.backgroundColor = bgColor;
+  // Setze Hintergrundfarbe für HTML und Body
+  document.documentElement.style.backgroundColor = 'transparent';
+  document.body.style.backgroundColor = 'transparent';
   
-  // Erstelle einen festen Hintergrund für alle Browser
-  const fixedBg = document.createElement('div');
-  fixedBg.id = 'fixed-bg';
-  fixedBg.style.cssText = `
+  // Stelle sicher, dass der Gradient sichtbar ist
+  const gradientBg = document.getElementById('app-bg-gradient');
+  if (gradientBg) {
+    gradientBg.style.opacity = '1';
+    gradientBg.style.display = 'block';
+    gradientBg.style.zIndex = '-10';
+  }
+  
+  // Fix für den Footer
+  const footer = document.querySelector('footer');
+  if (footer) {
+    footer.style.backgroundColor = bgColor;
+    footer.style.position = 'relative';
+    footer.style.zIndex = '100';
+    
+    // Füge zusätzlichen Bottom-Fix hinzu
+    const bottomFix = document.createElement('div');
+    bottomFix.style.cssText = `
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 100px;
+      background-color: ${bgColor};
+      transform: translateY(100%);
+      z-index: -1;
+    `;
+    footer.appendChild(bottomFix);
+  }
+  
+  // Fix für den grauen Balken am unteren Rand
+  const bottomBarFix = document.createElement('div');
+  bottomBarFix.id = 'bottom-bar-fix';
+  bottomBarFix.style.cssText = `
     position: fixed;
-    top: 0;
+    bottom: -10px;
     left: 0;
     right: 0;
-    bottom: 0;
-    width: 100vw;
-    height: 150vh;
+    height: 100px;
     background-color: ${bgColor};
-    z-index: -9999;
+    z-index: 90;
     pointer-events: none;
   `;
-  document.body.insertBefore(fixedBg, document.body.firstChild);
+  document.body.appendChild(bottomBarFix);
   
-  // Fix für den grauen Balken unten in PWA
-  const bottomFix = document.createElement('div');
-  bottomFix.id = 'bottom-fix';
-  bottomFix.style.cssText = `
-    position: fixed;
-    bottom: -50px;
-    left: 0;
-    right: 0;
-    height: 200px;
-    background-color: ${bgColor};
-    z-index: -9990;
-    pointer-events: none;
-  `;
-  document.body.appendChild(bottomFix);
-  
-  // Füge CSS für alle Browser hinzu
-  const style = document.createElement('style');
-  style.id = 'global-bg-fix';
-  style.textContent = `
-    html, body, #__next, .min-h-screen.relative {
-      background-color: ${bgColor} !important;
-    }
+  // Prüfe, ob wir im PWA-Modus sind
+  const isPWA = window.matchMedia('(display-mode: standalone)').matches;
+  if (isPWA) {
+    console.log("PWA-Modus erkannt, füge Footer-Fix hinzu");
     
-    footer {
-      background-color: ${bgColor} !important;
-      position: relative;
-      z-index: 10;
-    }
-    
-    #app-bg-gradient {
-      height: 150vh !important;
-      z-index: -9998 !important;
-    }
-    
-    @media all and (display-mode: standalone) {
+    // Füge CSS für den Footer im PWA-Modus hinzu
+    const style = document.createElement('style');
+    style.id = 'pwa-footer-fix';
+    style.textContent = `
+      footer {
+        background-color: ${bgColor} !important;
+        position: relative !important;
+        z-index: 100 !important;
+        padding-bottom: env(safe-area-inset-bottom, 20px) !important;
+      }
+      
+      .min-h-screen.relative {
+        background-color: transparent !important;
+      }
+      
+      #app-bg-gradient {
+        opacity: 1 !important;
+        display: block !important;
+      }
+      
+      /* Fix für den grauen Balken im PWA-Modus */
       body::after {
         content: "";
         position: fixed;
@@ -69,65 +88,50 @@ document.addEventListener('DOMContentLoaded', function() {
         right: 0;
         height: 200px;
         background-color: ${bgColor};
-        z-index: -9990;
+        z-index: 90;
       }
-    }
-  `;
-  document.head.appendChild(style);
+    `;
+    document.head.appendChild(style);
+  }
 });
 
 // Erneut ausführen, wenn die Seite vollständig geladen ist
 window.addEventListener('load', function() {
-  console.log("Seite vollständig geladen, wende Fixes erneut an");
+  console.log("Seite vollständig geladen, wende Footer-Fix an");
   
   // Grundfarben
   const bgColor = '#1A1820';
   
-  // Setze Hintergrundfarbe für alle Browser
-  document.documentElement.style.backgroundColor = bgColor;
-  document.body.style.backgroundColor = bgColor;
-  
-  // Stelle sicher, dass der feste Hintergrund existiert
-  if (!document.getElementById('fixed-bg')) {
-    const fixedBg = document.createElement('div');
-    fixedBg.id = 'fixed-bg';
-    fixedBg.style.cssText = `
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      width: 100vw;
-      height: 150vh;
-      background-color: ${bgColor};
-      z-index: -9999;
-      pointer-events: none;
-    `;
-    document.body.insertBefore(fixedBg, document.body.firstChild);
-  }
-  
-  // Stelle sicher, dass der Fix für den grauen Balken existiert
-  if (!document.getElementById('bottom-fix')) {
-    const bottomFix = document.createElement('div');
-    bottomFix.id = 'bottom-fix';
-    bottomFix.style.cssText = `
-      position: fixed;
-      bottom: -50px;
-      left: 0;
-      right: 0;
-      height: 200px;
-      background-color: ${bgColor};
-      z-index: -9990;
-      pointer-events: none;
-    `;
-    document.body.appendChild(bottomFix);
-  }
-  
-  // Überprüfe, ob der Footer sichtbar ist und korrigiere ihn bei Bedarf
+  // Stelle sicher, dass der Footer korrekt angezeigt wird
   const footer = document.querySelector('footer');
   if (footer) {
     footer.style.backgroundColor = bgColor;
     footer.style.position = 'relative';
-    footer.style.zIndex = '10';
+    footer.style.zIndex = '100';
+  }
+  
+  // Stelle sicher, dass der Gradient sichtbar ist
+  const gradientBg = document.getElementById('app-bg-gradient');
+  if (gradientBg) {
+    gradientBg.style.opacity = '1';
+    gradientBg.style.display = 'block';
+    gradientBg.style.zIndex = '-10';
+  }
+  
+  // Überprüfe, ob der Bottom-Fix existiert, sonst erstelle ihn
+  if (!document.getElementById('bottom-bar-fix')) {
+    const bottomBarFix = document.createElement('div');
+    bottomBarFix.id = 'bottom-bar-fix';
+    bottomBarFix.style.cssText = `
+      position: fixed;
+      bottom: -10px;
+      left: 0;
+      right: 0;
+      height: 100px;
+      background-color: ${bgColor};
+      z-index: 90;
+      pointer-events: none;
+    `;
+    document.body.appendChild(bottomBarFix);
   }
 });

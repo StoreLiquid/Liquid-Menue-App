@@ -270,9 +270,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen relative overflow-y-auto overflow-x-hidden text-white">
-      {/* Fester Hintergrund für alle Browser */}
-      <div className="fixed inset-0 w-screen h-screen bg-[#1A1820]"></div>
-      
       {/* Hintergrundverlauf mit Animation für die gesamte App */}
       <div id="app-bg-gradient" className="fixed inset-0 w-screen h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black animate-gradient-slow"></div>
       
@@ -288,8 +285,8 @@ export default function Home() {
       {/* Subtiler Glanzeffekt in der unteren linken Ecke */}
       <div id="app-corner-glow-2" className="fixed bottom-0 left-0 w-60 h-60 bg-gradient-radial from-gray-500/10 to-transparent rounded-full -translate-x-1/3 translate-y-1/3 animate-pulse-light"></div>
       
-      {/* Fix für grauen Balken in PWA */}
-      <div className="fixed bottom-0 left-0 right-0 h-[200px] bg-[#1A1820] -z-10"></div>
+      {/* Unterer Rand Fix */}
+      <div id="app-bottom-fix" className="fixed bottom-0 left-0 right-0 h-20 bg-[#1A1820] z-[95]"></div>
       
       <Head>
         <title>Liquid Menü</title>
@@ -386,11 +383,13 @@ export default function Home() {
         )}
       </main>
 
-      <footer className="border-t border-white/10 mt-12 py-6 text-center text-gray-300 relative z-10 bg-[#1A1820] w-full">
+      <footer className="border-t border-white/10 mt-12 py-6 text-center text-gray-300 relative z-100 bg-[#1A1820] shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
         <div className="container mx-auto px-4">
           <p>© 2025 Liquid Menü</p>
           <p className="text-xs mt-1 opacity-50">Created by A.G.</p>
         </div>
+        {/* Zusätzlicher Hintergrund-Fix für den unteren Rand */}
+        <div className="absolute left-0 right-0 bottom-0 h-20 bg-[#1A1820] -z-10 translate-y-full"></div>
       </footer>
     </div>
   );

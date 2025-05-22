@@ -89,7 +89,7 @@ class MyDocument extends Document {
               right: 0;
               height: 200px;
               background-color: var(--app-bg);
-              z-index: -9998;
+              z-index: 90;
             }
           `}</style>
 
@@ -109,6 +109,17 @@ class MyDocument extends Document {
             height: '150vh',
             backgroundColor: '#1A1820',
             zIndex: -9999
+          }}></div>
+          
+          {/* Fester Hintergrund am unteren Rand */}
+          <div id="fixed-bottom-bg" style={{
+            position: 'fixed',
+            bottom: -50,
+            left: 0,
+            right: 0,
+            height: 200,
+            backgroundColor: '#1A1820',
+            zIndex: 90
           }}></div>
           
           <Main />
@@ -161,7 +172,7 @@ class MyDocument extends Document {
                     right: 0;
                     height: 200px;
                     background-color: \${bgColor};
-                    z-index: -9990;
+                    z-index: 90;
                     pointer-events: none;
                   \`;
                   document.body.appendChild(bottomFix);

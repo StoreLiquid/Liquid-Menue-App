@@ -102,10 +102,13 @@ body::before {
 footer {
   background-color: var(--app-bg) !important;
   position: relative;
-  z-index: 10;
+  z-index: 100 !important; /* Höherer z-index damit er über dem grauen Balken liegt */
   width: 100%;
   color: #fff;
   border-color: rgba(255, 255, 255, 0.1) !important;
+  margin-bottom: 0;
+  padding-bottom: 20px;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5); /* Schatten nach oben für bessere Sichtbarkeit */
 }
 
 /* Animation für den Header-Verlauf */
@@ -156,26 +159,15 @@ footer {
     overflow-y: auto !important;
   }
   
-  /* Entfernen des grauen Balkens am unteren Rand */
-  body::after {
-    content: "";
-    position: fixed;
-    bottom: -50px;
-    left: 0;
-    right: 0;
-    height: 200px;
-    background-color: var(--app-bg);
-    z-index: -1;
-  }
-  
-  /* Sicherstellen, dass der Footer im Standalone-Modus korrekt angezeigt wird */
+  /* Fix für den Footer im PWA-Modus */
   footer {
     background-color: var(--app-bg) !important;
     border-top-color: rgba(255, 255, 255, 0.1) !important;
     position: relative;
-    z-index: 10;
+    z-index: 100 !important;
     margin-bottom: 0;
     padding-bottom: env(safe-area-inset-bottom, 20px);
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
   }
   
   /* Sicherstellen, dass der Hintergrund vollständig ist */
@@ -188,7 +180,7 @@ footer {
 /* Chrome-spezifische Anpassungen */
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   html, body, #__next, .min-h-screen.relative {
-    background-color: var(--app-bg) !important;
+    background-color: transparent !important;
   }
   
   #app-bg-gradient {
