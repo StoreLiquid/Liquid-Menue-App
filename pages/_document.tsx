@@ -149,23 +149,6 @@ class MyDocument extends Document {
                   \`;
                   document.body.insertBefore(fixedBg, document.body.firstChild);
                 }
-                
-                // Fix für den weißen Bereich unten
-                if (!document.getElementById('bottom-fix-js')) {
-                  const bottomFix = document.createElement('div');
-                  bottomFix.id = 'bottom-fix-js';
-                  bottomFix.style.cssText = \`
-                    position: fixed;
-                    bottom: -100px;
-                    left: 0;
-                    right: 0;
-                    height: 300px;
-                    background-color: \${bgColor};
-                    z-index: 90;
-                    pointer-events: none;
-                  \`;
-                  document.body.appendChild(bottomFix);
-                }
               })();
             `
           }} />

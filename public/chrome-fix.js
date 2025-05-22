@@ -5,6 +5,18 @@ document.addEventListener('DOMContentLoaded', function() {
   // Grundfarben
   const bgColor = '#1A1820';
   
+  // Prüfe, ob die Fixes bereits existieren
+  const existingBottomBarFix = document.getElementById('bottom-bar-fix');
+  const existingBottomFixJs = document.getElementById('bottom-fix-js');
+  
+  // Entferne doppelte Elemente, falls vorhanden
+  if (existingBottomBarFix) {
+    existingBottomBarFix.parentNode.removeChild(existingBottomBarFix);
+  }
+  if (existingBottomFixJs) {
+    existingBottomFixJs.parentNode.removeChild(existingBottomFixJs);
+  }
+  
   // Setze Hintergrundfarbe für HTML und Body
   document.documentElement.style.backgroundColor = bgColor;
   document.body.style.backgroundColor = bgColor;
@@ -16,6 +28,9 @@ document.addEventListener('DOMContentLoaded', function() {
     gradientBg.style.display = 'block';
     gradientBg.style.zIndex = '-10';
     gradientBg.style.height = '200vh';
+    gradientBg.style.backgroundImage = 'linear-gradient(to bottom right, #2A2832, #1A1820)';
+    gradientBg.style.animation = 'gradient 15s ease infinite';
+    gradientBg.style.backgroundSize = '200% 200%';
   }
   
   // Fix für den Footer
@@ -24,26 +39,12 @@ document.addEventListener('DOMContentLoaded', function() {
     footer.style.backgroundColor = bgColor;
     footer.style.position = 'relative';
     footer.style.zIndex = '100';
-    
-    // Füge zusätzlichen Bottom-Fix hinzu
-    const bottomFix = document.createElement('div');
-    bottomFix.style.cssText = `
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 200px;
-      background-color: ${bgColor};
-      transform: translateY(100%);
-      z-index: 10;
-    `;
-    footer.appendChild(bottomFix);
   }
   
-  // Fix für den weißen Bereich am unteren Rand
-  const bottomBarFix = document.createElement('div');
-  bottomBarFix.id = 'bottom-bar-fix';
-  bottomBarFix.style.cssText = `
+  // Ein einziger Fix für den unteren Bereich
+  const bottomFix = document.createElement('div');
+  bottomFix.id = 'bottom-fix-js';
+  bottomFix.style.cssText = `
     position: fixed;
     bottom: -100px;
     left: 0;
@@ -53,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
     z-index: 90;
     pointer-events: none;
   `;
-  document.body.appendChild(bottomBarFix);
+  document.body.appendChild(bottomFix);
   
   // Prüfe, ob wir im PWA-Modus sind
   const isPWA = window.matchMedia('(display-mode: standalone)').matches;
@@ -80,18 +81,9 @@ document.addEventListener('DOMContentLoaded', function() {
         opacity: 1 !important;
         display: block !important;
         height: 200vh !important;
-      }
-      
-      /* Fix für den weißen Bereich im PWA-Modus */
-      body::after {
-        content: "";
-        position: fixed;
-        bottom: -100px;
-        left: 0;
-        right: 0;
-        height: 300px;
-        background-color: ${bgColor};
-        z-index: 90;
+        background-image: linear-gradient(to bottom right, #2A2832, #1A1820) !important;
+        animation: gradient 15s ease infinite !important;
+        background-size: 200% 200% !important;
       }
     `;
     document.head.appendChild(style);
@@ -100,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Erneut ausführen, wenn die Seite vollständig geladen ist
 window.addEventListener('load', function() {
-  console.log("Seite vollständig geladen, wende Footer-Fix an");
+  console.log("Seite vollständig geladen, wende Fixes an");
   
   // Grundfarben
   const bgColor = '#1A1820';
@@ -113,46 +105,15 @@ window.addEventListener('load', function() {
     footer.style.zIndex = '100';
   }
   
-  // Stelle sicher, dass der Gradient sichtbar ist
+  // Stelle sicher, dass der Gradient sichtbar ist und animiert
   const gradientBg = document.getElementById('app-bg-gradient');
   if (gradientBg) {
     gradientBg.style.opacity = '1';
     gradientBg.style.display = 'block';
     gradientBg.style.zIndex = '-10';
     gradientBg.style.height = '200vh';
+    gradientBg.style.backgroundImage = 'linear-gradient(to bottom right, #2A2832, #1A1820)';
+    gradientBg.style.animation = 'gradient 15s ease infinite';
+    gradientBg.style.backgroundSize = '200% 200%';
   }
-  
-  // Überprüfe, ob der Bottom-Fix existiert, sonst erstelle ihn
-  if (!document.getElementById('bottom-bar-fix')) {
-    const bottomBarFix = document.createElement('div');
-    bottomBarFix.id = 'bottom-bar-fix';
-    bottomBarFix.style.cssText = `
-      position: fixed;
-      bottom: -100px;
-      left: 0;
-      right: 0;
-      height: 300px;
-      background-color: ${bgColor};
-      z-index: 90;
-      pointer-events: none;
-    `;
-    document.body.appendChild(bottomBarFix);
-  }
-  
-  // Zusätzlicher Fix für den weißen Bereich
-  const fullPageFix = document.createElement('div');
-  fullPageFix.id = 'full-page-fix';
-  fullPageFix.style.cssText = `
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100vw;
-    height: 200vh;
-    background-color: ${bgColor};
-    z-index: -9999;
-    pointer-events: none;
-  `;
-  document.body.insertBefore(fullPageFix, document.body.firstChild);
 });
