@@ -137,8 +137,8 @@ const ManufacturerGrid = ({
                   onClick={() => handleManufacturerClick(manufacturer.id)}
                   className={`rounded-xl py-1 px-3 shadow-sm cursor-pointer transition-all flex items-center justify-center min-w-[48px] border ${
                     manufacturer.id === selectedManufacturer
-                      ? 'bg-black/20 border-white/30 text-white'
-                      : 'bg-black/15 border-white/10 text-gray-300 hover:bg-black/20'
+                      ? 'bg-black/15 border-white/30 text-white'
+                      : 'bg-black/10 border-white/10 text-gray-300 hover:bg-black/15'
                   }`}
                   tabIndex={0}
                   role="button"
@@ -193,7 +193,7 @@ const ManufacturerGrid = ({
                   key={manufacturer.id}
                   onClick={() => handleManufacturerClick(manufacturer.id)}
                   style={{ animationDelay: `${index * 0.2}s` }} // Verzögerung basierend auf dem Index
-                  className="bg-black/15 backdrop-blur-sm p-4 rounded-lg shadow-md border border-white/10 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
+                  className="bg-black/10 backdrop-blur-sm p-4 rounded-lg shadow-md border border-white/10 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
                   tabIndex={0}
                   role="button"
                   aria-label={`Hersteller ${manufacturer.name} auswählen`}
@@ -210,7 +210,7 @@ const ManufacturerGrid = ({
                         style={{ animationDelay: `${index * 0.2}s` }} // Individuelle Verzögerung
                       >
                         {/* Animation-Effekt */}
-                        <div className="absolute inset-0 rounded-lg bg-blue-400/10 opacity-0 transition-opacity duration-300 group-hover:opacity-20"></div>
+                        <div className="absolute inset-0 rounded-lg opacity-0 transition-opacity duration-300 group-hover:opacity-20"></div>
                         
                         {/* Bewegungseffekt */}
                         <div className="relative w-full h-full overflow-hidden manufacturer-logo">
@@ -237,7 +237,7 @@ const ManufacturerGrid = ({
                           .map((kategorie, idx) => (
                             <span 
                               key={`${manufacturer.id}-${kategorie}-${idx}`}
-                              className="px-2 py-0.5 bg-black/15 text-gray-300 text-xs rounded-full border border-white/10"
+                              className="px-2 py-0.5 bg-black/10 text-gray-300 text-xs rounded-full border border-white/10"
                             >
                               {kategorie}
                             </span>
