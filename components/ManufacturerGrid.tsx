@@ -80,7 +80,7 @@ const ManufacturerGrid = ({
           transform: translateY(0px);
         }
         50% {
-          transform: translateY(-10px);
+          transform: translateY(-5px);
         }
         100% {
           transform: translateY(0px);
@@ -101,6 +101,7 @@ const ManufacturerGrid = ({
       
       .manufacturer-logo {
         animation: float 3s ease-in-out infinite;
+        padding: 5px;
       }
       
       .logo-glow {
@@ -206,18 +207,18 @@ const ManufacturerGrid = ({
                 >
                   <div className="flex flex-col items-center">
                       <div 
-                        className="w-28 h-28 mb-4 flex items-center justify-center relative group"
+                        className="w-28 h-32 mb-4 flex items-center justify-center relative group"
                         style={{ animationDelay: `${index * 0.2}s` }} // Individuelle Verzögerung
                       >
                         {/* Animation-Effekt */}
                         <div className="absolute inset-0 rounded-lg opacity-0 transition-opacity duration-300 group-hover:opacity-20"></div>
                         
                         {/* Bewegungseffekt */}
-                        <div className="relative w-full h-full overflow-hidden manufacturer-logo">
+                        <div className="relative w-full h-full manufacturer-logo">
                         <img 
                           src="/Bilder/Logo Rund.svg" 
                           alt={`Logo von ${manufacturer.name}`}
-                          className="w-full h-full object-contain z-10 relative transition-transform duration-500 hover:scale-110"
+                          className="w-24 h-24 object-contain z-10 relative transition-transform duration-500 hover:scale-110"
                         />
                         </div>
                     </div>
