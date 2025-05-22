@@ -29,6 +29,7 @@ body {
   flex-direction: column;
   overflow-y: auto !important;
   position: relative !important;
+  min-height: 100vh !important;
 }
 
 /* Sicherstellen, dass der Hintergrund überall angezeigt wird */
@@ -51,7 +52,7 @@ body::before {
   right: 0 !important;
   bottom: 0 !important;
   width: 100vw !important;
-  height: 120vh !important;
+  height: 200vh !important;
   background-image: linear-gradient(to bottom right, #2A2832, #1A1820) !important;
   z-index: -9998 !important;
   opacity: 1 !important;
@@ -172,19 +173,31 @@ footer {
   
   /* Sicherstellen, dass der Hintergrund vollständig ist */
   #app-bg-gradient {
-    height: 150vh !important;
-    bottom: -50vh !important;
+    height: 200vh !important;
+    bottom: -100vh !important;
   }
 }
 
 /* Chrome-spezifische Anpassungen */
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   html, body, #__next, .min-h-screen.relative {
-    background-color: transparent !important;
+    background-color: var(--app-bg) !important;
   }
   
   #app-bg-gradient {
-    height: 150vh !important;
+    height: 200vh !important;
+  }
+  
+  /* Zusätzlicher Fix für Chrome */
+  body::after {
+    content: "";
+    position: fixed;
+    bottom: -100px;
+    left: 0;
+    right: 0;
+    height: 300px;
+    background-color: var(--app-bg);
+    z-index: 90;
   }
 }
 

@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const bgColor = '#1A1820';
   
   // Setze Hintergrundfarbe für HTML und Body
-  document.documentElement.style.backgroundColor = 'transparent';
-  document.body.style.backgroundColor = 'transparent';
+  document.documentElement.style.backgroundColor = bgColor;
+  document.body.style.backgroundColor = bgColor;
   
   // Stelle sicher, dass der Gradient sichtbar ist
   const gradientBg = document.getElementById('app-bg-gradient');
@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
     gradientBg.style.opacity = '1';
     gradientBg.style.display = 'block';
     gradientBg.style.zIndex = '-10';
+    gradientBg.style.height = '200vh';
   }
   
   // Fix für den Footer
@@ -31,23 +32,23 @@ document.addEventListener('DOMContentLoaded', function() {
       left: 0;
       right: 0;
       bottom: 0;
-      height: 100px;
+      height: 200px;
       background-color: ${bgColor};
       transform: translateY(100%);
-      z-index: -1;
+      z-index: 10;
     `;
     footer.appendChild(bottomFix);
   }
   
-  // Fix für den grauen Balken am unteren Rand
+  // Fix für den weißen Bereich am unteren Rand
   const bottomBarFix = document.createElement('div');
   bottomBarFix.id = 'bottom-bar-fix';
   bottomBarFix.style.cssText = `
     position: fixed;
-    bottom: -10px;
+    bottom: -100px;
     left: 0;
     right: 0;
-    height: 100px;
+    height: 300px;
     background-color: ${bgColor};
     z-index: 90;
     pointer-events: none;
@@ -71,22 +72,24 @@ document.addEventListener('DOMContentLoaded', function() {
       }
       
       .min-h-screen.relative {
-        background-color: transparent !important;
+        background-color: ${bgColor} !important;
+        min-height: 100vh !important;
       }
       
       #app-bg-gradient {
         opacity: 1 !important;
         display: block !important;
+        height: 200vh !important;
       }
       
-      /* Fix für den grauen Balken im PWA-Modus */
+      /* Fix für den weißen Bereich im PWA-Modus */
       body::after {
         content: "";
         position: fixed;
-        bottom: -50px;
+        bottom: -100px;
         left: 0;
         right: 0;
-        height: 200px;
+        height: 300px;
         background-color: ${bgColor};
         z-index: 90;
       }
@@ -116,6 +119,7 @@ window.addEventListener('load', function() {
     gradientBg.style.opacity = '1';
     gradientBg.style.display = 'block';
     gradientBg.style.zIndex = '-10';
+    gradientBg.style.height = '200vh';
   }
   
   // Überprüfe, ob der Bottom-Fix existiert, sonst erstelle ihn
@@ -124,14 +128,31 @@ window.addEventListener('load', function() {
     bottomBarFix.id = 'bottom-bar-fix';
     bottomBarFix.style.cssText = `
       position: fixed;
-      bottom: -10px;
+      bottom: -100px;
       left: 0;
       right: 0;
-      height: 100px;
+      height: 300px;
       background-color: ${bgColor};
       z-index: 90;
       pointer-events: none;
     `;
     document.body.appendChild(bottomBarFix);
   }
+  
+  // Zusätzlicher Fix für den weißen Bereich
+  const fullPageFix = document.createElement('div');
+  fullPageFix.id = 'full-page-fix';
+  fullPageFix.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 200vh;
+    background-color: ${bgColor};
+    z-index: -9999;
+    pointer-events: none;
+  `;
+  document.body.insertBefore(fullPageFix, document.body.firstChild);
 });

@@ -106,20 +106,9 @@ class MyDocument extends Document {
             right: 0,
             bottom: 0,
             width: '100vw',
-            height: '150vh',
+            height: '200vh',
             backgroundColor: '#1A1820',
             zIndex: -9999
-          }}></div>
-          
-          {/* Fester Hintergrund am unteren Rand */}
-          <div id="fixed-bottom-bg" style={{
-            position: 'fixed',
-            bottom: -50,
-            left: 0,
-            right: 0,
-            height: 200,
-            backgroundColor: '#1A1820',
-            zIndex: 90
           }}></div>
           
           <Main />
@@ -153,7 +142,7 @@ class MyDocument extends Document {
                     right: 0;
                     bottom: 0;
                     width: 100vw;
-                    height: 150vh;
+                    height: 200vh;
                     background-color: \${bgColor};
                     z-index: -9999;
                     pointer-events: none;
@@ -161,16 +150,16 @@ class MyDocument extends Document {
                   document.body.insertBefore(fixedBg, document.body.firstChild);
                 }
                 
-                // Fix für den grauen Balken unten
+                // Fix für den weißen Bereich unten
                 if (!document.getElementById('bottom-fix-js')) {
                   const bottomFix = document.createElement('div');
                   bottomFix.id = 'bottom-fix-js';
                   bottomFix.style.cssText = \`
                     position: fixed;
-                    bottom: -50px;
+                    bottom: -100px;
                     left: 0;
                     right: 0;
-                    height: 200px;
+                    height: 300px;
                     background-color: \${bgColor};
                     z-index: 90;
                     pointer-events: none;
