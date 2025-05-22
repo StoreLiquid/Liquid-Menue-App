@@ -25,6 +25,15 @@ const Header: React.FC<HeaderProps> = ({
         <meta name="theme-color" content={isPwa ? "#3a2a5a" : "#1A1820"} />
         <meta name="background-color" content={isPwa ? "#3a2a5a" : "#1A1820"} />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        
+        {/* Apple Touch Icons für iOS Geräte */}
+        <link rel="apple-touch-icon" href="/icons/app-icon-192.png" />
+        <link rel="apple-touch-icon" sizes="152x152" href="/icons/app-icon-192.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/icons/app-icon-192.png" />
+        <link rel="apple-touch-icon" sizes="167x167" href="/icons/app-icon-192.png" />
+
+        {/* Standard Favicon */}
+        <link rel="icon" href="/icons/app-icon-192.png" />
       </Head>
       
       <div className="flex flex-col items-center justify-center mb-8">

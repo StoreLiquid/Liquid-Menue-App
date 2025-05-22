@@ -9,24 +9,10 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/icons/app-icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "/icons/app-icon-new.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
       "purpose": "any"
-    },
-    {
-      "src": "/icons/smartphone-icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any",
-      "platform": "mobile"
-    },
-    {
-      "src": "/icons/tablet-icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any",
-      "platform": "tablet"
     },
     {
       "src": "/icons/app-icon-192.png",
