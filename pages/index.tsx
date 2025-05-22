@@ -129,7 +129,7 @@ export default function Home() {
       await fetchData();
       
       console.log("Aktualisierung abgeschlossen!");
-      alert('Daten erfolgreich aktualisiert!');
+      // Keine Erfolgsmeldung mehr anzeigen
     } catch (error: any) {
       console.error('Fehler beim Synchronisieren:', error);
       alert(`Fehler bei der Synchronisation: ${error.message}`);
