@@ -3,6 +3,13 @@ echo Git Auto-Commit und Push Tool
 echo ===========================
 echo.
 
+echo WICHTIG: GitHub akzeptiert keine Passwörter mehr!
+echo Du musst einen Personal Access Token verwenden.
+echo Token erstellen: https://github.com/settings/tokens
+echo.
+echo Drücke eine beliebige Taste, um fortzufahren...
+pause
+
 echo Überprüfe auf Änderungen...
 git status
 echo.
@@ -40,11 +47,11 @@ echo.
 echo Pushe zu GitHub...
 echo.
 set /p username=GitHub Benutzername: 
-set /p password=GitHub Passwort oder Token: 
+set /p token=GitHub TOKEN (KEIN Passwort!): 
 
 echo.
 echo Führe Push mit den eingegebenen Anmeldedaten durch...
-git -c credential.helper= -c user.name="%username%" -c user.password="%password%" push origin master
+git -c credential.helper= -c user.name="%username%" -c user.password="%token%" push origin master
 
 echo.
 echo Fertig! Drücke eine beliebige Taste zum Beenden...
