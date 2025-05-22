@@ -18,11 +18,6 @@ class MyDocument extends Document {
           <meta name="mobile-web-app-capable" content="yes" />
           <meta name="theme-color" content="#1A1820" />
           <meta name="apple-mobile-web-app-status-bar" content="#1A1820" />
-          
-          {/* Chrome PWA Anpassungen */}
-          <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1A1820" />
-          <meta name="theme-color" media="(prefers-color-scheme: light)" content="#1A1820" />
-          <meta name="mobile-web-app-capable" content="yes" />
           <meta name="background-color" content="#1A1820" />
           
           {/* iOS Vollbild-Modus */}
@@ -50,45 +45,51 @@ class MyDocument extends Document {
           {/* iOS Startup Images */}
           <link rel="apple-touch-startup-image" href="/icons/app-icon-512.png" />
 
-          {/* PWA Splash Screen Background Color */}
+          {/* Grundlegende Styles für alle Browser */}
           <style>{`
             :root {
-              --app-background: #1A1820;
+              --app-bg: #1A1820;
             }
             
-            html {
-              background-color: var(--app-background);
-              height: 100%;
-              overscroll-behavior: none;
-            }
-            
-            body {
-              background-color: var(--app-background);
+            html, body, #__next {
+              background-color: var(--app-bg) !important;
               margin: 0;
               padding: 0;
               min-height: 100%;
+              height: 100%;
               overscroll-behavior: none;
-              display: flex;
-              flex-direction: column;
+              -webkit-overflow-scrolling: touch;
+              overflow-x: hidden;
             }
             
-            /* Verbesserte iOS Pull-to-Refresh-Steuerung für Hintergrundfarbe */
-            @supports (-webkit-overflow-scrolling: touch) {
-              body::before {
-                content: "";
-                position: fixed;
-                top: -150vh;
-                height: 150vh;
-                left: 0;
-                right: 0;
-                background-color: var(--app-background);
-                z-index: -10;
-              }
-              
-              #__next {
-                min-height: 100vh;
-                width: 100%;
-              }
+            body {
+              display: flex;
+              flex-direction: column;
+              overflow-y: auto !important;
+            }
+            
+            /* Fester Hintergrund für alle Browser */
+            body::before {
+              content: "";
+              position: fixed;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              background-color: var(--app-bg);
+              z-index: -9999;
+            }
+            
+            /* Fester Hintergrund am unteren Rand */
+            body::after {
+              content: "";
+              position: fixed;
+              bottom: -50px;
+              left: 0;
+              right: 0;
+              height: 200px;
+              background-color: var(--app-bg);
+              z-index: -9998;
             }
           `}</style>
 
@@ -97,37 +98,43 @@ class MyDocument extends Document {
           <link rel="shortcut icon" href="/icons/app-icon-192.png" />
         </Head>
         <body>
+          {/* Fester Hintergrund für alle Browser */}
+          <div id="fixed-bg" style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            width: '100vw',
+            height: '150vh',
+            backgroundColor: '#1A1820',
+            zIndex: -9999
+          }}></div>
+          
           <Main />
           <NextScript />
           
           {/* Add to Home Screen Prompt Script */}
           <script src="/add-to-home.js" defer></script>
           
-          {/* Chrome-spezifisches Inline-Script */}
+          {/* Chrome-Fix Script */}
+          <script src="/chrome-fix.js"></script>
+          
+          {/* Sofortiger Fix für alle Browser */}
           <script dangerouslySetInnerHTML={{
             __html: `
-              // Sofortiger Fix für Chrome und PWA
+              // Sofortiger Fix für alle Browser
               (function() {
-                const isChrome = /Chrome/.test(navigator.userAgent) && !/Edge|Edg/.test(navigator.userAgent);
-                const isPWA = window.matchMedia('(display-mode: standalone)').matches;
-                const isDesktop = window.innerWidth > 1024;
+                const bgColor = '#1A1820';
                 
-                console.log("Document Inline-Script wird ausgeführt");
-                console.log("Chrome erkannt:", isChrome);
-                console.log("PWA erkannt:", isPWA);
-                console.log("Desktop erkannt:", isDesktop);
+                // Setze Hintergrundfarbe für alle Browser
+                document.documentElement.style.backgroundColor = bgColor;
+                document.body.style.backgroundColor = bgColor;
                 
-                // Hintergrundfarbe für alle Browser
-                document.documentElement.style.backgroundColor = '#1A1820';
-                document.body.style.backgroundColor = '#1A1820';
-                
-                // Spezieller Fix für Chrome Desktop
-                if (isChrome && isDesktop) {
-                  console.log("Chrome Desktop Fix wird angewendet");
-                  
-                  // Erstelle ein festes Hintergrund-Element
+                // Stelle sicher, dass der feste Hintergrund existiert
+                if (!document.getElementById('fixed-bg-js')) {
                   const fixedBg = document.createElement('div');
-                  fixedBg.id = 'chrome-desktop-bg-early';
+                  fixedBg.id = 'fixed-bg-js';
                   fixedBg.style.cssText = \`
                     position: fixed;
                     top: 0;
@@ -135,64 +142,33 @@ class MyDocument extends Document {
                     right: 0;
                     bottom: 0;
                     width: 100vw;
-                    height: 100vh;
-                    background-color: #1A1820;
-                    background-image: linear-gradient(to bottom right, #2A2832, #1A1820);
+                    height: 150vh;
+                    background-color: \${bgColor};
                     z-index: -9999;
                     pointer-events: none;
                   \`;
-                  
-                  // Füge es als erstes Element im Body ein, sobald der Body verfügbar ist
-                  if (document.body) {
-                    document.body.insertBefore(fixedBg, document.body.firstChild);
-                  } else {
-                    // Wenn der Body noch nicht verfügbar ist, warte darauf
-                    document.addEventListener('DOMContentLoaded', function() {
-                      document.body.insertBefore(fixedBg, document.body.firstChild);
-                    });
-                  }
+                  document.body.insertBefore(fixedBg, document.body.firstChild);
                 }
                 
-                // Fix für den grauen Balken in PWA
-                if (isPWA) {
-                  console.log("PWA Fix wird angewendet");
-                  
-                  // Füge CSS für den Fix hinzu
-                  const style = document.createElement('style');
-                  style.id = 'pwa-bottom-fix-early';
-                  style.textContent = \`
-                    body::after {
-                      content: "";
-                      position: fixed;
-                      bottom: 0;
-                      left: 0;
-                      right: 0;
-                      height: 150px;
-                      background-color: #1A1820;
-                      z-index: -5;
-                    }
-                    
-                    footer {
-                      position: relative;
-                      z-index: 10;
-                      background-color: #1A1820 !important;
-                    }
-                    
-                    #app-bg-gradient {
-                      height: 120vh !important;
-                      bottom: -20vh !important;
-                    }
+                // Fix für den grauen Balken unten
+                if (!document.getElementById('bottom-fix-js')) {
+                  const bottomFix = document.createElement('div');
+                  bottomFix.id = 'bottom-fix-js';
+                  bottomFix.style.cssText = \`
+                    position: fixed;
+                    bottom: -50px;
+                    left: 0;
+                    right: 0;
+                    height: 200px;
+                    background-color: \${bgColor};
+                    z-index: -9990;
+                    pointer-events: none;
                   \`;
-                  
-                  // Füge den Style zum Head hinzu
-                  document.head.appendChild(style);
+                  document.body.appendChild(bottomFix);
                 }
               })();
             `
           }} />
-          
-          {/* Chrome-Fix Script */}
-          <script src="/chrome-fix.js"></script>
         </body>
       </Html>
     );

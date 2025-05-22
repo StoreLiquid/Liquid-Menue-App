@@ -1,43 +1,96 @@
-// Chrome-spezifischer Fix für Hintergrund und PWA
+// Einfacher, robuster Fix für Chrome und PWA
 document.addEventListener('DOMContentLoaded', function() {
-  // Prüfe, ob wir in Chrome sind (nicht Edge)
-  const isChrome = /Chrome/.test(navigator.userAgent) && !/Edge|Edg/.test(navigator.userAgent);
-  const isPWA = window.matchMedia('(display-mode: standalone)').matches;
-  const isDesktop = window.innerWidth > 1024;
-  
   console.log("Chrome-Fix wird geladen...");
-  console.log("Chrome erkannt:", isChrome);
-  console.log("PWA erkannt:", isPWA);
-  console.log("Desktop erkannt:", isDesktop);
   
-  // Hintergrundfarbe
+  // Grundfarben
   const bgColor = '#1A1820';
   
-  // Setze Hintergrundfarben direkt für alle Browser
+  // Setze Hintergrundfarbe für alle Browser
   document.documentElement.style.backgroundColor = bgColor;
   document.body.style.backgroundColor = bgColor;
   
-  // Stelle sicher, dass der Gradient sichtbar ist
-  const gradientBg = document.getElementById('app-bg-gradient');
-  if (gradientBg) {
-    gradientBg.style.opacity = '1';
-    gradientBg.style.display = 'block';
-    gradientBg.style.zIndex = '-10';
-  }
+  // Erstelle einen festen Hintergrund für alle Browser
+  const fixedBg = document.createElement('div');
+  fixedBg.id = 'fixed-bg';
+  fixedBg.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 150vh;
+    background-color: ${bgColor};
+    z-index: -9999;
+    pointer-events: none;
+  `;
+  document.body.insertBefore(fixedBg, document.body.firstChild);
   
-  // Erstelle ein festes Hintergrund-Element für Chrome Desktop
-  if (isChrome && isDesktop) {
-    console.log("Füge speziellen Chrome Desktop Fix hinzu");
-    
-    // Entferne vorhandene Elemente
-    const existingBg = document.getElementById('chrome-desktop-bg');
-    if (existingBg) {
-      existingBg.remove();
+  // Fix für den grauen Balken unten in PWA
+  const bottomFix = document.createElement('div');
+  bottomFix.id = 'bottom-fix';
+  bottomFix.style.cssText = `
+    position: fixed;
+    bottom: -50px;
+    left: 0;
+    right: 0;
+    height: 200px;
+    background-color: ${bgColor};
+    z-index: -9990;
+    pointer-events: none;
+  `;
+  document.body.appendChild(bottomFix);
+  
+  // Füge CSS für alle Browser hinzu
+  const style = document.createElement('style');
+  style.id = 'global-bg-fix';
+  style.textContent = `
+    html, body, #__next, .min-h-screen.relative {
+      background-color: ${bgColor} !important;
     }
     
-    // Erstelle neues Hintergrund-Element
+    footer {
+      background-color: ${bgColor} !important;
+      position: relative;
+      z-index: 10;
+    }
+    
+    #app-bg-gradient {
+      height: 150vh !important;
+      z-index: -9998 !important;
+    }
+    
+    @media all and (display-mode: standalone) {
+      body::after {
+        content: "";
+        position: fixed;
+        bottom: -50px;
+        left: 0;
+        right: 0;
+        height: 200px;
+        background-color: ${bgColor};
+        z-index: -9990;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+});
+
+// Erneut ausführen, wenn die Seite vollständig geladen ist
+window.addEventListener('load', function() {
+  console.log("Seite vollständig geladen, wende Fixes erneut an");
+  
+  // Grundfarben
+  const bgColor = '#1A1820';
+  
+  // Setze Hintergrundfarbe für alle Browser
+  document.documentElement.style.backgroundColor = bgColor;
+  document.body.style.backgroundColor = bgColor;
+  
+  // Stelle sicher, dass der feste Hintergrund existiert
+  if (!document.getElementById('fixed-bg')) {
     const fixedBg = document.createElement('div');
-    fixedBg.id = 'chrome-desktop-bg';
+    fixedBg.id = 'fixed-bg';
     fixedBg.style.cssText = `
       position: fixed;
       top: 0;
@@ -45,151 +98,36 @@ document.addEventListener('DOMContentLoaded', function() {
       right: 0;
       bottom: 0;
       width: 100vw;
-      height: 100vh;
+      height: 150vh;
       background-color: ${bgColor};
-      background-image: linear-gradient(to bottom right, #2A2832, #1A1820);
       z-index: -9999;
       pointer-events: none;
     `;
-    
-    // Füge es als erstes Element im Body ein
     document.body.insertBefore(fixedBg, document.body.firstChild);
-    
-    // Spezielles CSS für Chrome Desktop
-    const desktopStyle = document.createElement('style');
-    desktopStyle.id = 'chrome-desktop-styles';
-    desktopStyle.textContent = `
-      html, body, #__next, .min-h-screen.relative {
-        background-color: transparent !important;
-      }
-      
-      #app-bg-gradient {
-        opacity: 1 !important;
-        display: block !important;
-        z-index: -10 !important;
-      }
-      
-      .fixed {
-        position: fixed !important;
-        z-index: -1 !important;
-      }
+  }
+  
+  // Stelle sicher, dass der Fix für den grauen Balken existiert
+  if (!document.getElementById('bottom-fix')) {
+    const bottomFix = document.createElement('div');
+    bottomFix.id = 'bottom-fix';
+    bottomFix.style.cssText = `
+      position: fixed;
+      bottom: -50px;
+      left: 0;
+      right: 0;
+      height: 200px;
+      background-color: ${bgColor};
+      z-index: -9990;
+      pointer-events: none;
     `;
-    document.head.appendChild(desktopStyle);
+    document.body.appendChild(bottomFix);
   }
   
-  // Fix für den grauen Balken in PWA
-  if (isPWA) {
-    console.log("Füge PWA Fix für grauen Balken hinzu");
-    
-    // Entferne vorhandene Styles
-    const existingPwaStyle = document.getElementById('pwa-bottom-fix');
-    if (existingPwaStyle) {
-      existingPwaStyle.remove();
-    }
-    
-    // Erstelle neues Style-Element
-    const pwaStyle = document.createElement('style');
-    pwaStyle.id = 'pwa-bottom-fix';
-    pwaStyle.textContent = `
-      body::after {
-        content: "";
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 150px;
-        background-color: ${bgColor};
-        z-index: -5;
-      }
-      
-      footer {
-        position: relative;
-        z-index: 10;
-        background-color: ${bgColor} !important;
-      }
-    `;
-    document.head.appendChild(pwaStyle);
-  }
-});
-
-// Erneut ausführen, wenn die Seite vollständig geladen ist
-window.addEventListener('load', function() {
-  // Prüfe, ob wir in Chrome sind (nicht Edge)
-  const isChrome = /Chrome/.test(navigator.userAgent) && !/Edge|Edg/.test(navigator.userAgent);
-  const isPWA = window.matchMedia('(display-mode: standalone)').matches;
-  const isDesktop = window.innerWidth > 1024;
-  
-  console.log("Seite vollständig geladen");
-  
-  // Hintergrundfarbe
-  const bgColor = '#1A1820';
-  
-  // Für Chrome Desktop: Stelle sicher, dass der Hintergrund sichtbar ist
-  if (isChrome && isDesktop) {
-    console.log("Chrome Desktop: Stelle sicher, dass der Hintergrund sichtbar ist");
-    
-    // Setze Hintergrundfarben direkt
-    document.documentElement.style.backgroundColor = bgColor;
-    document.body.style.backgroundColor = bgColor;
-    
-    // Stelle sicher, dass der Gradient sichtbar ist
-    const gradientBg = document.getElementById('app-bg-gradient');
-    if (gradientBg) {
-      gradientBg.style.opacity = '1';
-      gradientBg.style.display = 'block';
-      gradientBg.style.zIndex = '-10';
-    }
-    
-    // Stelle sicher, dass der fixe Hintergrund noch da ist
-    if (!document.getElementById('chrome-desktop-bg')) {
-      // Erstelle neues Hintergrund-Element
-      const fixedBg = document.createElement('div');
-      fixedBg.id = 'chrome-desktop-bg';
-      fixedBg.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: ${bgColor};
-        background-image: linear-gradient(to bottom right, #2A2832, #1A1820);
-        z-index: -9999;
-        pointer-events: none;
-      `;
-      
-      // Füge es als erstes Element im Body ein
-      document.body.insertBefore(fixedBg, document.body.firstChild);
-    }
-  }
-  
-  // Für PWA: Stelle sicher, dass der graue Balken verschwunden ist
-  if (isPWA) {
-    console.log("PWA: Stelle sicher, dass der graue Balken verschwunden ist");
-    
-    if (!document.getElementById('pwa-bottom-fix')) {
-      const pwaStyle = document.createElement('style');
-      pwaStyle.id = 'pwa-bottom-fix';
-      pwaStyle.textContent = `
-        body::after {
-          content: "";
-          position: fixed;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          height: 150px;
-          background-color: ${bgColor};
-          z-index: -5;
-        }
-        
-        footer {
-          position: relative;
-          z-index: 10;
-          background-color: ${bgColor} !important;
-        }
-      `;
-      document.head.appendChild(pwaStyle);
-    }
+  // Überprüfe, ob der Footer sichtbar ist und korrigiere ihn bei Bedarf
+  const footer = document.querySelector('footer');
+  if (footer) {
+    footer.style.backgroundColor = bgColor;
+    footer.style.position = 'relative';
+    footer.style.zIndex = '10';
   }
 });
