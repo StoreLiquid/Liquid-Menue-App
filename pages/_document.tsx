@@ -114,6 +114,9 @@ class MyDocument extends Document {
           
           {/* Chrome-Hintergrund-Fix */}
           <script src="/chrome-background.js"></script>
+          
+          {/* Direkter Chrome-Fix */}
+          <script src="/chrome-fix.js"></script>
         </body>
       </Html>
     );

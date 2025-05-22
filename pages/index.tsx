@@ -269,7 +269,23 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-y-auto overflow-x-hidden text-white" style={{ backgroundColor: '#1A1820' }}>
+    <div 
+      className="min-h-screen relative overflow-y-auto overflow-x-hidden text-white" 
+      style={{ 
+        backgroundColor: '#1A1820', 
+        backgroundImage: 'linear-gradient(to bottom right, #2A2832, #1A1820)',
+        color: 'white'
+      }}
+    >
+      {/* Direkter Hintergrund für Chrome */}
+      <div 
+        className="fixed inset-0 w-screen h-screen bg-[#1A1820] z-[-9999]" 
+        style={{ 
+          position: 'fixed', 
+          backgroundImage: 'linear-gradient(to bottom right, #2A2832, #1A1820)'
+        }}
+      ></div>
+      
       {/* Hintergrundverlauf mit Animation für die gesamte App */}
       <div id="app-bg-gradient" className="fixed inset-0 w-screen h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black animate-gradient-slow"></div>
       

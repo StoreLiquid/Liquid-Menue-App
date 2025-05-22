@@ -1,4 +1,4 @@
-/* Chrome-spezifische Fixes - Vereinfachte Version */
+/* Chrome-spezifische Fixes - Verbesserte Version */
 html, body {
   background-color: #1A1820 !important;
   background-image: linear-gradient(to bottom right, #2A2832, #1A1820) !important;
@@ -6,10 +6,13 @@ html, body {
   overflow-x: hidden !important;
   height: auto !important;
   min-height: 100% !important;
+  color: white !important;
 }
 
 body {
   overflow-y: auto !important;
+  background-color: #1A1820 !important;
+  background-image: linear-gradient(to bottom right, #2A2832, #1A1820) !important;
 }
 
 #__next {
@@ -36,6 +39,7 @@ body {
   z-index: -10 !important;
   pointer-events: none !important;
   background-image: linear-gradient(to bottom right, #2A2832, #1A1820) !important;
+  opacity: 1 !important;
 }
 
 #app-bg-pattern {
@@ -59,16 +63,19 @@ body {
 }
 
 /* Fallback-Hintergrund für Chrome */
-.min-h-screen.relative::before {
-  content: "" !important;
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  background-image: linear-gradient(to bottom right, #2A2832, #1A1820) !important;
-  z-index: -100 !important;
-  pointer-events: none !important;
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #1A1820;
+  background-image: linear-gradient(to bottom right, #2A2832, #1A1820);
+  z-index: -999;
+  pointer-events: none;
 }
 
 main.container {

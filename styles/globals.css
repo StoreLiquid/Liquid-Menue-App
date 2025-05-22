@@ -4,12 +4,14 @@
 
 :root {
   --app-bg: #1A1820;
+  --app-bg-gradient: linear-gradient(to bottom right, #2A2832, #1A1820);
   --text-color: #ffffff;
 }
 
 /* Grundlegende Stile für alle Browser */
 html, body {
   background-color: var(--app-bg);
+  background-image: var(--app-bg-gradient);
   color: var(--text-color);
   min-height: 100%;
   height: 100%;
@@ -37,6 +39,7 @@ body {
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   html, body {
     background-color: var(--app-bg) !important;
+    background-image: var(--app-bg-gradient) !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
     height: auto !important;
@@ -68,6 +71,7 @@ body {
     width: 100vw !important;
     height: 100vh !important;
     pointer-events: none;
+    background-image: var(--app-bg-gradient) !important;
   }
   
   /* Zusätzliche Hintergrund-Elemente für Chrome */
