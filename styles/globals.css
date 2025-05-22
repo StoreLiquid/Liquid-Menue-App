@@ -139,7 +139,6 @@ body::before {
 
 /* Footer */
 footer {
-  background-color: var(--app-bg) !important;
   position: relative;
   z-index: 100 !important;
   width: 100%;
@@ -228,8 +227,7 @@ footer {
   
   /* Fix für den Footer im PWA-Modus */
   footer {
-    background-color: var(--app-bg) !important;
-    background-image: linear-gradient(to bottom, transparent, var(--app-bg)) !important;
+    background-image: linear-gradient(to bottom, transparent, var(--pwa-gradient-end)) !important;
     border-top-color: rgba(255, 255, 255, 0.1) !important;
     position: relative;
     z-index: 100 !important;

@@ -486,7 +486,14 @@ export default function Home() {
         )}
       </main>
 
-      <footer className="border-t border-white/10 mt-12 py-6 text-center text-gray-300 relative z-100 bg-[#1A1820] shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
+      <footer 
+        className="border-t border-white/10 mt-12 py-6 text-center text-gray-300 relative z-100 shadow-[0_-10px_30px_rgba(0,0,0,0.5)]"
+        style={{ 
+          background: isPwa 
+            ? `linear-gradient(to bottom, transparent, var(--pwa-gradient-end))` 
+            : `linear-gradient(to bottom, transparent, var(--app-bg))`
+        }}
+      >
         <div className="container mx-auto px-4">
           <p>© 2025 Liquid Menü</p>
           <p className="text-xs mt-1 opacity-50">Created by A.G.</p>

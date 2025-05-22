@@ -92,6 +92,13 @@
       z-index: -9997;
       opacity: 0.8;
     }
+    
+    /* Footer-Anpassungen für iOS PWA */
+    footer {
+      background-image: linear-gradient(to bottom, transparent, var(--pwa-gradient-end)) !important;
+      border-top-color: rgba(255, 255, 255, 0.15) !important;
+      padding-bottom: env(safe-area-inset-bottom, 20px) !important;
+    }
   }
 }
 
