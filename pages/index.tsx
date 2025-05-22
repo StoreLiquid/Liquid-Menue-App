@@ -6,6 +6,7 @@ import ProductList from '../components/ProductList';
 import BackgroundElements from '../components/BackgroundElements';
 import Header from '../components/Header';
 import HomeScreenPrompt from '../components/HomeScreenPrompt';
+import AutoRefresh from '../components/AutoRefresh';
 import useDeviceDetection from '../hooks/useDeviceDetection';
 import { Manufacturer, Liquid, CategoryType } from '../types';
 
@@ -371,6 +372,9 @@ export default function Home() {
 
       {/* Home Screen Prompt */}
       <HomeScreenPrompt isIOS={isIOS} isPwa={isPwa} />
+
+      {/* Auto Refresh Component */}
+      <AutoRefresh />
     </div>
   );
 } 
