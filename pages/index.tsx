@@ -22,10 +22,13 @@ export default function Home() {
   // Referenz für den ProductList-Bereich
   const productListRef = useRef<HTMLDivElement>(null);
 
-  // Neue State-Variable für PWA-Modus
+  // Neue State-Variable für PWA-Modus und Gerätetyp
   const [isPwa, setIsPwa] = useState<boolean>(false);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [isTablet, setIsTablet] = useState<boolean>(false);
+  const [isIOS, setIsIOS] = useState<boolean>(false);
   
-  // PWA-Erkennung
+  // PWA- und Gerätetyp-Erkennung
   useEffect(() => {
     // Prüfen, ob die App im Standalone-Modus (PWA) läuft
     const isInStandaloneMode = () => 
@@ -33,14 +36,38 @@ export default function Home() {
       (window.navigator as any).standalone || 
       document.referrer.includes('android-app://');
       
+    // Prüfen, ob es ein mobiles Gerät ist
+    const detectMobile = () => window.innerWidth <= 767;
+    
+    // Prüfen, ob es ein Tablet ist
+    const detectTablet = () => window.innerWidth > 767 && window.innerWidth <= 1024;
+    
+    // Prüfen, ob es ein iOS-Gerät ist
+    const detectIOS = () => /iPad|iPhone|iPod/.test(navigator.userAgent);
+    
+    // Setze die States
     setIsPwa(isInStandaloneMode());
+    setIsMobile(detectMobile());
+    setIsTablet(detectTablet());
+    setIsIOS(detectIOS());
     
     // Event-Listener für Änderungen im Display-Modus
     const mediaQuery = window.matchMedia('(display-mode: standalone)');
     const handleChange = (e: MediaQueryListEvent) => setIsPwa(e.matches);
     
+    // Event-Listener für Größenänderungen
+    const handleResize = () => {
+      setIsMobile(detectMobile());
+      setIsTablet(detectTablet());
+    };
+    
     mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
+    window.addEventListener('resize', handleResize);
+    
+    return () => {
+      mediaQuery.removeEventListener('change', handleChange);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   // Laden der Hersteller und Liquids
@@ -305,8 +332,8 @@ export default function Home() {
       
       {/* Animierte Sterne */}
       <div className="stars">
-        {Array.from({ length: isPwa ? 30 : 20 }).map((_, i) => {
-          const size = Math.random() * 3 + 1;
+        {Array.from({ length: isPwa ? 30 : (isMobile ? 15 : 20) }).map((_, i) => {
+          const size = Math.random() * 3 + (isMobile ? 1.5 : 1);
           const posX = Math.random() * 100;
           const posY = Math.random() * 100;
           const duration = Math.random() * 10 + 10;
@@ -324,7 +351,7 @@ export default function Home() {
                 animationDelay: `${delay}s`,
                 animationDuration: `${duration}s`,
                 '--duration': `${duration}s`,
-                opacity: isPwa ? '0.8' : undefined
+                opacity: isPwa ? '0.8' : (isMobile ? '0.7' : undefined)
               } as React.CSSProperties}
             />
           );
@@ -335,34 +362,34 @@ export default function Home() {
       <div 
         id="app-top-glow" 
         className="fixed top-0 left-0 right-0 h-[2px] w-full bg-gradient-to-r from-transparent via-[#8a2be2]/50 to-transparent animate-pulse-light"
-        style={{ opacity: isPwa ? '0.7' : '0.3' }}
+        style={{ opacity: isPwa ? '0.7' : (isMobile ? '0.5' : '0.3') }}
       ></div>
       
       {/* Subtiler Glanzeffekt in der oberen rechten Ecke */}
       <div 
         id="app-corner-glow-1" 
         className="fixed top-0 right-0 w-60 h-60 bg-gradient-radial from-[#8a2be2]/20 to-transparent rounded-full -translate-x-1/4 -translate-y-1/2 animate-pulse-light"
-        style={{ opacity: isPwa ? '0.7' : '0.2' }}
+        style={{ opacity: isPwa ? '0.7' : (isMobile ? '0.5' : '0.2') }}
       ></div>
       
       {/* Subtiler Glanzeffekt in der unteren linken Ecke */}
       <div 
         id="app-corner-glow-2" 
         className="fixed bottom-0 left-0 w-80 h-80 bg-gradient-radial from-[#8a2be2]/20 to-transparent rounded-full -translate-x-1/3 translate-y-1/3 animate-pulse-light"
-        style={{ opacity: isPwa ? '0.7' : '0.2' }}
+        style={{ opacity: isPwa ? '0.7' : (isMobile ? '0.5' : '0.2') }}
       ></div>
       
       {/* Zusätzlicher Glanzeffekt in der Mitte */}
       <div 
         id="app-center-glow" 
         className="fixed top-1/2 left-1/2 w-[500px] h-[500px] bg-gradient-radial from-[#8a2be2]/10 to-transparent rounded-full -translate-x-1/2 -translate-y-1/2 animate-pulse-light"
-        style={{ opacity: isPwa ? '0.7' : '0.1' }}
+        style={{ opacity: isPwa ? '0.7' : (isMobile ? '0.4' : '0.1') }}
       ></div>
 
       {/* Animierte Partikel */}
       <div className="fixed inset-0 z-[-9994] overflow-hidden">
-        {Array.from({ length: isPwa ? 8 : 5 }).map((_, i) => {
-          const size = Math.random() * 100 + 50;
+        {Array.from({ length: isPwa ? 8 : (isMobile ? 4 : 5) }).map((_, i) => {
+          const size = Math.random() * (isMobile ? 80 : 100) + (isMobile ? 30 : 50);
           const posX = Math.random() * 100;
           const posY = Math.random() * 100;
           const duration = Math.random() * 30 + 30;
@@ -379,7 +406,7 @@ export default function Home() {
                 top: `${posY}%`,
                 animationDelay: `${delay}s`,
                 animationDuration: `${duration}s`,
-                opacity: isPwa ? '0.7' : '0.2'
+                opacity: isPwa ? '0.7' : (isMobile ? '0.4' : '0.2')
               }}
             />
           );
@@ -387,8 +414,13 @@ export default function Home() {
       </div>
       
       {/* PWA-spezifischer zusätzlicher Hintergrund für iOS */}
-      {isPwa && (
+      {isPwa && isIOS && (
         <div className="fixed inset-0 z-[-9995] bg-gradient-radial from-[#3a2a5a]/50 to-transparent"></div>
+      )}
+      
+      {/* Zusätzlicher Hintergrund für mobile Geräte */}
+      {isMobile && !isPwa && (
+        <div className="fixed inset-0 z-[-9995] bg-gradient-radial from-[#2c1e4a]/30 to-transparent"></div>
       )}
       
       <Head>
@@ -491,7 +523,8 @@ export default function Home() {
         style={{ 
           background: isPwa 
             ? `linear-gradient(to bottom, transparent, var(--pwa-gradient-end))` 
-            : `linear-gradient(to bottom, transparent, var(--app-bg))`
+            : `linear-gradient(to bottom, transparent, var(--app-bg))`,
+          paddingBottom: isIOS ? 'env(safe-area-inset-bottom, 20px)' : (isMobile ? '16px' : '20px')
         }}
       >
         <div className="container mx-auto px-4">

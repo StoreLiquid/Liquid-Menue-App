@@ -290,6 +290,7 @@ footer {
   
   #app-bg-gradient {
     background-color: var(--gradient-start) !important;
+    background-image: radial-gradient(circle at top right, var(--gradient-start), var(--gradient-middle), var(--gradient-end)) !important;
     opacity: 1 !important;
     height: 300vh !important;
   }
@@ -301,6 +302,27 @@ footer {
   /* Verstärkte Glanzeffekte für Mobile */
   #app-center-glow, #app-corner-glow-1, #app-corner-glow-2 {
     opacity: 0.5 !important;
+  }
+  
+  /* Footer-Anpassungen für mobile Geräte */
+  footer {
+    background-image: linear-gradient(to bottom, transparent, var(--gradient-end)) !important;
+    padding-bottom: 16px;
+  }
+}
+
+/* Android-spezifische Anpassungen */
+@media screen and (-webkit-min-device-pixel-ratio:0) and (max-width: 767px) {
+  #app-bg-gradient {
+    height: 300vh !important;
+    background-attachment: fixed !important;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+  }
+  
+  /* Footer-Anpassungen für Android */
+  footer {
+    padding-bottom: 16px;
   }
 }
 

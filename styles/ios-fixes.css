@@ -49,6 +49,30 @@
     opacity: 0.9 !important;
   }
   
+  /* Footer-Anpassungen für iOS */
+  footer {
+    background-image: linear-gradient(to bottom, transparent, var(--pwa-gradient-end)) !important;
+    padding-bottom: env(safe-area-inset-bottom, 16px) !important;
+  }
+  
+  /* iPhone-spezifische Anpassungen */
+  @media only screen and (max-width: 428px) {
+    #app-bg-gradient {
+      height: 400vh !important;
+    }
+    
+    footer {
+      padding-bottom: env(safe-area-inset-bottom, 20px) !important;
+    }
+  }
+  
+  /* iPad-spezifische Anpassungen */
+  @media only screen and (min-width: 768px) and (max-width: 1024px) {
+    #app-bg-gradient {
+      height: 300vh !important;
+    }
+  }
+  
   /* PWA-Modus auf iOS */
   @media all and (display-mode: standalone) {
     html, body, #__next, .min-h-screen.relative {
@@ -98,6 +122,13 @@
       background-image: linear-gradient(to bottom, transparent, var(--pwa-gradient-end)) !important;
       border-top-color: rgba(255, 255, 255, 0.15) !important;
       padding-bottom: env(safe-area-inset-bottom, 20px) !important;
+    }
+    
+    /* iPhone-spezifische PWA-Anpassungen */
+    @media only screen and (max-width: 428px) {
+      #app-bg-gradient {
+        height: 500vh !important;
+      }
     }
   }
 }
