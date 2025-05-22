@@ -106,35 +106,93 @@ class MyDocument extends Document {
           {/* Chrome-spezifisches Inline-Script */}
           <script dangerouslySetInnerHTML={{
             __html: `
-              // Sofortiger Fix für Chrome
+              // Sofortiger Fix für Chrome und PWA
               (function() {
                 const isChrome = /Chrome/.test(navigator.userAgent) && !/Edge|Edg/.test(navigator.userAgent);
-                if (isChrome) {
-                  // Hintergrundfarbe für Chrome setzen
-                  document.documentElement.style.backgroundColor = '#1A1820';
-                  document.body.style.backgroundColor = '#1A1820';
+                const isPWA = window.matchMedia('(display-mode: standalone)').matches;
+                const isDesktop = window.innerWidth > 1024;
+                
+                console.log("Document Inline-Script wird ausgeführt");
+                console.log("Chrome erkannt:", isChrome);
+                console.log("PWA erkannt:", isPWA);
+                console.log("Desktop erkannt:", isDesktop);
+                
+                // Hintergrundfarbe für alle Browser
+                document.documentElement.style.backgroundColor = '#1A1820';
+                document.body.style.backgroundColor = '#1A1820';
+                
+                // Spezieller Fix für Chrome Desktop
+                if (isChrome && isDesktop) {
+                  console.log("Chrome Desktop Fix wird angewendet");
                   
-                  // Grauer Balken am unteren Rand in PWA entfernen
-                  if (window.matchMedia('(display-mode: standalone)').matches) {
-                    const style = document.createElement('style');
-                    style.textContent = \`
-                      body::after {
-                        content: "";
-                        position: fixed;
-                        bottom: 0;
-                        left: 0;
-                        right: 0;
-                        height: 100px;
-                        background-color: #1A1820;
-                        z-index: -1;
-                      }
-                    \`;
-                    document.head.appendChild(style);
+                  // Erstelle ein festes Hintergrund-Element
+                  const fixedBg = document.createElement('div');
+                  fixedBg.id = 'chrome-desktop-bg-early';
+                  fixedBg.style.cssText = \`
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    width: 100vw;
+                    height: 100vh;
+                    background-color: #1A1820;
+                    background-image: linear-gradient(to bottom right, #2A2832, #1A1820);
+                    z-index: -9999;
+                    pointer-events: none;
+                  \`;
+                  
+                  // Füge es als erstes Element im Body ein, sobald der Body verfügbar ist
+                  if (document.body) {
+                    document.body.insertBefore(fixedBg, document.body.firstChild);
+                  } else {
+                    // Wenn der Body noch nicht verfügbar ist, warte darauf
+                    document.addEventListener('DOMContentLoaded', function() {
+                      document.body.insertBefore(fixedBg, document.body.firstChild);
+                    });
                   }
+                }
+                
+                // Fix für den grauen Balken in PWA
+                if (isPWA) {
+                  console.log("PWA Fix wird angewendet");
+                  
+                  // Füge CSS für den Fix hinzu
+                  const style = document.createElement('style');
+                  style.id = 'pwa-bottom-fix-early';
+                  style.textContent = \`
+                    body::after {
+                      content: "";
+                      position: fixed;
+                      bottom: 0;
+                      left: 0;
+                      right: 0;
+                      height: 150px;
+                      background-color: #1A1820;
+                      z-index: -5;
+                    }
+                    
+                    footer {
+                      position: relative;
+                      z-index: 10;
+                      background-color: #1A1820 !important;
+                    }
+                    
+                    #app-bg-gradient {
+                      height: 120vh !important;
+                      bottom: -20vh !important;
+                    }
+                  \`;
+                  
+                  // Füge den Style zum Head hinzu
+                  document.head.appendChild(style);
                 }
               })();
             `
           }} />
+          
+          {/* Chrome-Fix Script */}
+          <script src="/chrome-fix.js"></script>
         </body>
       </Html>
     );

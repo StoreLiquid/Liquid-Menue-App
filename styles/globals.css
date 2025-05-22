@@ -36,8 +36,12 @@ body {
 
 /* Chrome-spezifische Anpassungen */
 @media screen and (-webkit-min-device-pixel-ratio:0) {
-  html, body, #__next {
+  html, body {
     background-color: var(--app-bg) !important;
+  }
+  
+  #__next {
+    background-color: transparent !important;
   }
   
   .fixed {
@@ -48,6 +52,26 @@ body {
   .bg-gradient-to-br {
     z-index: -10 !important;
     opacity: 1 !important;
+  }
+  
+  /* Speziell für Chrome Desktop */
+  @media (min-width: 1024px) {
+    html, body, #__next, .min-h-screen.relative {
+      background-color: var(--app-bg) !important;
+    }
+    
+    #app-bg-gradient {
+      opacity: 1 !important;
+      display: block !important;
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      z-index: -10 !important;
+    }
   }
 }
 
@@ -180,9 +204,15 @@ footer {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 100px;
+    height: 150px;
     background-color: var(--app-bg);
     z-index: -1;
+  }
+  
+  /* Sicherstellen, dass der Hintergrund vollständig ist */
+  #app-bg-gradient {
+    height: 120vh !important;
+    bottom: -20vh !important;
   }
 }
 
