@@ -99,4 +99,62 @@ Format (ab Zelle A2):
 - Filtern nach Kategorien (10ml, 60ml, 120ml)
 - Filtern nach Tags (z.B. "Süß", "Kalt", "Fruchtig")
 - Produktanzeige nach Herstellern
-- Responsive Design für Smartphones und Tablets 
+- Responsive Design für Smartphones und Tablets
+
+# Automatische Tabellenerstellung für Google Sheets
+
+Dieses Google Apps Script automatisiert die Erstellung und Formatierung von Tabellenblättern in Google Sheets. Es erkennt den Typ des Tabellenblatts anhand seines Namens und füllt es automatisch mit passenden Überschriften und Beispieldaten.
+
+## Funktionen
+
+- **Automatische Erkennung** des Tabellentyps anhand des Namens
+- **Automatisches Einfügen** von Überschriften und Beispieldaten
+- **Formatierung** der Tabelle (fett gedruckte Überschriften, Hintergrundfarbe)
+- **Automatische Spaltenbreitenanpassung**
+
+## Unterstützte Tabellentypen
+
+1. **Produkt/Liquid-Tabellen**
+   - Erkannt durch Namen wie "produkt", "liquid", "suche"
+   - Spalten: ID, HerstellerID, Herstellername, Nikotin, Füllmenge, Preis, Sorte, Tags
+
+2. **Hersteller-Tabellen**
+   - Erkannt durch Namen wie "hersteller"
+   - Spalten: ID, Name, Kategorie
+
+3. **Bestellungs-Tabellen**
+   - Erkannt durch Namen wie "bestellung", "order"
+   - Spalten: BestellID, Datum, KundenID, ProduktID, Menge, Gesamtpreis, Status
+
+## Installation
+
+1. Öffne dein Google Sheet
+2. Gehe zu "Erweiterungen" > "Apps Script"
+3. Füge den Code aus der Datei `AutomatischeTabellenerstellung.gs` ein
+4. Speichere das Projekt (Disketten-Symbol)
+5. Aktualisiere dein Google Sheet
+6. Klicke auf das neue Menü "Automatisierung" > "Trigger installieren"
+
+## Verwendung
+
+### Automatische Tabellenerstellung
+
+Nach der Installation des Triggers werden neue Tabellenblätter automatisch erkannt und formatiert, wenn sie erstellt werden.
+
+### Manuelle Formatierung
+
+Um ein bestehendes Tabellenblatt zu formatieren:
+1. Wähle das Tabellenblatt aus
+2. Klicke auf "Automatisierung" > "Aktuelle Tabelle formatieren"
+3. Wenn der Tabellentyp nicht automatisch erkannt wird, wirst du aufgefordert, den Typ manuell auszuwählen
+
+## Anpassung
+
+Du kannst die Vorlagen im Skript anpassen, um sie an deine spezifischen Bedürfnisse anzupassen. Ändere einfach die Werte in der `TABELLEN_VORLAGEN`-Konstante am Anfang des Skripts.
+
+## Fehlerbehebung
+
+Wenn das Skript nicht wie erwartet funktioniert:
+1. Überprüfe, ob der Trigger korrekt installiert wurde
+2. Stelle sicher, dass der Name des Tabellenblatts einen der erkannten Begriffe enthält
+3. Versuche, die Tabelle manuell zu formatieren über das Menü "Automatisierung" 
