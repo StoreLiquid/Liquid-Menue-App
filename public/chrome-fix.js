@@ -1,6 +1,6 @@
 // Chrome-Hintergrund-Fix - Direkter Ansatz
 document.addEventListener('DOMContentLoaded', function() {
-  // Feste Hintergrundfarben
+  // Feste Hintergrundfarben - an Edge angepasst
   const bgColor = '#1A1820';
   const bgGradient = 'linear-gradient(to bottom right, #2A2832, #1A1820)';
   
@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
     background-image: ${bgGradient};
     z-index: -10000;
     pointer-events: none;
+    opacity: 0.8;
   `;
   
   // Füge es als erstes Element im Body ein
@@ -49,6 +50,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Stelle sicher, dass der fixe Hintergrund noch da ist
     if (!document.getElementById('chrome-fixed-bg')) {
       document.body.insertBefore(fixedBg.cloneNode(true), document.body.firstChild);
+    }
+    
+    // Stelle sicher, dass der Gradient sichtbar ist
+    const gradientBg = document.getElementById('app-bg-gradient');
+    if (gradientBg) {
+      gradientBg.style.opacity = '1';
+      gradientBg.style.display = 'block';
     }
   });
 }); 

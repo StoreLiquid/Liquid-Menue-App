@@ -28,7 +28,7 @@
   if (isChrome()) {
     console.log("Chrome Browser erkannt, füge robusten Hintergrund hinzu...");
     
-    // Hintergrund-Farben
+    // Hintergrund-Farben - an Edge angepasst
     const bgColor = '#1A1820';
     const bgGradient = 'linear-gradient(to bottom right, #2A2832, #1A1820)';
     
@@ -56,6 +56,7 @@
           background-image: ${bgGradient};
           z-index: -9999;
           pointer-events: none;
+          opacity: 0.8;
         `;
         document.body.insertBefore(bgDiv, document.body.firstChild);
       }
@@ -72,6 +73,7 @@
       if (gradientBg) {
         gradientBg.style.backgroundImage = bgGradient;
         gradientBg.style.opacity = '1';
+        gradientBg.style.display = 'block';
       }
     }
     
@@ -91,6 +93,7 @@
       #app-bg-gradient {
         background-image: ${bgGradient} !important;
         opacity: 1 !important;
+        display: block !important;
       }
       
       #chrome-bg-fix {
@@ -105,6 +108,7 @@
         background-image: ${bgGradient} !important;
         z-index: -9999 !important;
         pointer-events: none !important;
+        opacity: 0.8 !important;
       }
     `;
     document.head.appendChild(style);

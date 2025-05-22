@@ -269,37 +269,21 @@ export default function Home() {
   };
 
   return (
-    <div 
-      className="min-h-screen relative overflow-y-auto overflow-x-hidden text-white" 
-      style={{ 
-        backgroundColor: '#1A1820', 
-        backgroundImage: 'linear-gradient(to bottom right, #2A2832, #1A1820)',
-        color: 'white'
-      }}
-    >
-      {/* Direkter Hintergrund für Chrome */}
-      <div 
-        className="fixed inset-0 w-screen h-screen bg-[#1A1820] z-[-9999]" 
-        style={{ 
-          position: 'fixed', 
-          backgroundImage: 'linear-gradient(to bottom right, #2A2832, #1A1820)'
-        }}
-      ></div>
-      
+    <div className="min-h-screen relative overflow-y-auto overflow-x-hidden text-white">
       {/* Hintergrundverlauf mit Animation für die gesamte App */}
-      <div id="app-bg-gradient" className="fixed inset-0 w-screen h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black animate-gradient-slow"></div>
+      <div id="app-bg-gradient" className="fixed inset-0 w-screen h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black animate-gradient-slow" style={{ zIndex: -10 }}></div>
       
       {/* Subtiles Muster-Overlay für mehr Tiefe */}
-      <div id="app-bg-pattern" className="fixed inset-0 w-screen h-screen opacity-10 bg-[url('/noise-pattern.svg')] mix-blend-overlay"></div>
+      <div id="app-bg-pattern" className="fixed inset-0 w-screen h-screen opacity-10 bg-[url('/noise-pattern.svg')] mix-blend-overlay" style={{ zIndex: -9 }}></div>
       
       {/* Glanzeffekt am oberen Rand */}
-      <div id="app-top-glow" className="fixed top-0 left-0 right-0 h-[1px] w-full bg-gradient-to-r from-transparent via-gray-400 to-transparent animate-pulse-light" style={{ position: 'fixed', zIndex: -8 }}></div>
+      <div id="app-top-glow" className="fixed top-0 left-0 right-0 h-[1px] w-full bg-gradient-to-r from-transparent via-gray-400 to-transparent animate-pulse-light" style={{ zIndex: -8 }}></div>
       
       {/* Subtiler Glanzeffekt in der Ecke */}
-      <div id="app-corner-glow-1" className="fixed top-0 right-0 w-40 h-40 bg-gradient-radial from-gray-500/10 to-transparent rounded-full -translate-x-1/4 -translate-y-1/2 animate-pulse-light" style={{ position: 'fixed', zIndex: -8 }}></div>
+      <div id="app-corner-glow-1" className="fixed top-0 right-0 w-40 h-40 bg-gradient-radial from-gray-500/10 to-transparent rounded-full -translate-x-1/4 -translate-y-1/2 animate-pulse-light" style={{ zIndex: -8 }}></div>
       
       {/* Subtiler Glanzeffekt in der unteren linken Ecke */}
-      <div id="app-corner-glow-2" className="fixed bottom-0 left-0 w-60 h-60 bg-gradient-radial from-gray-500/10 to-transparent rounded-full -translate-x-1/3 translate-y-1/3 animate-pulse-light" style={{ position: 'fixed', zIndex: -8 }}></div>
+      <div id="app-corner-glow-2" className="fixed bottom-0 left-0 w-60 h-60 bg-gradient-radial from-gray-500/10 to-transparent rounded-full -translate-x-1/3 translate-y-1/3 animate-pulse-light" style={{ zIndex: -8 }}></div>
       
       <Head>
         <title>Liquid Menü</title>

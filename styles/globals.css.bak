@@ -1,4 +1,4 @@
-@tailwind base;
+﻿@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -8,7 +8,7 @@
   --text-color: #ffffff;
 }
 
-/* Grundlegende Stile für alle Browser */
+/* Grundlegende Stile fÃ¼r alle Browser */
 html, body {
   background-color: var(--app-bg);
   color: var(--text-color);
@@ -100,7 +100,7 @@ body {
   overflow-y: visible !important;
 }
 
-/* Korrektur für absolute positionierte Elemente */
+/* Korrektur fÃ¼r absolute positionierte Elemente */
 .min-h-screen.relative {
   min-height: 100vh;
   width: 100%;
@@ -118,7 +118,7 @@ footer {
   border-color: rgba(255, 255, 255, 0.1) !important;
 }
 
-/* Animation für den Header-Verlauf */
+/* Animation fÃ¼r den Header-Verlauf */
 @keyframes gradient {
   0% {
     background-position: 0% 50%;
@@ -136,7 +136,7 @@ footer {
   animation: gradient 15s ease infinite;
 }
 
-/* Subtile Pulse-Animation für Glanzeffekte */
+/* Subtile Pulse-Animation fÃ¼r Glanzeffekte */
 @keyframes pulse-light {
   0% {
     opacity: 0.05;
@@ -160,12 +160,12 @@ footer {
 
 /* iOS-spezifische Anpassungen */
 @supports (-webkit-touch-callout: none) {
-  /* Entfernt den weißen Überziehbereich bei Pull-to-refresh */
+  /* Entfernt den weiÃŸen Ãœberziehbereich bei Pull-to-refresh */
   body {
     background-attachment: fixed;
   }
   
-  /* Erweitert den Hintergrund nach oben für Pull-to-Refresh */
+  /* Erweitert den Hintergrund nach oben fÃ¼r Pull-to-Refresh */
   body::before {
     content: '';
     position: fixed;
