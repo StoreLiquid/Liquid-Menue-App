@@ -19,6 +19,12 @@ class MyDocument extends Document {
           <meta name="theme-color" content="#1A1820" />
           <meta name="apple-mobile-web-app-status-bar" content="#1A1820" />
           
+          {/* Chrome PWA Anpassungen */}
+          <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1A1820" />
+          <meta name="theme-color" media="(prefers-color-scheme: light)" content="#1A1820" />
+          <meta name="mobile-web-app-capable" content="yes" />
+          <meta name="background-color" content="#1A1820" />
+          
           {/* iOS Vollbild-Modus */}
           <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover, shrink-to-fit=no" />
           <meta name="apple-touch-fullscreen" content="yes" />
@@ -96,6 +102,39 @@ class MyDocument extends Document {
           
           {/* Add to Home Screen Prompt Script */}
           <script src="/add-to-home.js" defer></script>
+          
+          {/* Chrome-spezifisches Inline-Script */}
+          <script dangerouslySetInnerHTML={{
+            __html: `
+              // Sofortiger Fix für Chrome
+              (function() {
+                const isChrome = /Chrome/.test(navigator.userAgent) && !/Edge|Edg/.test(navigator.userAgent);
+                if (isChrome) {
+                  // Hintergrundfarbe für Chrome setzen
+                  document.documentElement.style.backgroundColor = '#1A1820';
+                  document.body.style.backgroundColor = '#1A1820';
+                  
+                  // Grauer Balken am unteren Rand in PWA entfernen
+                  if (window.matchMedia('(display-mode: standalone)').matches) {
+                    const style = document.createElement('style');
+                    style.textContent = \`
+                      body::after {
+                        content: "";
+                        position: fixed;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        height: 100px;
+                        background-color: #1A1820;
+                        z-index: -1;
+                      }
+                    \`;
+                    document.head.appendChild(style);
+                  }
+                }
+              })();
+            `
+          }} />
         </body>
       </Html>
     );
