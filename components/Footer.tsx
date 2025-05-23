@@ -17,6 +17,35 @@ const Footer: React.FC<FooterProps> = ({ isPwa, isMobile, isIOS }) => {
   // Funktion zum Schließen des QR-Codes und Scrollen nach oben
   const closeQRAndScrollToTop = () => {
     setShowQRCode(false);
+    // Direkt nach oben scrollen mit verschiedenen Methoden für maximale Kompatibilität
+    setTimeout(() => {
+      // Methode 1: Standard window.scrollTo
+      window.scrollTo(0, 0);
+      
+      // Methode 2: Für ältere Browser
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+      
+      // Methode 3: Anker-Link programmgesteuert auslösen
+      const topElement = document.getElementById('top');
+      if (topElement) {
+        topElement.scrollIntoView(true);
+      }
+    }, 50);
+  };
+  
+  // Funktion zum direkten Scrollen nach oben
+  const scrollToTop = () => {
+    // Direkt nach oben scrollen mit verschiedenen Methoden für maximale Kompatibilität
+    window.scrollTo(0, 0);
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+    
+    // Anker-Link programmgesteuert auslösen
+    const topElement = document.getElementById('top');
+    if (topElement) {
+      topElement.scrollIntoView(true);
+    }
   };
   
   // Effekt zum Scrollen zum QR-Code, wenn er angezeigt wird
@@ -52,15 +81,15 @@ const Footer: React.FC<FooterProps> = ({ isPwa, isMobile, isIOS }) => {
     >
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center justify-center">
-          {/* Nach-oben-Link */}
+          {/* Nach-oben-Button */}
           {!showQRCode && (
-            <a 
-              href="#top"
+            <button 
+              onClick={scrollToTop}
               className="mb-4 text-xs text-gray-400 hover:text-gray-300 transition-colors duration-300"
               aria-label="Nach oben"
             >
               Nach oben
-            </a>
+            </button>
           )}
           
           {/* QR-Code-Button */}
