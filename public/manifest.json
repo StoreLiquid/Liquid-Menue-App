@@ -27,6 +27,20 @@
       "purpose": "any maskable"
     },
     {
+      "src": "/icons/app-icon-new.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable",
+      "platform": "windows"
+    },
+    {
+      "src": "/icons/app-icon-new.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable",
+      "platform": "macos"
+    },
+    {
       "src": "/icons/smartphone-icon-192.png",
       "sizes": "192x192",
       "type": "image/png",

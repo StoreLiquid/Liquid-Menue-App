@@ -14,7 +14,19 @@ const HomeScreenPrompt: React.FC<HomeScreenPromptProps> = ({ isIOS, isPwa }) => 
     // Prüfe auch, ob der Nutzer die Aufforderung bereits geschlossen hat
     const hasBeenDismissed = localStorage.getItem('homeScreenPromptDismissed') === 'true';
     
-    if (isIOS && !isPwa && !hasBeenDismissed) {
+    // Prüfe, ob der Benutzer über den QR-Code gekommen ist (URL-Parameter oder Referrer)
+    const urlParams = new URLSearchParams(window.location.search);
+    const fromQRCode = urlParams.has('fromQR') || document.referrer.includes('qrserver');
+    
+    // Speichere den QR-Code-Status im localStorage
+    if (fromQRCode) {
+      localStorage.setItem('fromQRCode', 'true');
+    }
+    
+    // Lese den gespeicherten QR-Code-Status
+    const isFromQRCode = localStorage.getItem('fromQRCode') === 'true';
+    
+    if (isIOS && !isPwa && !hasBeenDismissed && !isFromQRCode) {
       // Verzögere die Anzeige um 2 Sekunden, damit der Nutzer erst die App sehen kann
       const timer = setTimeout(() => {
         setShowPrompt(true);

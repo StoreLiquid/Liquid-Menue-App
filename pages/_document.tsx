@@ -24,6 +24,11 @@ class MyDocument extends Document {
           <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover, shrink-to-fit=no" />
           <meta name="apple-touch-fullscreen" content="yes" />
           
+          {/* Desktop Icons für Windows und macOS */}
+          <link rel="icon" type="image/png" sizes="1024x1024" href="/icons/app-icon-new.png" />
+          <link rel="icon" type="image/png" sizes="512x512" href="/icons/app-icon-512.png" />
+          <link rel="icon" type="image/png" sizes="192x192" href="/icons/app-icon-192.png" />
+          
           {/* iOS Homescreen Icons - Using PNG for better compatibility */}
           <link rel="apple-touch-icon" href="/icons/smartphone-icon-192.png" />
           <link rel="apple-touch-icon" sizes="152x152" href="/icons/smartphone-icon-192.png" />
@@ -111,7 +116,7 @@ class MyDocument extends Document {
 
           {/* Manifest und Icons */}
           <link rel="manifest" href="/manifest.json" />
-          <link rel="shortcut icon" href="/icons/app-icon-192.png" />
+          <link rel="shortcut icon" href="/icons/app-icon-new.png" />
         </Head>
         <body>
           {/* Fester Hintergrund für alle Browser */}

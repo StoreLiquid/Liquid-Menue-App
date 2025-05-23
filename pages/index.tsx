@@ -5,7 +5,7 @@ import Searchbar from '../components/Searchbar';
 import ProductList from '../components/ProductList';
 import BackgroundElements from '../components/BackgroundElements';
 import Header from '../components/Header';
-import HomeScreenPrompt from '../components/HomeScreenPrompt';
+import Footer from '../components/Footer';
 import AutoRefresh from '../components/AutoRefresh';
 import useDeviceDetection from '../hooks/useDeviceDetection';
 import { Manufacturer, Liquid, CategoryType } from '../types';
@@ -364,14 +364,8 @@ export default function Home() {
         )}
       </main>
 
-      {/* Einfacher Copyright-Text */}
-      <div className="text-center py-6 text-gray-300 mt-12">
-        <p>© 2025 Liquid Menü</p>
-        <p className="text-xs mt-1 opacity-50">Created by A.G.</p>
-      </div>
-
-      {/* Home Screen Prompt */}
-      <HomeScreenPrompt isIOS={isIOS} isPwa={isPwa} />
+      {/* Footer mit QR-Code */}
+      <Footer isPwa={isPwa} isMobile={isMobile} isIOS={isIOS} />
 
       {/* Auto Refresh Component */}
       <AutoRefresh />
