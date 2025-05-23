@@ -13,16 +13,23 @@ interface FooterProps {
 const Footer: React.FC<FooterProps> = ({ isPwa, isMobile, isIOS }) => {
   const [showQRCode, setShowQRCode] = useState(false);
   const qrCodeRef = useRef<HTMLDivElement>(null);
-  const headerRef = useRef<HTMLDivElement>(null);
   
-  // Beim Laden der Komponente eine Referenz zum Header finden
-  useEffect(() => {
-    // Versuche, den Header zu finden (wir nehmen an, es ist das erste Element mit der Klasse "container")
-    const header = document.querySelector('header') || document.querySelector('main')?.firstElementChild;
-    if (header instanceof HTMLElement) {
-      headerRef.current = header as HTMLDivElement;
-    }
-  }, []);
+  // Funktion zum Scrollen nach ganz oben
+  const scrollToTop = () => {
+    // Direktes Scrollen ohne Animation für zuverlässigeres Verhalten in PWAs
+    window.scrollTo(0, 0);
+    
+    // Zusätzliche Methoden für verschiedene Browser/Umgebungen
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+    
+    // Fallback mit setTimeout für einige PWA-Umgebungen
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    }, 50);
+  };
   
   const toggleQRCode = () => {
     const wasShowing = showQRCode;
@@ -30,36 +37,7 @@ const Footer: React.FC<FooterProps> = ({ isPwa, isMobile, isIOS }) => {
     
     // Wenn der QR-Code geschlossen wird, nach oben scrollen
     if (wasShowing) {
-      setTimeout(() => {
-        // Versuche mehrere Methoden für verschiedene Umgebungen
-        try {
-          // Methode 1: Scroll zum Header-Element (funktioniert in PWAs besser)
-          if (headerRef.current) {
-            headerRef.current.scrollIntoView({ 
-              behavior: 'smooth', 
-              block: 'start'
-            });
-          } 
-          // Methode 2: Standard-Scroll zum Seitenanfang
-          else {
-            window.scrollTo({ 
-              top: 0, 
-              behavior: 'smooth' 
-            });
-          }
-          
-          // Methode 3: Fallback für ältere Browser oder PWAs
-          if (isPwa) {
-            document.body.scrollTop = 0;
-            document.documentElement.scrollTop = 0;
-          }
-        } catch (error) {
-          console.log('Scroll-Fehler abgefangen:', error);
-          // Fallback: Direktes Setzen der Scroll-Position
-          document.body.scrollTop = 0;
-          document.documentElement.scrollTop = 0;
-        }
-      }, 100);
+      scrollToTop();
     }
   };
   
@@ -68,15 +46,17 @@ const Footer: React.FC<FooterProps> = ({ isPwa, isMobile, isIOS }) => {
     if (showQRCode && qrCodeRef.current) {
       setTimeout(() => {
         try {
-          qrCodeRef.current?.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'center'
-          });
+          // Berechne die Position des QR-Codes
+          const rect = qrCodeRef.current.getBoundingClientRect();
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          const targetY = scrollTop + rect.top - 100; // 100px Abstand von oben
+          
+          // Scrolle direkt zur berechneten Position
+          window.scrollTo(0, targetY);
         } catch (error) {
           console.log('QR-Code-Scroll-Fehler abgefangen:', error);
-          // Fallback: Manuelles Scrollen
-          const yOffset = qrCodeRef.current.getBoundingClientRect().top + window.pageYOffset - 100;
-          window.scrollTo(0, yOffset);
+          // Fallback
+          qrCodeRef.current?.scrollIntoView({ block: 'center' });
         }
       }, 100);
     }
