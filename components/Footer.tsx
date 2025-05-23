@@ -15,7 +15,18 @@ const Footer: React.FC<FooterProps> = ({ isPwa, isMobile, isIOS }) => {
   const qrCodeRef = useRef<HTMLDivElement>(null);
   
   const toggleQRCode = () => {
+    const wasShowing = showQRCode;
     setShowQRCode(!showQRCode);
+    
+    // Wenn der QR-Code geschlossen wird, nach oben scrollen
+    if (wasShowing) {
+      setTimeout(() => {
+        window.scrollTo({ 
+          top: 0, 
+          behavior: 'smooth' 
+        });
+      }, 100);
+    }
   };
   
   // Effekt zum Scrollen zum QR-Code, wenn er angezeigt wird
