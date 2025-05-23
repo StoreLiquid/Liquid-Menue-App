@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 interface FooterProps {
   isPwa: boolean;
@@ -12,10 +12,23 @@ interface FooterProps {
  */
 const Footer: React.FC<FooterProps> = ({ isPwa, isMobile, isIOS }) => {
   const [showQRCode, setShowQRCode] = useState(false);
+  const qrCodeRef = useRef<HTMLDivElement>(null);
   
   const toggleQRCode = () => {
     setShowQRCode(!showQRCode);
   };
+  
+  // Effekt zum Scrollen zum QR-Code, wenn er angezeigt wird
+  useEffect(() => {
+    if (showQRCode && qrCodeRef.current) {
+      setTimeout(() => {
+        qrCodeRef.current?.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'center'
+        });
+      }, 100);
+    }
+  }, [showQRCode]);
 
   return (
     <footer 
@@ -49,7 +62,10 @@ const Footer: React.FC<FooterProps> = ({ isPwa, isMobile, isIOS }) => {
           </button>
           
           {showQRCode && (
-            <div className="mb-6 bg-black/40 backdrop-blur-sm border border-white/10 p-4 rounded-xl shadow-lg transition-all duration-300 ease-in-out">
+            <div 
+              ref={qrCodeRef}
+              className="mb-6 bg-black/40 backdrop-blur-sm border border-white/10 p-4 rounded-xl shadow-lg transition-all duration-300 ease-in-out"
+            >
               <p className="text-gray-300 text-xs mb-3 font-medium">Scanne diesen QR-Code, um die App zu öffnen</p>
               <div className="bg-white p-2 rounded-lg inline-block">
                 <img
