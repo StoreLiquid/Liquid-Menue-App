@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 interface FooterProps {
   isPwa: boolean;
@@ -14,25 +14,27 @@ const Footer: React.FC<FooterProps> = ({ isPwa, isMobile, isIOS }) => {
   const [showQRCode, setShowQRCode] = useState(false);
   const qrCodeRef = useRef<HTMLDivElement>(null);
   
-  // Einfache Funktion zum Scrollen nach oben
-  const scrollToTop = () => {
-    window.scrollTo(0, 0);
+  // Funktion zum Schließen des QR-Codes und Scrollen nach oben
+  const closeQRAndScrollToTop = () => {
+    setShowQRCode(false);
   };
   
-  const toggleQRCode = () => {
-    // Speichere den aktuellen Zustand
-    const wasShowing = showQRCode;
-    
-    // Aktualisiere den Zustand
-    setShowQRCode(!showQRCode);
-    
-    // Wenn der QR-Code geschlossen wird, nach oben scrollen
-    if (wasShowing) {
-      // Verzögerung für iOS-Geräte
+  // Effekt zum Scrollen zum QR-Code, wenn er angezeigt wird
+  useEffect(() => {
+    if (showQRCode && qrCodeRef.current) {
+      // Kurze Verzögerung, damit der DOM aktualisiert werden kann
       setTimeout(() => {
-        scrollToTop();
-      }, 50);
+        // Scroll zum QR-Code
+        const qrCodeElement = document.getElementById('qrcode-section');
+        if (qrCodeElement) {
+          qrCodeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 100);
     }
+  }, [showQRCode]);
+
+  const toggleQRCode = () => {
+    setShowQRCode(!showQRCode);
   };
 
   // Berechne zusätzlichen Abstand für mobile Geräte
@@ -50,15 +52,15 @@ const Footer: React.FC<FooterProps> = ({ isPwa, isMobile, isIOS }) => {
     >
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center justify-center">
-          {/* Nach-oben-Scrollen-Button */}
+          {/* Nach-oben-Link */}
           {!showQRCode && (
-            <button 
-              onClick={scrollToTop}
+            <a 
+              href="#top"
               className="mb-4 text-xs text-gray-400 hover:text-gray-300 transition-colors duration-300"
-              aria-label="Nach oben scrollen"
+              aria-label="Nach oben"
             >
-              Nach oben scrollen
-            </button>
+              Nach oben
+            </a>
           )}
           
           {/* QR-Code-Button */}
@@ -87,7 +89,7 @@ const Footer: React.FC<FooterProps> = ({ isPwa, isMobile, isIOS }) => {
             <div 
               ref={qrCodeRef}
               className="mb-6 bg-black/40 backdrop-blur-sm border border-white/10 p-4 rounded-xl shadow-lg transition-all duration-300 ease-in-out"
-              id="qr-code-container"
+              id="qrcode-section"
             >
               <p className="text-gray-300 text-xs mb-3 font-medium">Scanne diesen QR-Code, um die App zu öffnen</p>
               <div className="bg-white p-2 rounded-lg inline-block">
@@ -96,6 +98,14 @@ const Footer: React.FC<FooterProps> = ({ isPwa, isMobile, isIOS }) => {
                   alt="QR-Code für https://liquid-menue-app.vercel.app/"
                   className="w-32 h-32"
                 />
+              </div>
+              <div className="mt-4">
+                <button 
+                  onClick={closeQRAndScrollToTop}
+                  className="text-xs text-purple-300 hover:text-purple-200 transition-colors duration-300"
+                >
+                  QR-Code schließen und nach oben
+                </button>
               </div>
             </div>
           )}

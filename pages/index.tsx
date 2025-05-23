@@ -285,6 +285,9 @@ export default function Home() {
 
   return (
     <div className="min-h-screen relative overflow-y-auto overflow-x-hidden text-white">
+      {/* Anker für "Nach oben" Links */}
+      <div id="top" style={{ position: 'absolute', top: 0, left: 0 }}></div>
+      
       {/* Hintergrund-Elemente */}
       <BackgroundElements isPwa={isPwa} isMobile={isMobile} isIOS={isIOS} />
       
