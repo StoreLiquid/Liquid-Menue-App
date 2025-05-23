@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 
 interface FooterProps {
   isPwa: boolean;
@@ -14,53 +14,26 @@ const Footer: React.FC<FooterProps> = ({ isPwa, isMobile, isIOS }) => {
   const [showQRCode, setShowQRCode] = useState(false);
   const qrCodeRef = useRef<HTMLDivElement>(null);
   
-  // Funktion zum Scrollen nach ganz oben
+  // Einfache Funktion zum Scrollen nach oben
   const scrollToTop = () => {
-    // Direktes Scrollen ohne Animation für zuverlässigeres Verhalten in PWAs
     window.scrollTo(0, 0);
-    
-    // Zusätzliche Methoden für verschiedene Browser/Umgebungen
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
-    
-    // Fallback mit setTimeout für einige PWA-Umgebungen
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-      document.body.scrollTop = 0;
-      document.documentElement.scrollTop = 0;
-    }, 50);
   };
   
   const toggleQRCode = () => {
+    // Speichere den aktuellen Zustand
     const wasShowing = showQRCode;
+    
+    // Aktualisiere den Zustand
     setShowQRCode(!showQRCode);
     
     // Wenn der QR-Code geschlossen wird, nach oben scrollen
     if (wasShowing) {
-      scrollToTop();
+      // Verzögerung für iOS-Geräte
+      setTimeout(() => {
+        scrollToTop();
+      }, 50);
     }
   };
-  
-  // Effekt zum Scrollen zum QR-Code, wenn er angezeigt wird
-  useEffect(() => {
-    if (showQRCode && qrCodeRef.current) {
-      setTimeout(() => {
-        try {
-          // Berechne die Position des QR-Codes
-          const rect = qrCodeRef.current.getBoundingClientRect();
-          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-          const targetY = scrollTop + rect.top - 100; // 100px Abstand von oben
-          
-          // Scrolle direkt zur berechneten Position
-          window.scrollTo(0, targetY);
-        } catch (error) {
-          console.log('QR-Code-Scroll-Fehler abgefangen:', error);
-          // Fallback
-          qrCodeRef.current?.scrollIntoView({ block: 'center' });
-        }
-      }, 100);
-    }
-  }, [showQRCode]);
 
   // Berechne zusätzlichen Abstand für mobile Geräte
   const extraPadding = isIOS ? 'env(safe-area-inset-bottom, 80px)' : (isMobile ? '70px' : '20px');
@@ -77,7 +50,18 @@ const Footer: React.FC<FooterProps> = ({ isPwa, isMobile, isIOS }) => {
     >
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center justify-center">
-          {/* QR-Code-Button nach oben verschieben, damit er besser erreichbar ist */}
+          {/* Nach-oben-Scrollen-Button */}
+          {!showQRCode && (
+            <button 
+              onClick={scrollToTop}
+              className="mb-4 text-xs text-gray-400 hover:text-gray-300 transition-colors duration-300"
+              aria-label="Nach oben scrollen"
+            >
+              Nach oben scrollen
+            </button>
+          )}
+          
+          {/* QR-Code-Button */}
           <div className="mb-8">
             <button 
               onClick={toggleQRCode}
@@ -103,6 +87,7 @@ const Footer: React.FC<FooterProps> = ({ isPwa, isMobile, isIOS }) => {
             <div 
               ref={qrCodeRef}
               className="mb-6 bg-black/40 backdrop-blur-sm border border-white/10 p-4 rounded-xl shadow-lg transition-all duration-300 ease-in-out"
+              id="qr-code-container"
             >
               <p className="text-gray-300 text-xs mb-3 font-medium">Scanne diesen QR-Code, um die App zu öffnen</p>
               <div className="bg-white p-2 rounded-lg inline-block">
