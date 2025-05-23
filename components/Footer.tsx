@@ -13,6 +13,16 @@ interface FooterProps {
 const Footer: React.FC<FooterProps> = ({ isPwa, isMobile, isIOS }) => {
   const [showQRCode, setShowQRCode] = useState(false);
   const qrCodeRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+  
+  // Beim Laden der Komponente eine Referenz zum Header finden
+  useEffect(() => {
+    // Versuche, den Header zu finden (wir nehmen an, es ist das erste Element mit der Klasse "container")
+    const header = document.querySelector('header') || document.querySelector('main')?.firstElementChild;
+    if (header instanceof HTMLElement) {
+      headerRef.current = header as HTMLDivElement;
+    }
+  }, []);
   
   const toggleQRCode = () => {
     const wasShowing = showQRCode;
@@ -21,10 +31,34 @@ const Footer: React.FC<FooterProps> = ({ isPwa, isMobile, isIOS }) => {
     // Wenn der QR-Code geschlossen wird, nach oben scrollen
     if (wasShowing) {
       setTimeout(() => {
-        window.scrollTo({ 
-          top: 0, 
-          behavior: 'smooth' 
-        });
+        // Versuche mehrere Methoden für verschiedene Umgebungen
+        try {
+          // Methode 1: Scroll zum Header-Element (funktioniert in PWAs besser)
+          if (headerRef.current) {
+            headerRef.current.scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'start'
+            });
+          } 
+          // Methode 2: Standard-Scroll zum Seitenanfang
+          else {
+            window.scrollTo({ 
+              top: 0, 
+              behavior: 'smooth' 
+            });
+          }
+          
+          // Methode 3: Fallback für ältere Browser oder PWAs
+          if (isPwa) {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+          }
+        } catch (error) {
+          console.log('Scroll-Fehler abgefangen:', error);
+          // Fallback: Direktes Setzen der Scroll-Position
+          document.body.scrollTop = 0;
+          document.documentElement.scrollTop = 0;
+        }
       }, 100);
     }
   };
@@ -33,13 +67,23 @@ const Footer: React.FC<FooterProps> = ({ isPwa, isMobile, isIOS }) => {
   useEffect(() => {
     if (showQRCode && qrCodeRef.current) {
       setTimeout(() => {
-        qrCodeRef.current?.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'center'
-        });
+        try {
+          qrCodeRef.current?.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center'
+          });
+        } catch (error) {
+          console.log('QR-Code-Scroll-Fehler abgefangen:', error);
+          // Fallback: Manuelles Scrollen
+          const yOffset = qrCodeRef.current.getBoundingClientRect().top + window.pageYOffset - 100;
+          window.scrollTo(0, yOffset);
+        }
       }, 100);
     }
   }, [showQRCode]);
+
+  // Berechne zusätzlichen Abstand für mobile Geräte
+  const extraPadding = isIOS ? 'env(safe-area-inset-bottom, 80px)' : (isMobile ? '70px' : '20px');
 
   return (
     <footer 
@@ -48,29 +92,32 @@ const Footer: React.FC<FooterProps> = ({ isPwa, isMobile, isIOS }) => {
         background: isPwa 
           ? `linear-gradient(to bottom, transparent, var(--pwa-gradient-end))` 
           : `linear-gradient(to bottom, transparent, var(--app-bg))`,
-        paddingBottom: isIOS ? 'env(safe-area-inset-bottom, 20px)' : (isMobile ? '16px' : '20px')
+        paddingBottom: extraPadding
       }}
     >
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center justify-center">
-          <button 
-            onClick={toggleQRCode}
-            className="mb-4 text-sm text-purple-300 hover:text-purple-200 transition-colors duration-300 flex items-center"
-            aria-label={showQRCode ? "QR-Code ausblenden" : "QR-Code anzeigen"}
-            tabIndex={0}
-            onKeyDown={(e) => e.key === 'Enter' && toggleQRCode()}
-          >
-            {showQRCode ? "QR-Code ausblenden" : "QR-Code anzeigen"}
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              className={`ml-1 w-4 h-4 transition-transform duration-300 ${showQRCode ? 'rotate-180' : ''}`} 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor"
+          {/* QR-Code-Button nach oben verschieben, damit er besser erreichbar ist */}
+          <div className="mb-8">
+            <button 
+              onClick={toggleQRCode}
+              className="mb-2 text-sm bg-purple-900/50 hover:bg-purple-800/70 text-white py-2 px-4 rounded-lg transition-colors duration-300 flex items-center shadow-md"
+              aria-label={showQRCode ? "QR-Code ausblenden" : "QR-Code anzeigen"}
+              tabIndex={0}
+              onKeyDown={(e) => e.key === 'Enter' && toggleQRCode()}
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
+              {showQRCode ? "QR-Code ausblenden" : "QR-Code anzeigen"}
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                className={`ml-1 w-4 h-4 transition-transform duration-300 ${showQRCode ? 'rotate-180' : ''}`} 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+          </div>
           
           {showQRCode && (
             <div 
